@@ -27,6 +27,7 @@ FRONT_PROFILE_TOTAL_SCORE_MAX = 305.5
 
 
 def gonial_angle_score(angle, gender):
+    measurement_name = "Gonial angle(°)"
     level_count = 7
     min_range_array = [
         [112, 109.5, 106, 102, 97, 92, 80],
@@ -44,16 +45,18 @@ def gonial_angle_score(angle, gender):
              "Your jawline's shape would not generally be considered favorable. It is either too square (low value) or rounded and lacking angularity (high value).",
              "Your jawline is beginning to stray into the extremes and would not generally be considered harmonious. It is likely that your jaw is either too square or rounded in shape."
              "Your jawline shape is at the extremes and would not generally be considered harmonious. It is likely that your jaw is either too square or rounded in shape."]
+    
     for i in range(level_count):
         if (
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 
 def nasofrontal_angle_score(angle, gender):
+    measurement_name = "Nasofrontal angle (°)"
     level_count = 6
     min_range_array = [[106, 101, 97, 94, 88, 70], [122, 117, 113, 110, 107, 70]]
     max_range_array = [[129, 134, 138, 141, 147, 170], [143, 148, 152, 155, 158, 170]]
@@ -69,11 +72,12 @@ def nasofrontal_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 
 def mandibular_plane_angle_score(angle, gender):
+    measurement_name = "Mandibular plane angle (°)"
     level_count = 6
     min_range_array = [[15, 14, 12.5, 10, 8, 0], [15, 14, 12.5, 10, 8, 0]]
     max_range_array = [[22, 27, 30, 32.5, 35, 45], [23, 27, 30, 32.5, 35, 45]]
@@ -89,11 +93,12 @@ def mandibular_plane_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 
 def ramus_mandible_ratio_score(ratio, gender):
+    measurement_name = "Mandibular plane angle (°)"
     level_count = 6
     min_range_array = [
         [0.59, 0.54, 0.49, 0.41, 0.33, 0.1],
@@ -115,10 +120,11 @@ def ramus_mandible_ratio_score(ratio, gender):
             ratio >= min_range_array[1 - gender][i]
             and ratio <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[i]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], ratio, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], ratio, measurement_name
 
 def facial_convexity_glabella_score(angle, gender):
+    measurement_name = "Facial convexity (glabella) (°)"
     level_count = 6
     min_range_array = [[168, 171, 163, 160, 155, 140], [166, 163, 161, 159, 155, 140]]
     max_range_array = [[176, 179, 181, 183, 184, 195], [175, 178, 180, 182, 184, 195]]
@@ -134,10 +140,11 @@ def facial_convexity_glabella_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[i]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def submental_cervical_angle_score(angle, gender):
+    measurement_name = "Submental cervical angle (°)"
     level_count = 5
     min_range_array = [[91, 81, 81, 75, 50], [91, 81, 81, 75, 50]]
     max_range_array = [[110, 120, 130, 140, 160], [110, 120, 130, 140, 160]]
@@ -152,10 +159,11 @@ def submental_cervical_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def nasofacial_angle_score(angle, gender):
+    measurement_name = "Nasofacial angle (°)"
     level_count = 6
     min_range_array = [[30, 36, 28, 26.5, 25.5, 10], [30, 36, 28, 26.5, 25.5, 10]]
     max_range_array = [[36, 40, 42, 43.5, 44.5, 60], [36, 40, 42, 43.5, 44.5, 60]]
@@ -171,10 +179,11 @@ def nasofacial_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def nasolabial_angle_score(angle, gender):
+    measurement_name = "Nasolabial angle (°)"
     level_count = 7
     min_range_array = [[94, 90, 85, 81, 70, 65, 30], [96, 92, 87, 83, 79, 74, 30]]
     max_range_array = [
@@ -194,23 +203,25 @@ def nasolabial_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def orbital_vector_score(value, gender):
+    measurement_name = "Orbital vector"
     if value == "positive":
-        return 7.5, "Your nose has a pleasant and ideal shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape."
+        return 7.5, "Your nose has a pleasant and ideal shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape.", 7.5, "Positive", value, measurement_name
     elif value == "slightly positive":
-        return 3.75, "You have a slightly positive orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive."
+        return 3.75, "You have a slightly positive orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive.", 7.5, "Positive", value, measurement_name
     elif value == "neutral":
-        return 1.875, "You have a neutral orbital vector, indicating no infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is a feature that is generally considered attractive."
+        return 1.875, "You have a neutral orbital vector, indicating no infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is a feature that is generally considered attractive.", 7.5, "Positive", value, measurement_name
     elif value == "slightly negative":
-        return -3.75, "You have a slightly negative orbital vector, indicating some infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is not yet extreme hollowing."
+        return -3.75, "You have a slightly negative orbital vector, indicating some infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is not yet extreme hollowing.", 7.5, "Positive", value, measurement_name
     elif value == "very negative":
-        return -7.5, "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature."
-    return -7.5, "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature."
+        return -7.5, "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature.", 7.5, "Positive", value, measurement_name
+    return -7.5, "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature.", 7.5, "Positive", value, measurement_name
 
 def total_facial_convexity_score(angle, gender):
+    measurement_name = "Total facial convexity"
     level_count = 7
     min_range_array = [
         [137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100],
@@ -233,10 +244,11 @@ def total_facial_convexity_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def mentolabial_angle_score(angle, gender):
+    measurement_name = "Mentolabial angle"
     level_count = 6
     min_range_array = [[108, 94, 80, 75, 65, 40], [93, 79, 70, 65, 62, 40]]
     max_range_array = [[130, 144, 158, 165, 175, 200], [125, 139, 153, 160, 175, 200]]
@@ -252,10 +264,11 @@ def mentolabial_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def facial_convexity_nasion_score(angle, gender):
+    measurement_name = "Facial convexity (nasion)"
     level_count = 6
     min_range_array = [[163, 160, 158, 155, 152, 120], [161, 158, 156, 153, 152, 120]]
     max_range_array = [[179, 173, 175, 178, 181, 195], [179, 173, 175, 178, 181, 195]]
@@ -271,10 +284,11 @@ def facial_convexity_nasion_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def nasal_projection_score(value, gender):
+    measurement_name = "Nasal projection"
     level_count = 6
     min_range_array = [
         [0.55, 0.5, 0.45, 0.37, 0.3, 0.1],
@@ -296,10 +310,11 @@ def nasal_projection_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def nasal_wh_ratio_score(value, gender):
+    measurement_name = "Nasal W to H ratio"
     level_count = 6
     min_range_array = [
         [0.62, 0.55, 0.49, 0.45, 0.4, 0.1],
@@ -321,42 +336,47 @@ def nasal_wh_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def ricketts_E_line_score(value, gender):
+    measurement_name = "Ricketts' E line"
     if value == "ideal":
-        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     elif value == "near ideal":
-        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     else:
-        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
 
 def holdaway_H_line_score(value, gender):
+    measurement_name = "Holdaway H line"
     if value == "ideal":
-        return 5, "You have a pleasant harmony between your chin and lips according to this specific assessment."
+        return 5, "You have a pleasant harmony between your chin and lips according to this specific assessment.", 5, "Ideal", value, measurement_name
     elif value == "near ideal":
-        return 2.5, "You have a reasonably pleasant harmony between your chin and lips according to this specific assessment."
+        return 2.5, "You have a reasonably pleasant harmony between your chin and lips according to this specific assessment.", 5, "Ideal", value, measurement_name
     else:
-        return 0, "You have an unpleasant harmony between your chin and lips according to this specific assessment."
+        return 0, "You have an unpleasant harmony between your chin and lips according to this specific assessment.", 5, "Ideal", value, measurement_name
 
 def steiner_S_line_score(value, gender):
+    measurement_name = "Steiner S line"
     if value == "ideal":
-        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     elif value == "near ideal":
-        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     else:
-        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
 
 def burstone_line_score(value, gender):
+    measurement_name = "Burstone line"
     if value == "ideal":
-        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 5, "You have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     elif value == "near ideal":
-        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 2.5, "You have a reasonably pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
     else:
-        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment."
+        return 0, "You do not have a pleasant harmony between your chin, lips, and nose according to this specific assessment.", 5, "Ideal", value, measurement_name
 
 def nasomental_angle_score(angle, gender):
+    measurement_name = "Nasomental angle (°)"
     level_count = 6
     min_range_array = [[125, 120, 118, 116, 114, 100], [125, 120, 118, 116, 114, 100]]
     max_range_array = [
@@ -375,30 +395,33 @@ def nasomental_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def gonion_mouth_relationship_score(value, gender):
+    measurement_name = "Gonion to mouth relationship"
     if value == "below":
-        return 5, "Your ramus has sufficient vertical growth."
+        return 5, "Your ramus has sufficient vertical growth.", 5, "Below", value, measurement_name
     elif value == "in_line":
-        return 1, "Your ramus has normal vertical growth, but could ideally have more length."
+        return 1, "Your ramus has normal vertical growth, but could ideally have more length.", 5, "Below", value, measurement_name
     elif value == "above":
-        return 0, "Your ramus has lacking vertical growth."
+        return 0, "Your ramus has lacking vertical growth.", 5, "Below", value, measurement_name
     else:
-        return -5, "Your ramus has severely lacking vertical growth."
+        return -5, "Your ramus has severely lacking vertical growth.", 5, "Below", value, measurement_name
 
 def recession_relative_frankfort_plane_score(value, gender):
+    measurement_name = "Recession relative to frankfort plane"
     if value == "none":
-        return 5, "According to this assessment, you have no notable recession regarding the position of your chin relative to your nasion."
+        return 5, "According to this assessment, you have no notable recession regarding the position of your chin relative to your nasion.", 5, "None", value, measurement_name
     elif value == "slight":
-        return 1, "According to this assessment, you have slight recession regarding the position of your chin relative to your nasion."
+        return 1, "According to this assessment, you have slight recession regarding the position of your chin relative to your nasion.", 5, "None", value, measurement_name
     elif value == "moderate":
-        return 0, "According to this assessment, you have moderate recession regarding the position of your chin relative to your nasion."
+        return 0, "According to this assessment, you have moderate recession regarding the position of your chin relative to your nasion.", 5, "None", value, measurement_name
     else:
-        return -10, "According to this assessment, you have extreme recession regarding the position of your chin relative to your nasion."
+        return -10, "According to this assessment, you have extreme recession regarding the position of your chin relative to your nasion.", 5, "None", value, measurement_name
 
 def browridge_inclination_angle_score(angle, gender):
+    measurement_name = "Browridge inclination angle (°)"
     level_count = 7
     min_range_array = [[13, 10, 8, 6, 4, 2, 0], [10, 7, 5, 3, 1, 1, 0]]
     max_range_array = [[24, 27, 29, 31, 33, 36, 45], [22, 25, 27, 29, 31, 39, 45]]
@@ -415,10 +438,11 @@ def browridge_inclination_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 def nasal_tip_angle_score(angle, gender):
+    measurement_name = "Nasal tip angle (°)"
     level_count = 6
     min_range_array = [[112, 108, 104, 100, 97, 70], [118, 115, 111, 108, 105, 70]]
     max_range_array = [[125, 129, 133, 137, 140, 170], [131, 134, 138, 141, 144, 170]]
@@ -434,12 +458,13 @@ def nasal_tip_angle_score(angle, gender):
             angle >= min_range_array[1 - gender][i]
             and angle <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], angle, measurement_name
 
 
 ###########FRONT PROFILE###########
 def facial_thirds_score(value, gender):
+    measurement_name = "Facial thirds (%)"
     level_count = 7
     min_range_array_favor = [
         [29.5, 28, 26.5, 25, 23.5, 22.5, 18],
@@ -479,7 +504,7 @@ def facial_thirds_score(value, gender):
                     ):
                         break
                     if index == 2:
-                        return score_array[i], notes[i]
+                        return score_array[i], notes[i], score_array[0], [min_range_array_favor[1-gender][0], max_range_array_favor[1 - gender][0]], value, measurement_name
         else:
             for i in range(level_count):
                 for index in range(3):
@@ -489,7 +514,7 @@ def facial_thirds_score(value, gender):
                     ):
                         break
                     if index == 2:
-                        return score_array[i], notes[i]
+                        return score_array[i], notes[i], score_array[0], [min_range_array_basic[1-gender][0], max_range_array_basic[1 - gender][0]], value, measurement_name
     else:
         is_favor = 0
         if value[2] <= value[0] and value[2] <= value[1]:
@@ -503,7 +528,7 @@ def facial_thirds_score(value, gender):
                     ):
                         break
                     if index == 2:
-                        return score_array[i], notes[i]
+                        return score_array[i], notes[i], score_array[0], [min_range_array_favor[1-gender][0], max_range_array_favor[1 - gender][0]], value, measurement_name
         else:
             for i in range(level_count):
                 for index in range(3):
@@ -513,10 +538,11 @@ def facial_thirds_score(value, gender):
                     ):
                         break
                     if index == 2:
-                        return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+                        return score_array[i], notes[i], score_array[0], [min_range_array_basic[1-gender][0], max_range_array_basic[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array_basic[1-gender][0], max_range_array_basic[1 - gender][0]], value, measurement_name
 
 def lateral_canthal_tilt_score(value, gender):
+    measurement_name = "Lateral Canthal Tilt (°)"
     level_count = 7
     min_range_array = [[5.2, 4, 3, 0, -2, -4, -10], [6, 4.8, 3.6, 1.5, 0, -3, -10]]
     max_range_array = [
@@ -536,10 +562,11 @@ def lateral_canthal_tilt_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def facial_wh_ratio_score(value, gender):
+    measurement_name = "Facial width-to-height ratio"
     level_count = 7
     min_range_array = [
         [1.9, 1.85, 1.8, 1.75, 1.7, 1.66, 1.3],
@@ -562,10 +589,11 @@ def facial_wh_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def jaw_frontal_angle_score(value, gender):
+    measurement_name = "Jaw frontal angle (°)"
     level_count = 7
     min_range_array = [
         [84.5, 80.5, 76.5, 72.5, 69.5, 66.5, 40],
@@ -588,10 +616,11 @@ def jaw_frontal_angle_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def cheekbone_high_setedness_score(value, gender):
+    measurement_name = "Cheekbone height (%)"
     level_count = 7
     min_range_array = [[81, 76, 70, 65, 60, 55, 10], [83, 79, 73, 68, 63, 58, 10]]
     max_range_array = [[100, 81, 76, 70, 65, 60, 55], [100, 83, 79, 73, 68, 63, 58]]
@@ -608,10 +637,11 @@ def cheekbone_high_setedness_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def total_facial_wh_ratio_score(value, gender):
+    measurement_name = "Total facial height-to-width ratio"
     level_count = 7
     min_range_array = [
         [1.33, 1.3, 1.26, 1.23, 1.2, 1.18, 1.0],
@@ -634,10 +664,11 @@ def total_facial_wh_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def bigonial_width_score(value, gender):
+    measurement_name = "Bigonial width (%)"
     level_count = 7
     min_range_array = [
         [85.5, 83.5, 80.5, 77.5, 75, 70, 50],
@@ -660,10 +691,11 @@ def bigonial_width_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def chin_philtrum_ratio_score(value, gender):
+    measurement_name = "Chin to philtrum ratio"
     level_count = 6
     min_range_array = [
         [2.05, 1.87, 1.75, 1.55, 1.2, 1.0, 0.1],
@@ -686,10 +718,11 @@ def chin_philtrum_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def neck_width_score(value, gender):
+    measurement_name = "Neck Width (%)"
     level_count = 7
     min_range_array = [[90, 85, 80, 75, 70, 65, 30], [75, 69, 67, 65, 62, 57, 30]]
     max_range_array = [
@@ -709,10 +742,11 @@ def neck_width_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def mouth_nose_width_ratio(value, gender):
+    measurement_name = "Mouth width to nose width ratio"
     level_count = 7
     min_range_array = [
         [1.38, 1.34, 1.3, 1.26, 1.22, 1.18, 0.9],
@@ -735,10 +769,11 @@ def mouth_nose_width_ratio(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def midface_ratio(value, gender):
+    measurement_name = "Midface ratio"
     level_count = 7
     min_range_array = [
         [0.93, 0.9, 0.88, 0.85, 0.8, 0.77, 0.5],
@@ -761,10 +796,11 @@ def midface_ratio(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def eyebrow_position_ratio_score(value, gender):
+    measurement_name = "Eyebrow position ratio"
     level_count = 7
     min_range_array = [
         [0, 0.65, 0.95, 1.2, 1.5, 1.8, 2.1],
@@ -787,10 +823,11 @@ def eyebrow_position_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def eye_spacing_ratio_score(value, gender):
+    measurement_name = "Eye spacing ratio"
     level_count = 7
     min_range_array = [
         [0.9, 0.86, 0.81, 0.76, 0.71, 0.67, 0.4],
@@ -813,10 +850,11 @@ def eye_spacing_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def eye_aspect_ratio_score(value, gender):
+    measurement_name = "Eye aspect ratio"
     level_count = 7
     min_range_array = [
         [2.8, 2.6, 2.4, 2.2, 2, 1.8, 0],
@@ -839,10 +877,11 @@ def eye_aspect_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def lower_upper_lip_ratio_score(value, gender):
+    measurement_name = "Lower lip to upper lip ratio"
     level_count = 7
     min_range_array = [
         [1.4, 1.1, 0.9, 0.7, 0.4, 0.1, 0.1],
@@ -865,10 +904,11 @@ def lower_upper_lip_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def deviation_IAA_score(value, gender):
+    measurement_name = "Deviation of IAA(Ipsilateral alar angle) & JFA(Jaw frontal angle)"
     level_count = 6
     min_range_array = [[0, 2.5, 5, 10, 15, 20], [0, 2.5, 5, 10, 15, 20]]
     max_range_array = [[2.5, 5, 10, 15, 20, 100], [2.5, 5, 10, 15, 20, 100]]
@@ -884,10 +924,11 @@ def deviation_IAA_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def eyebrow_tilt_score(value, gender):
+    measurement_name = "Eyebrow tilt"
     level_count = 6
     min_range_array = [[5, 3, 0, -2, -4, -15], [11, 9, 6, 4, 2, -15]]
     max_range_array = [[13, 15, 18, 20, 22, 40], [18.7, 20.7, 23.7, 25.7, 27.7, 40]]
@@ -903,10 +944,11 @@ def eyebrow_tilt_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def bitemporal_width_score(value, gender):
+    measurement_name = "Bitemporal width"
     level_count = 7
     min_range_array = [[84, 82, 79, 77, 74, 71, 50], [79, 76, 73, 70, 67, 65, 50]]
     max_range_array = [
@@ -926,10 +968,11 @@ def bitemporal_width_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def lower_third_proporation_score(value, gender):
+    measurement_name = "Lower third proportion"
     level_count = 6
     min_range_array = [
         [30.6, 29.6, 28.4, 27.2, 26.6, 20],
@@ -948,10 +991,11 @@ def lower_third_proporation_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def lpsilateral_alar_angle_score(value, gender):
+    measurement_name = "Ipsilateral alar angle"
     level_count = 7
     min_range_array = [[84, 82, 79, 77, 75, 73, 50], [84, 82, 79, 77, 75, 73, 50]]
     max_range_array = [
@@ -971,10 +1015,11 @@ def lpsilateral_alar_angle_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def medial_canthal_angle(value, gender):
+    measurement_name = "Medial canthal angle"
     level_count = 7
     min_range_array = [[29, 25, 21, 18, 15, 10, 5], [33, 29, 22, 19, 16, 13, 5]]
     max_range_array = [[47, 51, 57, 63, 69, 75, 120], [51, 55, 61, 65, 71, 77, 120]]
@@ -991,10 +1036,11 @@ def medial_canthal_angle(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def eye_separation_ratio_score(value, gender):
+    measurement_name = "Eye separation ratio"
     level_count = 7
     min_range_array = [
         [44.3, 43.6, 43.1, 42.6, 42, 41, 35],
@@ -1017,8 +1063,8 @@ def eye_separation_ratio_score(value, gender):
             value >= min_range_array[1 - gender][i]
             and value <= max_range_array[1 - gender][i]
         ):
-            return score_array[i], notes[i]
-    return score_array[-1], notes[-1]
+            return score_array[i], notes[i], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
+    return score_array[-1], notes[-1], score_array[0], [min_range_array[1-gender][0], max_range_array[1 - gender][0]], value, measurement_name
 
 def side_input(
     gender: int,
@@ -1050,143 +1096,239 @@ def side_input(
 
     scores = []
     notes = []
+    max_scores = []
+    ranges = []
+    current_values = []
+    measurement_names = []
 
-    temp_sum, note = gonial_angle_score(gonialAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = gonial_angle_score(gonialAngle, gender)
     print("Gonial angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasofrontal_angle_score(nasofrontalAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasofrontal_angle_score(nasofrontalAngle, gender)
     print("Nasofrontal angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = mandibular_plane_angle_score(mandibularPlaneAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = mandibular_plane_angle_score(mandibularPlaneAngle, gender)
     print("Mandibular plane angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = ramus_mandible_ratio_score(ramus2MandibleRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = ramus_mandible_ratio_score(ramus2MandibleRatio, gender)
     print("Ramus mandible ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = facial_convexity_glabella_score(facialConvexityGlabella, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = facial_convexity_glabella_score(facialConvexityGlabella, gender)
     print("Facial convexity glabella score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = submental_cervical_angle_score(submentalCervicalAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = submental_cervical_angle_score(submentalCervicalAngle, gender)
     print("Submental cervical angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasofacial_angle_score(nasofacialAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasofacial_angle_score(nasofacialAngle, gender)
     print("Nasofacial angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasolabial_angle_score(nasolabialAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasolabial_angle_score(nasolabialAngle, gender)
     print("Nasolabial angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = orbital_vector_score(orbitalVector, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = orbital_vector_score(orbitalVector, gender)
     print("Orbital vector score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = total_facial_convexity_score(totalFacialConvexity, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = total_facial_convexity_score(totalFacialConvexity, gender)
     print("Total facial convexity score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = mentolabial_angle_score(mentolabialAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = mentolabial_angle_score(mentolabialAngle, gender)
     print("Mentolabial angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = facial_convexity_nasion_score(facialConvexityNasion, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = facial_convexity_nasion_score(facialConvexityNasion, gender)
     print("Facial convexity nasion score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasal_projection_score(nasalProjection, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasal_projection_score(nasalProjection, gender)
     print("Nasal Projection score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasal_wh_ratio_score(nasalW2HRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasal_wh_ratio_score(nasalW2HRatio, gender)
     print("Nasal W to H ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = ricketts_E_line_score(rickettsELine, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = ricketts_E_line_score(rickettsELine, gender)
     print("Ricketts E line score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = holdaway_H_line_score(holdawayHLine, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = holdaway_H_line_score(holdawayHLine, gender)
     print("Holdaway H line score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = steiner_S_line_score(steinerSLine, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = steiner_S_line_score(steinerSLine, gender)
     print("Steiner S line score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = burstone_line_score(burstoneLine, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = burstone_line_score(burstoneLine, gender)
     print("Burstone line score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasomental_angle_score(nasomentalAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasomental_angle_score(nasomentalAngle, gender)
     print("Nasomental angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = gonion_mouth_relationship_score(gonion2MouthRelationship, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = gonion_mouth_relationship_score(gonion2MouthRelationship, gender)
     print("Gonion, mouth relationship score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = recession_relative_frankfort_plane_score(recessionRelative2FrankfortPlane, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = recession_relative_frankfort_plane_score(recessionRelative2FrankfortPlane, gender)
     print("Recession relative frankfort plane score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = browridge_inclination_angle_score(browridgeInclinationAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = browridge_inclination_angle_score(browridgeInclinationAngle, gender)
     print("Browridge inclination angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = nasal_tip_angle_score(nasalTipAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = nasal_tip_angle_score(nasalTipAngle, gender)
     print("Nasal tip angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
     print("Total Side Profile score is ", sum)
@@ -1195,7 +1337,7 @@ def side_input(
         sum / SIDE_PROFILE_TOTAL_SCORE_MAX * 100,
         "%",
     )
-    return sum, sum / SIDE_PROFILE_TOTAL_SCORE_MAX * 100, scores, notes
+    return sum, sum / SIDE_PROFILE_TOTAL_SCORE_MAX * 100, scores, notes, max_scores, ranges, current_values, measurement_names
 
 def front_input(
     gender: int,
@@ -1226,140 +1368,232 @@ def front_input(
 
     scores = []
     notes = []
+    max_scores = []
+    ranges = []
+    current_values = []
+    measurement_names = []
 
     print(gender, eyeSeparationRatio)
     print(type(gender), type(eyeSeparationRatio))
 
-    temp_sum, note = eye_separation_ratio_score(eyeSeparationRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = eye_separation_ratio_score(eyeSeparationRatio, gender)
     print("Eye separation ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = facial_thirds_score(facialThirds, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = facial_thirds_score(facialThirds, gender)
     print("Facial thirds score is ", temp_sum, facialThirds, gender)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = lateral_canthal_tilt_score(lateralCanthalTilt, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = lateral_canthal_tilt_score(lateralCanthalTilt, gender)
     print("Lateral canthal tilt score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = facial_wh_ratio_score(facialWHRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = facial_wh_ratio_score(facialWHRatio, gender)
     print("Facial width-to-height ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = jaw_frontal_angle_score(jawFrontalAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = jaw_frontal_angle_score(jawFrontalAngle, gender)
     print("Jaw frontal angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = cheekbone_high_setedness_score(cheekBoneHeight, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = cheekbone_high_setedness_score(cheekBoneHeight, gender)
     print("Cheekbone high setedness score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = total_facial_wh_ratio_score(totalFacialWHRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = total_facial_wh_ratio_score(totalFacialWHRatio, gender)
     print("Total face width-to-height ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = bigonial_width_score(bigonialWidth, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = bigonial_width_score(bigonialWidth, gender)
     print("Bigonial width score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = chin_philtrum_ratio_score(chin2PhiltrumRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = chin_philtrum_ratio_score(chin2PhiltrumRatio, gender)
     print("Chin philtrum ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = neck_width_score(neckWidth, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = neck_width_score(neckWidth, gender)
     print("Neck width score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = mouth_nose_width_ratio(mouthWidth2NoseWidthRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = mouth_nose_width_ratio(mouthWidth2NoseWidthRatio, gender)
     print("Mouth, nose width ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = midface_ratio(midFaceRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = midface_ratio(midFaceRatio, gender)
     print("Midface ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = eyebrow_position_ratio_score(eyebrowPositionRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = eyebrow_position_ratio_score(eyebrowPositionRatio, gender)
     print("Eyebrow position ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = eye_spacing_ratio_score(eyeSpacingRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = eye_spacing_ratio_score(eyeSpacingRatio, gender)
     print("Eye spacing ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = eye_aspect_ratio_score(eyeAspectRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = eye_aspect_ratio_score(eyeAspectRatio, gender)
     print("Eye aspect ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = lower_upper_lip_ratio_score(lowerLip2UpperLipRatio, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = lower_upper_lip_ratio_score(lowerLip2UpperLipRatio, gender)
     print("Lower, upper lip ratio score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = deviation_IAA_score(deviationOfJFA2IAA, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = deviation_IAA_score(deviationOfJFA2IAA, gender)
     print("Deviation IAA score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = eyebrow_tilt_score(eyebrowTilt, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = eyebrow_tilt_score(eyebrowTilt, gender)
     print("Eyebrow tilt score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = bitemporal_width_score(bitemporalWidth, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = bitemporal_width_score(bitemporalWidth, gender)
     print("Bitemporal width score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = lower_third_proporation_score(lowerThirdProporation, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = lower_third_proporation_score(lowerThirdProporation, gender)
     print("Lower third proporation score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = lpsilateral_alar_angle_score(ipsilateralAlarAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = lpsilateral_alar_angle_score(ipsilateralAlarAngle, gender)
     print("Lpsilateral alar angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
-    temp_sum, note = medial_canthal_angle(medialCanthalAngle, gender)
+    temp_sum, note, max_score, range, current_value, measurement_name = medial_canthal_angle(medialCanthalAngle, gender)
     print("Medial canthal angle score is ", temp_sum)
     scores.append(temp_sum)
     notes.append(note)
+    max_scores.append(max_score)
+    ranges.append(range)
+    current_values.append(current_value)
+    measurement_names.append(measurement_name)
     sum = sum + temp_sum
 
     print("Front profile score is ", sum)
@@ -1368,7 +1602,7 @@ def front_input(
         sum / FRONT_PROFILE_TOTAL_SCORE_MAX * 100,
         "%",
     )
-    return sum, sum / FRONT_PROFILE_TOTAL_SCORE_MAX * 100, scores, notes
+    return sum, sum / FRONT_PROFILE_TOTAL_SCORE_MAX * 100, scores, note, max_scores, ranges, current_values, measurement_names
 
 
 @app.post("/getfrontmark")
@@ -1377,9 +1611,10 @@ def get_front_mark(
 ):
     print(body)
     # print (body.bigonialWidth)
-    mark, percentage, scores, notes = front_input(**body.dict())
+    mark, percentage, scores, notes, max_scores, ranges, current_values, measurement_names = front_input(**body.dict())
     print(mark, percentage, scores, notes)
-    return {"mark": mark, "percent": percentage, "scores": scores, "notes": notes}
+    return {"mark": mark, "percent": percentage, "scores": scores, "notes": notes, "max_scores": max_scores, "ranges": ranges, "current_values": current_values,
+            "measurement_names": measurement_names}
 
 
 @app.post("/getsidemark")
@@ -1388,11 +1623,12 @@ def get_side_mark(
 ):
     print(body)
     # print (body.bigonialWidth)
-    mark, percentage, scores, notes = side_input(**body.dict())
-    return {"mark": mark, "percent": percentage, "scores": scores, "notes": notes}
+    mark, percentage, scores, notes, max_scores, ranges, current_values, measurement_names = side_input(**body.dict())
+    return {"mark": mark, "percent": percentage, "scores": scores, "notes": notes, "max_scores": max_scores, "ranges": ranges, "current_values": current_values,
+            "measurement_names": measurement_names}
 
 @app.post("/frontmagic")
-async def upload_image(image: UploadFile):
+async def upload_front_image(image: UploadFile):
     # Create a folder named "images" if it doesn't exist
     os.makedirs("images", exist_ok=True)
 
@@ -1410,7 +1646,7 @@ async def upload_image(image: UploadFile):
             "points": result_points.tolist()}
 
 @app.post("/sidemagic")
-async def upload_image(image: UploadFile):
+async def upload_side_image(image: UploadFile):
     # Create a folder named "images" if it doesn't exist
     os.makedirs("images", exist_ok=True)
 
