@@ -243,10 +243,5 @@ def process_image(image_path):
         new_x = result[i][0]
         new_y = result[i][1]
         cv2.circle(img, (int(new_x), int(new_y)), 1, (255,0,255), 2)
-    cv2.imshow("origin", img)
-    cv2.waitKey(0)
 
     return result
-
-
-print(process_image("./images/temp.jpg"))
