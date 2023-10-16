@@ -5,11 +5,6 @@ from starlette.middleware.cors import CORSMiddleware
 
 from schemas import GetFrontMarkRequestSchema
 from schemas import GetSideMarkRequestSchema
-import os
-from PIL import Image
-
-import face_landmarks
-import side_landmarks
 
 app = FastAPI()
 app.add_middleware(
@@ -628,7 +623,7 @@ def eyebrow_position_ratio_score(value, gender):
     ]
     max_range_array = [
         [0.65, 0.95, 1.2, 1.5, 1.8, 2.1, 4.0],
-        [0.85, 1, 1.15, 1.35, 1.85, 2.4, 4.0],
+        [0.85, 1, 1.35, 1.75, 2, 2.3, 4.0],
     ]
     score_array = [10, 5, 2.5, 0, -5, -10, -20]
     for i in range(level_count):
@@ -1088,43 +1083,6 @@ def get_side_mark(
     # print (body.bigonialWidth)
     mark, percentage = side_input(**body.dict())
     return {"mark": mark, "percent": percentage}
-
-@app.post("/frontmagic")
-async def upload_image(image: UploadFile):
-    # Create a folder named "images" if it doesn't exist
-    os.makedirs("images", exist_ok=True)
-
-    # Save the uploaded image to the "images" folder
-    file_path = os.path.join("images", "temp.jpg")
-    img = Image.open(image.file)
-    width = int(img.width * (800 / img.height))
-    img = img.resize((width, 800))
-    img.save(file_path)
-
-    result_points = face_landmarks.process_image(file_path)
-    print(result_points)
-
-    return {"message": "Image uploaded successfully",
-            "points": result_points.tolist()}
-
-@app.post("/sidemagic")
-async def upload_image(image: UploadFile):
-    # Create a folder named "images" if it doesn't exist
-    os.makedirs("images", exist_ok=True)
-
-    # Save the uploaded image to the "images" folder
-    file_path = os.path.join("images", "temp.jpg")
-    img = Image.open(image.file)
-    width = int(img.width * (800 / img.height))
-    img = img.resize((width, 800))
-    img.save(file_path)
-
-
-    result_points = side_landmarks.process_image(file_path)
-    print(result_points)
-
-    return {"message": "Image uploaded successfully",
-            "points": result_points}
 
 
 @app.post("/get_test/")
