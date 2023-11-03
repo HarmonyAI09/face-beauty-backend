@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 class GetFrontMarkRequestSchema(BaseModel):
     gender: int
+    racial: str
     eyeSeparationRatio: float
     facialThirds: list
     lateralCanthalTilt: float
@@ -30,6 +31,7 @@ class GetFrontMarkRequestSchema(BaseModel):
 
 class GetSideMarkRequestSchema(BaseModel):
     gender: int
+    racial: str
     gonialAngle: float
     nasofrontalAngle: float
     mandibularPlaneAngle: float

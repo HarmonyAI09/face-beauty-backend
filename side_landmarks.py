@@ -49,12 +49,12 @@ def mapping_func(path):
     print(result_marks)
     return result_marks, width, height
 
-def main_process(path):
+def process_image(path):
     response = requests.post(
         'https://api.remove.bg/v1.0/removebg',
         files={'image_file': open(path, 'rb')},
         data={'size': 'auto'},
-        headers={'X-Api-Key': '7Rpyut6AoqWqTFEMB7zjEita'},
+        headers={'X-Api-Key': 'NxYggFhnjy9Y9JYArchAV2Jq'},
     )
     if response.status_code == requests.codes.ok:
         with open('nobackground.jpg', 'wb') as out:
@@ -89,7 +89,7 @@ def main_process(path):
     reference_points[25] = neck_position
     reference_points[10] = nose_position
 
-    source_points_path = "./f15.pts"
+    source_points_path = "./Match/f15.pts"
     return_points = [[0,0]] * 30
     try:
       with open(source_points_path, 'r') as file:
@@ -139,7 +139,6 @@ def main_process(path):
     ref_step_index = []
     ref_empty_step_index=[]
     for i, point in enumerate(sorted_points):
-      print(i, ref_step_index, point)
       if reference_points[point[2]][0]==0:
         ref_empty_step_index[len(ref_empty_step_index)-1].append(point[2])
       else:
@@ -150,7 +149,7 @@ def main_process(path):
       start = ref_step_index[i]
       end = ref_step_index[i+1]
       main_width = points[end][0]-points[start][0]
-      new_width = reference_points[end][0]-reference_points[start][0]
+      new_width = abs(reference_points[end][0]-reference_points[start][0])+0.01
       step_ratio = main_width / new_width
       for j in ref_empty_step_index[i]:
         temp_width= (points[j][0]-points[start][0])/step_ratio
@@ -163,5 +162,3 @@ def main_process(path):
     # cv2.imwrite("ttt.jpg", im)
     # print(reference_points)
     return reference_points
-
-main_process("f15.jpg")
