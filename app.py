@@ -1,20 +1,44 @@
 import uvicorn
 from typing import Union
 
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, Request, HTTPException, status
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from schemas import GetFrontMarkRequestSchema
 from schemas import GetSideMarkRequestSchema
+from fastapi.responses import RedirectResponse
+import auth
+import pricing
 import os
 from PIL import Image
-
-# import face_landmarks
-# import side_landmarks
+import stripe
+import json
+from pymongo import MongoClient
 from pydantic import BaseModel
+from datetime import datetime, timedelta
+
+import face_landmarks
+import side_landmarks
+
+stripe.api_key = 'sk_test_51OAYN0ItQ91j83DilxeRLixL8nBtOwbGiJ5KSlB65qG576Eans0deS8osZ5vknUd2rej0R3FfcIOjvXiKpwBFgre003XBuMXBQ'
+mongo_uri = "mongodb+srv://devguru13580:hXcQgMDBinZ8wlo4@cluster0.ehilact.mongodb.net/"
+client = MongoClient(mongo_uri)
+db = client["harmony"]
+users_collection = db["users"]
+
+class PurchasePlan(BaseModel):
+    email: str
+
+def calculate_expiration_date():    
+    return datetime.now() + timedelta(days=30)
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",  # Add other origins as needed
+    "http://localhost:8000",  # Assuming this is where your FastAPI server is running
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
@@ -26,10 +50,14 @@ app.add_middleware(
 SIDE_PROFILE_TOTAL_SCORE_MAX = 194.5
 FRONT_PROFILE_TOTAL_SCORE_MAX = 305.5
 
+app.include_router(auth.router, prefix="/api")
+app.include_router(pricing.router, prefix="/pricing")
+
 ###########SIDE PROFILE###########
 
 
 def gonial_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 4
@@ -91,6 +119,7 @@ def gonial_angle_score(angle, gender, racial):
 
 
 def nasofrontal_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 4
@@ -146,6 +175,7 @@ def nasofrontal_angle_score(angle, gender, racial):
 
 
 def mandibular_plane_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 2
@@ -205,6 +235,7 @@ There are a few effective ways to improve your MPA. The best course to take depe
 
 
 def ramus_mandible_ratio_score(ratio, gender, racial):
+    ratio = round(ratio, 2)
     default_plus = 0
     measurement_name = "Ramus to Mandible ratio"
     level_count = 6
@@ -262,6 +293,7 @@ custom wraparound jaw implants can add overall volume to the jaw. Keep in mind t
 
 
 def facial_convexity_glabella_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 2
@@ -332,6 +364,7 @@ Again, these are suggestions and giving a precise course of action would require
 
 
 def submental_cervical_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     measurement_name = "Submental cervical angle (°)"
     level_count = 5
@@ -385,6 +418,7 @@ def submental_cervical_angle_score(angle, gender, racial):
 
 
 def nasofacial_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 2
@@ -441,6 +475,7 @@ Along with correcting any malocclusion (reference facial convexity glabella), th
 
 
 def nasolabial_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -11
@@ -576,6 +611,7 @@ Another potential option is gaining body-fat. This will not provide a substantia
 
 
 def total_facial_convexity_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 5
@@ -645,6 +681,7 @@ If your angle is too low, increasing the projection of your nose is possible, bu
 
 
 def mentolabial_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     measurement_name = "Mentolabial angle"
     level_count = 6
@@ -704,6 +741,7 @@ The main things we would seek to address here are the projection of your chin an
 
 
 def facial_convexity_nasion_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 2
@@ -763,6 +801,7 @@ The same concepts of improvement would apply here as for the facial convexity (g
 
 
 def nasal_projection_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -0.1
@@ -823,6 +862,7 @@ Rhinoplasty to reduce nasal projection is the primary way to address an overly p
 
 
 def nasal_wh_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -0.05
@@ -1033,6 +1073,7 @@ def burstone_line_score(value, gender, racial):
 
 
 def nasomental_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -3
@@ -1192,6 +1233,7 @@ This assessment tends to correlate to the facial convexity. To improve it, you c
 
 
 def browridge_inclination_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     measurement_name = "Browridge inclination angle (°)"
     level_count = 7
@@ -1247,6 +1289,7 @@ There are a few ways to improve the shape of your frontal bone, or forehead:
 
 
 def nasal_tip_angle_score(angle, gender, racial):
+    angle = round(angle, 2)
     default_plus = 0
     if racial == "Middle eastern":
         default_plus = -10
@@ -1299,6 +1342,7 @@ Rhinplasty specifically localized around the nasal tip is extremely common to ad
 
 ###########FRONT PROFILE###########
 def facial_thirds_score(value, gender, racial):
+    value = [round(x, 2) for x in value]
     default_plus = 0
     measurement_name = "Facial thirds (%)"
     level_count = 7
@@ -1443,6 +1487,7 @@ def facial_thirds_score(value, gender, racial):
 
 
 def lateral_canthal_tilt_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 1.5
@@ -1504,11 +1549,12 @@ Blepharoplasty is also an option to address a sagging eyelid if the perceived ti
 
 
 def facial_wh_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 0.03
     elif racial == "East Asian":
-        default_plus = -0.06
+        default_plus = -0.04
     elif racial == "South Asian":
         default_plus = 0.02
     measurement_name = "Facial width-to-height ratio"
@@ -1576,6 +1622,7 @@ Reducing FWHR is not as possible aside from losing facial fat and invasive zygom
 
 
 def jaw_frontal_angle_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Jaw frontal angle (°)"
     level_count = 7
@@ -1642,6 +1689,7 @@ There are a few ways to improve the contour of your jaw:
 
 
 def cheekbone_high_setedness_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Cheekbone height (%)"
     level_count = 7
@@ -1692,6 +1740,7 @@ We will assume that the main goal is to achieve higher set cheekbones. To do thi
 
 
 def total_facial_wh_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Total facial height-to-width ratio"
     level_count = 7
@@ -1760,6 +1809,7 @@ Improving total FWHR/facial index depends on the underlying cause and severity o
 
 
 def bigonial_width_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Bigonial width (%)"
     level_count = 7
@@ -1826,6 +1876,7 @@ There are a few ways to alter this ratio:
 
 
 def chin_philtrum_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Chin to philtrum ratio"
     level_count = 6
@@ -1890,6 +1941,7 @@ def chin_philtrum_ratio_score(value, gender, racial):
 
 
 def neck_width_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Neck Width (%)"
     level_count = 7
@@ -1944,6 +1996,7 @@ Altering your neck width is fairly straightforward. Losing body fat tends to mak
 
 
 def mouth_nose_width_ratio(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -0.05
@@ -2008,6 +2061,7 @@ Rhinoplasty can be used to reduce your nasal width (higher ratios), or increase 
 
 
 def midface_ratio(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = 0.02
@@ -2070,6 +2124,7 @@ Some more invasive midface procedures like Lefort 1 can make the midface more ve
 
 
 def eyebrow_position_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 0.3
@@ -2130,6 +2185,7 @@ Filler around the brows can perhaps lower the brow position, but it is not somet
 
 
 def eye_spacing_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 0.03
@@ -2188,6 +2244,7 @@ Aside from illusions in the form of makeup and lash length, there is no real way
 
 
 def eye_aspect_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Eye aspect ratio"
     level_count = 7
@@ -2246,6 +2303,7 @@ In the cases of overlying soft tissue in the upper lid region, blepharoplasty ca
 
 
 def lower_upper_lip_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "African":
         default_plus = -0.2
@@ -2304,6 +2362,7 @@ Lip filler aimed at increasing the upper or lower lip volume is the best way to 
 
 
 def deviation_IAA_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = (
         "Deviation of IAA(Ipsilateral alar angle) & JFA(Jaw frontal angle)"
@@ -2352,6 +2411,7 @@ def deviation_IAA_score(value, gender, racial):
 
 
 def eyebrow_tilt_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Eyebrow tilt"
     level_count = 6
@@ -2403,6 +2463,7 @@ Sometimes though, the shape of your brows is tied to your brow ridge's actual mo
 
 
 def bitemporal_width_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "South Asian":
         default_plus = -2
@@ -2466,6 +2527,7 @@ Altering your forehead width will mostly have to do with altering your hairline.
 
 
 def lower_third_proporation_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Lower third proportion"
     level_count = 6
@@ -2524,6 +2586,7 @@ Altering lip size does not substantially affect this proportion.
 
 
 def lpsilateral_alar_angle_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     measurement_name = "Ipsilateral alar angle"
     level_count = 7
@@ -2577,6 +2640,7 @@ Altering the spacing between your eyes is not really feasible, so the only way t
 
 
 def medial_canthal_angle(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = 8
@@ -2629,6 +2693,7 @@ There is no surgery specifically addressed at altering the medial canthus, but C
 
 
 def eye_separation_ratio_score(value, gender, racial):
+    value= round(value, 2)
     default_plus = 0
     if racial == "East Asian":
         default_plus = -0.7
@@ -3219,6 +3284,27 @@ def front_input(
 ):
     sum = 0.0
 
+    print(midFaceRatio)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    facialThirds = [round(x, 2) for x in facialThirds]
+    lateralCanthalTilt = round(lateralCanthalTilt, 2)
+    facialWHRatio = round(facialWHRatio, 2)
+    jawFrontalAngle = round(jawFrontalAngle, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    eyeSeparationRatio = round(eyeSeparationRatio, 2)
+    
+
+    print(midFaceRatio)
+    print("888888888888")
+
+
     scores = []
     notes = []
     max_scores = []
@@ -3648,13 +3734,6 @@ def front_input(
     measurement_names.append(measurement_name)
     sum = sum + temp_sum
     advices.append(advice)
-
-    print("Front profile score is ", sum)
-    print(
-        "Total front profile percentage is ",
-        sum / FRONT_PROFILE_TOTAL_SCORE_MAX * 100,
-        "%",
-    )
     return (
         sum,
         sum / FRONT_PROFILE_TOTAL_SCORE_MAX * 100,
@@ -3672,7 +3751,6 @@ def front_input(
 def get_front_mark(
     body: GetFrontMarkRequestSchema,
 ):
-    # print (body.bigonialWidth)
     (
         mark,
         percentage,
@@ -3684,17 +3762,6 @@ def get_front_mark(
         measurement_names,
         advices,
     ) = front_input(**body.dict())
-    print(
-        mark,
-        percentage,
-        scores,
-        notes,
-        max_scores,
-        ranges,
-        current_values,
-        measurement_names,
-        advices,
-    )
     return {
         "mark": mark,
         "percent": percentage,
@@ -3712,8 +3779,6 @@ def get_front_mark(
 def get_side_mark(
     body: GetSideMarkRequestSchema,
 ):
-    print(body)
-    # print (body.bigonialWidth)
     (
         mark,
         percentage,
@@ -3738,53 +3803,142 @@ def get_side_mark(
     }
 
 
-# @app.post("/frontmagic")
-# async def upload_front_image(image: UploadFile):
-#     # Create a folder named "images" if it doesn't exist
-#     os.makedirs("images", exist_ok=True)
+@app.post("/frontmagic")
+async def upload_front_image(image: UploadFile):
+    # Create a folder named "images" if it doesn't exist
+    os.makedirs("images", exist_ok=True)
 
-#     # Save the uploaded image to the "images" folder
-#     file_path = os.path.join("images", "temp.jpg")
-#     img = Image.open(image.file)
-#     width = int(img.width * (800 / img.height))
-#     img = img.resize((width, 800))
-#     img.save(file_path)
+    # Save the uploaded image to the "images" folder
+    file_path = os.path.join("images", "temp.jpg")
+    img = Image.open(image.file)
+    width = int(img.width * (800 / img.height))
+    img = img.resize((width, 800))
+    img.save(file_path)
 
-#     result_points = face_landmarks.process_image(file_path)
-#     print(result_points)
+    result_points = face_landmarks.process_image(file_path)
+    print(result_points)
 
-#     return {"message": "Image uploaded successfully", "points": result_points.tolist()}
-
-
-# class Result(BaseModel):
-#     points: list[list[float]]
+    return {"message": "Image uploaded successfully", "points": result_points.tolist()}
 
 
-# @app.post("/sidemagic")
-# async def upload_side_image(image: UploadFile):
-#     # Create a folder named "images" if it doesn't exist
-#     os.makedirs("images", exist_ok=True)
+class Result(BaseModel):
+    points: list[list[float]]
 
-#     # Save the uploaded image to the "images" folder
-#     file_path = os.path.join(".", "temp.jpg")
-#     img = Image.open(image.file)
-#     width = int(img.width * (800 / img.height))
-#     img = img.resize((width, 800))
-#     img.save(file_path)
 
-#     result_points = side_landmarks.process_image(file_path)
-#     print(result_points, type(result_points))
-#     response_data = Result(points=result_points)
+@app.post("/sidemagic")
+async def upload_side_image(image: UploadFile):
+    # Create a folder named "images" if it doesn't exist
+    os.makedirs("images", exist_ok=True)
 
-#     # return {"message": "Image uploaded successfully", "points": result_points.tolist()}
-#     # return {"message": "Image uploaded successfully", "points": "111"}
-#     return JSONResponse(content=response_data.dict())
+    # Save the uploaded image to the "images" folder
+    file_path = os.path.join(".", "temp.jpg")
+    img = Image.open(image.file)
+    width = int(img.width * (800 / img.height))
+    img = img.resize((width, 800))
+    img.save(file_path)
+
+    result_points = side_landmarks.process_image(file_path)
+    print(result_points, type(result_points))
+    response_data = Result(points=result_points)
+
+    # return {"message": "Image uploaded successfully", "points": result_points.tolist()}
+    # return {"message": "Image uploaded successfully", "points": "111"}
+    return JSONResponse(content=response_data.dict())
 
 
 @app.get("/")
 async def root():
     return {"message": "hello world"}
 
+@app.get("/asd")
+async def root():
+    return {"message": "hello world asd"}
+
+@app.post("/create-checkout-session")
+async def create_checkout_session(request: Request):
+    data = await request.json()
+    plan = data.get("plan")
+    userEmail = data.get("userEmail")
+    print(userEmail)
+    print(plan)
+    metadata = {
+    "plan": plan,
+    "userEmail": userEmail
+    }
+    
+    if plan == "Buy Premium":
+        price_id = "price_1OC6ypItQ91j83DijyVq8rbK"  # Replace with your actual price ID
+    elif plan == "Buy Enterprise":
+        price_id = "price_1OC90iItQ91j83DiPSgNiVUs"  # Replace with your actual price ID
+    else:
+        raise HTTPException(status_code=400, detail="Invalid plan selected")
+
+
+        
+    checkout_session = stripe.checkout.Session.create(
+
+        line_items=[
+            {
+                'price': price_id,
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        metadata=metadata,
+        success_url='https://master.d1i3eyf13fhgw2.amplifyapp.com/checkout-success',
+        cancel_url='https://master.d1i3eyf13fhgw2.amplifyapp.com/pricing',
+    )
+    print(price_id)
+
+    
+    return {"url": checkout_session.url}
+
+
+endpoint_secret = 'whsec_XsvOoUqxzhUH72aQIkMLrVe1qaYJPC5k'
+
+@app.post("/webhook")
+async def my_webhook_view(request: Request):
+    payload = await request.body()
+    sig_header = request.headers.get('stripe-signature')
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError:
+        # Invalid payload
+        raise HTTPException(status_code=400)
+    except stripe.error.SignatureVerificationError:
+        # Invalid signature
+        raise HTTPException(status_code=400)
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+      session = event['data']['object']
+      plan = session['metadata']['plan']
+      userEmail = session['metadata']['userEmail']
+      expire_date = calculate_expiration_date()
+      if(plan == "Buy Premium"):
+          result = users_collection.update_one({"email": userEmail}, {"$set": {"lvl": 1, "expire_day": expire_date}})
+          if result.modified_count:
+              return {"message": "Premium plan purchased successfully, expires on: " + expire_date.strftime("%Y-%m-%d")}
+          else:
+              raise HTTPException(status_code=404, detail="User not found or already on premium level")
+      elif(plan == "Buy Enterprise"):
+          result = users_collection.update_one({"email": userEmail}, {"$set": {"lvl": 2, "expire_day": expire_date}})
+          if result.modified_count:
+              return {"message": "Professional plan purchased successfully, expires on: " + expire_date.strftime("%Y-%m-%d")}
+          else:
+              raise HTTPException(status_code=404, detail="User not found or already on premium level")
+
+        
+
+    # else:
+    #   print('Unhandled event type {}'.format(event['type']))
+
+    # # Passed signature verification
+    # return {"status": "success"}
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
