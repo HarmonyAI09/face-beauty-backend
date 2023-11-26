@@ -1,13 +1,16 @@
 import uvicorn
-from typing import Union
+import datetime
+import hashlib
 
-from fastapi import FastAPI, UploadFile, Request, HTTPException, status
+from fastapi import FastAPI, UploadFile, Request, HTTPException, File
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from schemas import GetFrontMarkRequestSchema
 from schemas import GetSideMarkRequestSchema
 from fastapi.responses import RedirectResponse
+from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 import auth
 import pricing
 import os
@@ -20,6 +23,13 @@ from datetime import datetime, timedelta
 
 import face_landmarks
 import side_landmarks
+import createReportImages
+from fastapi import Form
+
+import json
+import io
+from pathlib import Path
+import zipfile
 
 stripe.api_key = 'sk_test_51OAYN0ItQ91j83DilxeRLixL8nBtOwbGiJ5KSlB65qG576Eans0deS8osZ5vknUd2rej0R3FfcIOjvXiKpwBFgre003XBuMXBQ'
 mongo_uri = "mongodb+srv://devguru13580:hXcQgMDBinZ8wlo4@cluster0.ehilact.mongodb.net/"
@@ -3844,6 +3854,55 @@ async def upload_side_image(image: UploadFile):
     # return {"message": "Image uploaded successfully", "points": result_points.tolist()}
     # return {"message": "Image uploaded successfully", "points": "111"}
     return JSONResponse(content=response_data.dict())
+
+
+@app.post("/generatemeasurementimages")
+async def GenerateMeasurementImages(
+    front: UploadFile = Form(...),
+    side: UploadFile = Form(...),
+    points: str = Form(...)
+):
+    print("~~~~~~~~~~generate measurement images request")
+    currentTime = datetime.now()
+    currentIndex = hashlib.md5(str(currentTime).encode()).hexdigest()
+    
+    # Save frontImage with currentIndex name
+    frontImage_path = f"UPLOADS/{currentIndex}_0.jpg"
+    with open(frontImage_path, "wb") as f:
+        f.write(front.file.read())
+
+    # # Save sideImage with currentIndex name
+    sideImage_path = f"UPLOADS/{currentIndex}_1.jpg"
+    with open(sideImage_path, "wb") as f:
+        f.write(side.file.read())
+
+    await createReportImages.createReportImages(frontImage_path, sideImage_path, json.JSONDecoder().decode(points))
+
+    print(currentIndex)
+    image_directory =  Path(f"REPORTS/{currentIndex}_0")
+
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        for i in range(1, 46):
+            # image_path = f"REPORTS/{currentIndex}_0" + "/" + str(i) + ".jpg"
+            image_path = Path(f"REPORTS/{currentIndex}_0") / f"{i}.jpg"
+            # if image_path.is_file() and image_path.suffix.lower() in {".png", ".jpg", ".jpeg"}:
+                # Add only image files to the zip archive
+            zip_file.write(image_path, arcname=image_path.name)
+            print(image_path)
+
+    # Rewind the buffer to the beginning
+    zip_buffer.seek(0)
+
+    # Set the appropriate response headers
+    headers = {
+        "Content-Disposition": "attachment; filename=images.zip",
+        "Content-Type": "application/zip",
+    }
+
+    # Return the zip file as a StreamingResponse
+    return StreamingResponse(io.BytesIO(zip_buffer.read()), headers=headers)
 
 
 @app.get("/")
