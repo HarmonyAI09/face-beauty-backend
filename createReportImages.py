@@ -2115,7 +2115,7 @@ def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     return True
 
 async def createReportImages(front_img_url, side_img_url, position_lists):
-    DIR = "./REPORTS/" + (os.path.basename(front_img_url))[:-3]+"/"
+    DIR = "./REPORTS/" + (os.path.basename(front_img_url))[:-6]+"/"
     os.makedirs(DIR, exist_ok=True)
 
     create_eye_separation_ratio_create(front_img_url, position_lists, DIR, 1)
