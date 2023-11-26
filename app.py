@@ -3886,7 +3886,7 @@ async def GenerateMeasurementImages(
     with zipfile.ZipFile(zip_buffer, "w") as zip_file:
         for i in range(1, 46):
             # image_path = f"REPORTS/{currentIndex}_0" + "/" + str(i) + ".jpg"
-            image_path = Path(f"REPORTS/{currentIndex}_0") / f"{i}.jpg"
+            image_path = Path(f"REPORTS/{currentIndex}") / f"{i}.jpg"
             # if image_path.is_file() and image_path.suffix.lower() in {".png", ".jpg", ".jpeg"}:
                 # Add only image files to the zip archive
             zip_file.write(image_path, arcname=image_path.name)
