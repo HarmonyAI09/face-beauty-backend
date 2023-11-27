@@ -235,9 +235,25 @@ def find_intersection(line1, line2):
 ###Front Functions
 #1
 def create_eye_separation_ratio_create(img_url, mark_points, DIR, index):
+    print(mark_points)
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
     draw.ellipse((mark_points[12][0]["x"]-3, mark_points[12][0]["y"]-3, mark_points[12][0]["x"]+3, mark_points[12][0]["y"]+3), fill=(255, 0, 0))
     draw.ellipse((mark_points[12][1]["x"]-3, mark_points[12][1]["y"]-3, mark_points[12][1]["x"]+3, mark_points[12][1]["y"]+3), fill=(255, 0, 0))
     draw.line((mark_points[12][0]["x"], mark_points[12][0]["y"], mark_points[12][1]["x"], mark_points[12][1]["y"]), fill=(0, 255, 0), width=3)
@@ -260,7 +276,7 @@ def create_eye_separation_ratio_create(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_eye_separation_ratio_create.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -270,8 +286,23 @@ def create_eye_separation_ratio_create(img_url, mark_points, DIR, index):
 #2
 def create_facial_thirds_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[1][0]["x"]
     y1 = mark_points[1][0]["y"]
@@ -307,7 +338,7 @@ def create_facial_thirds_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_facial_thirds_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -318,8 +349,23 @@ def create_facial_thirds_image(img_url, mark_points, DIR, index):
 #3
 def create_lateral_canthal_tilt_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[11][0]["x"]
     y1 = mark_points[11][0]["y"]
@@ -353,7 +399,7 @@ def create_lateral_canthal_tilt_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_lateral_canthal_tilt_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -362,8 +408,23 @@ def create_lateral_canthal_tilt_image(img_url, mark_points, DIR, index):
 #4
 def create_facial_width_to_height_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[6][0]["x"]
     y1 = mark_points[6][0]["y"]
@@ -398,7 +459,7 @@ def create_facial_width_to_height_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_facial_width_to_height_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -407,8 +468,23 @@ def create_facial_width_to_height_ratio_image(img_url, mark_points, DIR, index):
 #5
 def create_jaw_frontal_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[26][0]["x"]
     y1 = mark_points[26][0]["y"]
@@ -443,7 +519,7 @@ def create_jaw_frontal_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_jaw_frontal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -452,8 +528,23 @@ def create_jaw_frontal_angle_image(img_url, mark_points, DIR, index):
 #6
 def create_cheekbone_height_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[12][0]["x"]
     y1 = mark_points[12][0]["y"]
@@ -491,7 +582,7 @@ def create_cheekbone_height_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_cheekbone_height_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -501,8 +592,23 @@ def create_cheekbone_height_image(img_url, mark_points, DIR, index):
 #7
 def create_total_facial_height_to_width_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[1][0]["x"]
     y1 = mark_points[1][0]["y"]
@@ -535,7 +641,7 @@ def create_total_facial_height_to_width_ratio_image(img_url, mark_points, DIR, i
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_total_facial_height_to_width_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -545,8 +651,23 @@ def create_total_facial_height_to_width_ratio_image(img_url, mark_points, DIR, i
 #8
 def create_bigonial_width_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[17][0]["x"]
     y1 = mark_points[17][0]["y"]
@@ -579,7 +700,7 @@ def create_bigonial_width_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_bigonial_width_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -589,8 +710,23 @@ def create_bigonial_width_image(img_url, mark_points, DIR, index):
 #9
 def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[20][0]["x"]
     y1 = mark_points[20][0]["y"]
@@ -623,7 +759,7 @@ def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_chin_to_philtrum_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -633,8 +769,23 @@ def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
 #10
 def create_Neck_width__image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[22][0]["x"]
     y1 = mark_points[22][0]["y"]
@@ -667,7 +818,7 @@ def create_Neck_width__image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_Neck_width__image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -677,8 +828,23 @@ def create_Neck_width__image(img_url, mark_points, DIR, index):
 #11
 def create_mouth_width_to_nose_width_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[18][0]["x"]
     y1 = mark_points[18][0]["y"]
@@ -711,7 +877,7 @@ def create_mouth_width_to_nose_width_ratio_image(img_url, mark_points, DIR, inde
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_mouth_width_to_nose_width_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -721,8 +887,23 @@ def create_mouth_width_to_nose_width_ratio_image(img_url, mark_points, DIR, inde
 #12
 def create_midface_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[12][0]["x"]
     y1 = mark_points[12][0]["y"]
@@ -753,7 +934,7 @@ def create_midface_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_midface_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -763,8 +944,23 @@ def create_midface_ratio_image(img_url, mark_points, DIR, index):
 #13
 def create_eyebrow_position_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[10][0]["x"]
     y1 = mark_points[10][0]["y"]
@@ -801,7 +997,7 @@ def create_eyebrow_position_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_eyebrow_position_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -812,8 +1008,23 @@ def create_eyebrow_position_ratio_image(img_url, mark_points, DIR, index):
 #14
 def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[11][0]["x"]
     y1 = mark_points[11][0]["y"]
@@ -853,7 +1064,7 @@ def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_eye_spacing_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -863,8 +1074,23 @@ def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
 #15
 def create_eye_aspect_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[10][1]["x"]
     y1 = mark_points[10][1]["y"]
@@ -897,7 +1123,7 @@ def create_eye_aspect_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_eye_aspect_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -907,8 +1133,23 @@ def create_eye_aspect_ratio_image(img_url, mark_points, DIR, index):
 #16
 def create_lower_lip_to_upper_lip_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[21][0]["x"]
     y1 = mark_points[21][0]["y"]
@@ -939,7 +1180,7 @@ def create_lower_lip_to_upper_lip_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_lower_lip_to_upper_lip_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -949,8 +1190,23 @@ def create_lower_lip_to_upper_lip_ratio_image(img_url, mark_points, DIR, index):
 #17
 def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[11][0]["x"]
     y1 = mark_points[11][0]["y"]
@@ -997,7 +1253,7 @@ def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_deviation_of_iaa_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1007,8 +1263,23 @@ def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
 #18
 def create_eyebrow_tilt_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[7][1]["x"]
     y1 = mark_points[7][1]["y"]
@@ -1035,7 +1306,7 @@ def create_eyebrow_tilt_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_eyebrow_tilt_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1045,8 +1316,23 @@ def create_eyebrow_tilt_image(img_url, mark_points, DIR, index):
 #19
 def create_bitemporal_width_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[2][0]["x"]
     y1 = mark_points[2][0]["y"]
@@ -1079,7 +1365,7 @@ def create_bitemporal_width_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_bitemporal_width_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1089,8 +1375,23 @@ def create_bitemporal_width_image(img_url, mark_points, DIR, index):
 #20
 def create_lower_third_proportion_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[19][0]["x"]
     y1 = mark_points[19][0]["y"]
@@ -1121,7 +1422,7 @@ def create_lower_third_proportion_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_lower_third_proportion_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1131,8 +1432,23 @@ def create_lower_third_proportion_image(img_url, mark_points, DIR, index):
 #21
 def create_ipsilateral_alar_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[9][0]["x"]
     y1 = mark_points[9][0]["y"]
@@ -1162,7 +1478,7 @@ def create_ipsilateral_alar_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_ipsilateral_alar_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1172,8 +1488,23 @@ def create_ipsilateral_alar_angle_image(img_url, mark_points, DIR, index):
 #22
 def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[16][1]["x"]
     y1 = mark_points[16][1]["y"]
@@ -1203,7 +1534,7 @@ def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_medial_canthal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1215,8 +1546,23 @@ def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
 #23
 def create_gonial_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[38][0]["x"]
     y1 = mark_points[38][0]["y"]
@@ -1246,7 +1592,7 @@ def create_gonial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_gonial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1256,8 +1602,23 @@ def create_gonial_angle_image(img_url, mark_points, DIR, index):
 #24
 def create_nasofrontal_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[32][0]["x"]
     y1 = mark_points[32][0]["y"]
@@ -1287,7 +1648,7 @@ def create_nasofrontal_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasofrontal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1297,8 +1658,23 @@ def create_nasofrontal_angle_image(img_url, mark_points, DIR, index):
 #25
 def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[47][0]["x"]
     y1 = mark_points[47][0]["y"]
@@ -1328,7 +1704,7 @@ def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_mandibular_plane_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1338,8 +1714,23 @@ def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
 #26
 def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[38][0]["x"]
     y1 = mark_points[38][0]["y"]
@@ -1370,7 +1761,7 @@ def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_ramus_to_mandible_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1380,8 +1771,23 @@ def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
 #27
 def create_facial_convexity_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[32][0]["x"]
     y1 = mark_points[32][0]["y"]
@@ -1411,7 +1817,7 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_facial_convexity_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1421,8 +1827,23 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
 #28
 def create_submental_cervical_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[51][0]["x"]
     y1 = mark_points[51][0]["y"]
@@ -1452,7 +1873,7 @@ def create_submental_cervical_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_submental_cervical_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1462,8 +1883,23 @@ def create_submental_cervical_angle_image(img_url, mark_points, DIR, index):
 #29
 def create_nasofacial_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[39][0]["x"]
     y1 = mark_points[39][0]["y"]
@@ -1493,7 +1929,7 @@ def create_nasofacial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasofacial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1503,8 +1939,23 @@ def create_nasofacial_angle_image(img_url, mark_points, DIR, index):
 #30
 def create_nasolabial_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[41][0]["x"]
     y1 = mark_points[41][0]["y"]
@@ -1534,7 +1985,7 @@ def create_nasolabial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasolabial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1544,8 +1995,23 @@ def create_nasolabial_angle_image(img_url, mark_points, DIR, index):
 #31
 def create_orbital_vector_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[33][0]["x"]
     y1 = mark_points[33][0]["y"]
@@ -1553,7 +2019,7 @@ def create_orbital_vector_image(img_url, mark_points, DIR, index):
     draw.line((x1,y1-150,x1,y1+150), fill=(0,255,0), width=1)
 
     # Crop the image to the square
-    cropped_img = img.crop((x1-150, y1-150, x1+150, y1+150))
+    cropped_img = canvas.crop((x1-150, y1-150, x1+150, y1+150))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_orbital_vector_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1563,8 +2029,23 @@ def create_orbital_vector_image(img_url, mark_points, DIR, index):
 #32
 def create_total_facial_convexity_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[32][0]["x"]
     y1 = mark_points[32][0]["y"]
@@ -1594,7 +2075,7 @@ def create_total_facial_convexity_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_total_facial_convexity_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1604,8 +2085,23 @@ def create_total_facial_convexity_image(img_url, mark_points, DIR, index):
 #33
 def create_mentolabial_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[47][0]["x"]
     y1 = mark_points[47][0]["y"]
@@ -1635,7 +2131,7 @@ def create_mentolabial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_mentolabial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1645,8 +2141,23 @@ def create_mentolabial_angle_image(img_url, mark_points, DIR, index):
 #34
 def create_facial_convexity_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[35][0]["x"]
     y1 = mark_points[35][0]["y"]
@@ -1676,7 +2187,7 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_facial_convexity_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1686,8 +2197,23 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
 #35
 def create_nasal_projection_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[40][0]["x"]
     y1 = mark_points[40][0]["y"]
@@ -1722,7 +2248,7 @@ def create_nasal_projection_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasal_projection_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1732,8 +2258,23 @@ def create_nasal_projection_image(img_url, mark_points, DIR, index):
 #36
 def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[33][0]["x"]
     y1 = mark_points[33][0]["y"]
@@ -1765,7 +2306,7 @@ def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasal_w_to_h_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1775,8 +2316,23 @@ def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
 #37
 def create_ricketts_e_line_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[40][0]["x"]
     y1 = mark_points[40][0]["y"]
@@ -1802,7 +2358,7 @@ def create_ricketts_e_line_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_ricketts_e_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1812,8 +2368,23 @@ def create_ricketts_e_line_image(img_url, mark_points, DIR, index):
 #38
 def create_holdaway_h_line_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[45][0]["x"]
     y1 = mark_points[45][0]["y"]
@@ -1839,7 +2410,7 @@ def create_holdaway_h_line_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_holdaway_h_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1849,8 +2420,23 @@ def create_holdaway_h_line_image(img_url, mark_points, DIR, index):
 #39??????????
 def create_steiner_s_line_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[59][0]["x"]
     y1 = mark_points[59][0]["y"]
@@ -1876,7 +2462,7 @@ def create_steiner_s_line_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_steiner_s_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1886,8 +2472,23 @@ def create_steiner_s_line_image(img_url, mark_points, DIR, index):
 #40
 def create_burstone_line_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[43][0]["x"]
     y1 = mark_points[43][0]["y"]
@@ -1913,7 +2514,7 @@ def create_burstone_line_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_burstone_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1923,8 +2524,23 @@ def create_burstone_line_image(img_url, mark_points, DIR, index):
 #41
 def create_nasomental_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[35][0]["x"]
     y1 = mark_points[35][0]["y"]
@@ -1954,7 +2570,7 @@ def create_nasomental_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasomental_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1964,8 +2580,23 @@ def create_nasomental_angle_image(img_url, mark_points, DIR, index):
 #42
 def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[47][0]["x"]
     y1 = mark_points[47][0]["y"]
@@ -1991,7 +2622,7 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_gonion_to_mouth_relationship_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -2001,8 +2632,23 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
 #43
 def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[35][0]["x"]
     y1 = mark_points[35][0]["y"]
@@ -2028,7 +2674,7 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_recession_relative_to_frankfort_plane_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -2038,8 +2684,23 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
 #44
 def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[32][0]["x"]
     y1 = mark_points[32][0]["y"]
@@ -2066,7 +2727,7 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_browridge_inclination_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -2076,8 +2737,23 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
 #45
 def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
-    img = img.resize((800, 800))
-    draw = ImageDraw.Draw(img)  
+    
+    # Calculate the updated dimensions while maintaining aspect ratio
+    if img.height >= img.width:
+        updated_height = 800
+        updated_width = img.width * 800 / img.height
+    else:
+        updated_width = 800
+        updated_height = img.height * 800 / img.width
+
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
+
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
     x1 = mark_points[36][0]["x"]
     y1 = mark_points[36][0]["y"]
@@ -2107,7 +2783,7 @@ def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = img.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
     cropped_img = cropped_img.resize((300, 300))
     output_filename = os.path.join(DIR, f"{create_nasal_tip_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -2115,6 +2791,7 @@ def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     return True
 
 async def createReportImages(front_img_url, side_img_url, position_lists):
+    position_lists = list(position_lists.values())
     DIR = "./REPORTS/" + (os.path.basename(front_img_url))[:-6]+"/"
     os.makedirs(DIR, exist_ok=True)
 
