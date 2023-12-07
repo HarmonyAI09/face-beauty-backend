@@ -17,30 +17,6 @@ def get_crosss_point(x1, y1, x2, y2, x3, y3, x4, y4):
 
 def process_image(image_path):
     result_points = np.zeros((30, 2, 2))
-    good_index_in_68 = [
-        # [34, 19, 0],
-        # [34, 19, 1],
-        # [35, 20, 0],
-        # [35, 20, 1],
-        # [53, 21, 0],
-        # [53, 21, 1],
-        # [9, 29, 0],
-        # [9, 29, 1],
-        # [8, 28, 0],
-        # [10, 28, 1],
-        # [6, 26, 0],
-        # [12, 26, 1],
-        # [5, 22, 0],
-        # [13, 22, 1],
-        # [58, 25, 0],
-        # [58, 25, 1],
-        # [67, 24, 0],
-        # [67, 24, 1],
-        # [49, 23, 0],
-        # [55, 23, 1],
-        # [2, 17, 0],
-        # [16, 17, 1],
-    ]
     good_index_in_81 = [
         [72, 1, 0],
         [72, 1, 1],
@@ -107,13 +83,6 @@ def process_image(image_path):
     for i, rect in enumerate(rects):
         shape1 = predictor1(gray, rect)
         shape1 = np.array([[p.x, p.y] for p in shape1.parts()])
-        for index in range(len(good_index_in_68)):
-            result_points[
-                good_index_in_68[index][1], good_index_in_68[index][2], 0
-            ] = shape1[good_index_in_68[index][0] - 1][0]
-            result_points[
-                good_index_in_68[index][1], good_index_in_68[index][2], 1
-            ] = shape1[good_index_in_68[index][0] - 1][1]
         result_points[12, 0, 0] = (shape1[38][0] + shape1[41][0]) / 2
         result_points[12, 0, 1] = (shape1[38][1] + shape1[41][1]) / 2
         result_points[12, 1, 0] = (shape1[44][0] + shape1[47][0]) / 2

@@ -2,7 +2,7 @@ from typing import List
 from pydantic import BaseModel, Field
 
 
-class GetFrontMarkRequestSchema(BaseModel):
+class frontProfileSchema(BaseModel):
     gender: int
     racial: str
     eyeSeparationRatio: float = Field(round=2)
@@ -28,8 +28,7 @@ class GetFrontMarkRequestSchema(BaseModel):
     lowerThirdProporation: float = Field(round=2)
     medialCanthalAngle: float = Field(round=2)
 
-
-class GetSideMarkRequestSchema(BaseModel):
+class sideProfileSchema(BaseModel):
     gender: int
     racial: str
     gonialAngle: float = Field(round=2)
@@ -55,3 +54,49 @@ class GetSideMarkRequestSchema(BaseModel):
     recessionRelative2FrankfortPlane: str
     browridgeInclinationAngle: float = Field(round=2)
     nasalTipAngle: float = Field(round=2)
+
+class MeasurementOverview:
+    name = ""
+    score = 0
+    max = 0
+    value = 0
+    range = ""
+    note = ""
+    advice = ""
+    def __init__(self, name, score, max, value, range, note, advice) -> None:
+        self.name = name
+        self.score = score
+        self.max = max
+        self.value = value
+        self.range = range
+        self.note = note
+        self.advice = advice
+
+class profileResponseSchema:
+    score = 0.0
+    detailScores = []
+    notes = []
+    maxScores = []
+    idealRanges = []
+    measureNames = []
+    advices = []
+
+    def update(self, overview:MeasurementOverview):
+        self.score = self.score + overview.score
+        self.detailScores.append(overview.score)
+        self.notes.append(overview.note)
+        self.maxScores.append(overview.max)
+        self.idealRanges.append(overview.range)
+        self.advice.append(overview.advice)
+
+    def result(self):
+        resp = {
+            "score" : self.score,
+            "scores" : self.detailScores,
+            "notes" : self.notes,
+            "maxs" : self.maxScores,
+            "ranges" : self.idealRanges,
+            "names" : self.measureNames,
+            "advices" : self.advices
+        }
+        return resp
