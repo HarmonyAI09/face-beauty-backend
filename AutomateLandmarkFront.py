@@ -10,6 +10,18 @@ import mediapipe as mp
 
 UPLOAD_DIR = "UPLOADS"
 DEFAULT_LENGTH = 800
+DELTA = 0.005
+
+def getVectorParameters(x1, y1, x2, y2):
+    A = (y1 - y2) / (x1 - x2)
+    B = y1 - x1 * A
+    return A, B
+def getCrossPoint(x1, y1, x2, y2, x3, y3, x4, y4):
+    A1, B1 = getVectorParameters(x1, y1, x2, y2)
+    A2, B2 = getVectorParameters(x3, y3, x4, y4)
+    X = (B2 - B1) / (A1 - A2)
+    Y = A1 * X + B1
+    return X, Y
 
 def storeImage(image:UploadFile):
     # Create a folder if it doesn't exist
@@ -31,16 +43,76 @@ def storeImage(image:UploadFile):
     imageResize.save(imageStorePath)
     return imageStorePath
 
-def getLandmarksUsing81(imgPath):
+def getLandmarksUsing68(imgPath, IndexList, Landmarks):
+    imgGray = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
+    p = "shape_predictor_68_face_landmarks.dat"
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor(p)
+    faces = detector(imgGray, 0)
+    for i, face in enumerate(faces):
+        shape = predictor(imgGray, face)
+        shape = np.array([[l.x, l.y] for l in shape.parts()])
+        Landmarks[12, 0, 0] = (shape[38][0] + shape[41][0]) / 2
+        Landmarks[12, 0, 1] = (shape[38][1] + shape[41][1]) / 2
+        Landmarks[12, 1, 0] = (shape[44][0] + shape[47][0]) / 2
+        Landmarks[12, 1, 1] = (shape[44][1] + shape[47][1]) / 2
+    return Landmarks
+def getLandmarksUsing81(imgPath, IndexList, Landmarks):
     imgGray = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
     p = "shape_predictor_81_face_landmarks.dat"
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(p)
-    
+    faces = detector(imgGray, 0)
+    for i, face in enumerate(faces):
+        shape = predictor(imgGray, face)
+        shape = np.array([[l.x, l.y] for l in shape.parts()])
+        for index in range(len(IndexList)):
+            Landmarks[IndexList[index][1], IndexList[index][2], 0] = shape[IndexList[index][0]-1][0]
+            Landmarks[IndexList[index][1], IndexList[index][2], 1] = shape[IndexList[index][0]-1][1]
+    return Landmarks
+def getLandmarksUsingMP(imgPath, IndexList, Landmarks):
+    imgBGR = cv2.imread(imgPath)
+    imgRGB = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
+    height, width, _ = imgRGB.shape
+    mp_face_mesh = mp.solutions.face_mesh
+    with mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.9) as face_mesh:
+        faces = face_mesh.process(imgRGB)
+        for face in faces.multi_face_landmarks:
+            for index in range(len(IndexList)):
+                Landmarks[IndexList[index][1], IndexList[index][2], 0] = int(face.landmark[IndexList[index][0]].x*width)
+                Landmarks[IndexList[index][1], IndexList[index][2], 1] = int(face.landmark[IndexList[index][0]].x*height)
+            Landmarks[3, 0, 0] = int(face.landmark[105].x*width)
+            Landmarks[3, 0, 1] = int((face.landmark[105].y - DELTA)*height)
+            Landmarks[4, 0, 0] = int(face.landmark[105].x*width)
+            Landmarks[4, 0, 1] = int((face.landmark[105].y + DELTA)*height)
+            Landmarks[3, 1, 0] = int(face.landmark[334].x*width)
+            Landmarks[3, 1, 1] = int((face.landmark[334].y - DELTA)*height)
+            Landmarks[4, 1, 0] = int(face.landmark[334].x*width)
+            Landmarks[4, 1, 1] = int((face.landmark[334].y + DELTA)*height)
+            Landmarks[7, 0, 0] = int(face.landmark[55].x*width)
+            Landmarks[7, 0, 1] = int((face.landmark[55].y - DELTA)*height)
+            Landmarks[8, 0, 0] = int(face.landmark[55].x*width)
+            Landmarks[8, 0, 1] = int((face.landmark[55].y + DELTA)*height)
+            Landmarks[7, 1, 0] = int(face.landmark[285].x*width)
+            Landmarks[7, 1, 1] = int((face.landmark[285].y - DELTA)*height)
+            Landmarks[8, 1, 0] = int(face.landmark[285].x*width)
+            Landmarks[8, 1, 1] = int((face.landmark[285].y + DELTA)*height)
 
+            Landmarks[27, 0, 0], Landmarks[27, 0, 1] = getCrossPoint(
+                face.landmark[207].x*width,face.landmark[207].y*height,
+                face.landmark[135].x*width,face.landmark[135].y*height,
+                face.landmark[152].x*width,face.landmark[152].y*height,
+                face.landmark[149].x*width,face.landmark[149].y*height)
+            Landmarks[27, 1, 0], Landmarks[27, 1, 1] = getCrossPoint(
+                face.landmark[433].x*width,face.landmark[433].y*height,
+                face.landmark[397].x*width,face.landmark[397].y*height,
+                face.landmark[152].x*width,face.landmark[152].y*height,
+                face.landmark[378].x*width,face.landmark[378].y*height)
+    return Landmarks
 
 def getProfileLandmarks(imgPath):
     profileLandmarks = np.zeros((30, 2, 2))
+    IndexListUsing68 = []
     IndexListUsing81 = [
         [72, 1, 0],
         [72, 1, 1],
@@ -92,6 +164,11 @@ def getProfileLandmarks(imgPath):
         [454, 17, 1],
     ]
 
-    img = cv2.imread(imgPath)
-    img_Gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    profileLandmarks = getLandmarksUsing68(imgPath, IndexListUsing68, profileLandmarks)
+    profileLandmarks = getLandmarksUsing81(imgPath, IndexListUsing81, profileLandmarks)
+    profileLandmarks = getLandmarksUsingMP(imgPath, IndexListUsingMP, profileLandmarks)
 
+    return profileLandmarks
+
+def mainProcess(image:UploadFile):
+    return getProfileLandmarks(storeImage(image))

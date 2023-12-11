@@ -112,7 +112,6 @@ def process_image(image_path):
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         h, w, _ = image.shape
         results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        annotated_image = image.copy()
         if results.multi_face_landmarks:
             for index in range(len(good_index_in_mediapipe)):
                 result_points[

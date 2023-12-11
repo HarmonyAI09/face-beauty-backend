@@ -11,7 +11,7 @@ from schemas import GetSideMarkRequestSchema
 from fastapi.responses import RedirectResponse
 from fastapi.responses import FileResponse
 from fastapi.responses import StreamingResponse
-import auth
+import Auth
 import pricing
 import os
 from PIL import Image
@@ -56,7 +56,7 @@ app.add_middleware(
 SIDE_PROFILE_TOTAL_SCORE_MAX = 194.5
 FRONT_PROFILE_TOTAL_SCORE_MAX = 305.5
 
-app.include_router(auth.router, prefix="/api")
+app.include_router(Auth.router, prefix="/api")
 app.include_router(pricing.router, prefix="/pricing")
 
 def side_input(
