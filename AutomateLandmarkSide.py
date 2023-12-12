@@ -16,6 +16,7 @@ UPLOAD_DIR = "UPLOADS"
 SAMPLE_POINTS_FILE = "REFERENCE/f15.pts"
 DEFAULT_LENGTH = 800
 SAMPLE_RATIO = 1.0
+ZERO = 0.001
 
 def storeImage(image:UploadFile):
     # Create a folder if it doesn't exist
@@ -55,6 +56,7 @@ def storeImage(image:UploadFile):
     imageResize = imageSrc.resize((width, height))
     imageResize.save(imageStorePath)
     return imageStorePath
+
 def getLandmarkUsingLib(imgPath, Landmarks):
     imgSrc = open_image(imgPath)
     face = FaceAlignment(LandmarksType._2D, enable_cuda=True, flip_input=False, use_cnn_face_detector=True)
@@ -90,12 +92,51 @@ def getLandmarkGenerate(imgPath, Landmarks):
             x, y = map(float, ptData.strip().split())
             samplePts.append([x, y, i])
 
-    sortedPts = sorted(samplePts, key=lambda p: p[1])
+    ##### SET X-value of Point0 #####
     SAMPLE_RATIO = (samplePts[25][1]-samplePts[0][1])/(samplePts[25][1]-samplePts[2][1])
     Landmarks[0] = [0, Landmarks[25][1] - (Landmarks[25][1]-Landmarks[2][1]) * SAMPLE_RATIO]
 
+    ##### SET X-values #####
+    sortedPts = sorted(samplePts, key=lambda p: p[1])
+    refStepIdxList = []
+    refNullIdxList = []
+    for point in sortedPts:
+        if np.array_equal(Landmarks[point[2]], [0.0, 0.0]):
+            refNullIdxList[-1].append(point[2])
+        else:
+            refStepIdxList.append(point[2])
+            refNullIdxList.append([])
 
+    for i in range(len(refStepIdxList)-1):
+        head = refStepIdxList[i]
+        tail = refStepIdxList[i+1]
+        srcHeight = samplePts[tail][1] - samplePts[head][1]
+        tgtHeight = Landmarks[tail][1] - Landmarks[head][1]
+        stepRatio = srcHeight / tgtHeight
+        for nullIdx in refNullIdxList[i]:
+            resHeight = (samplePts[nullIdx][1] - samplePts[head][1]) / stepRatio
+            Landmarks[nullIdx] = [0, Landmarks[head][1] + resHeight]
 
+    ##### SET Y-values #####
+    sortedPts = sorted(samplePts, key=lambda p: p[0])
+    refStepIdxList = []
+    refNullIdxList = []
+    for point in sortedPts:
+        if Landmarks[point[2]][0] == 0:
+            refNullIdxList[-1].append(point[2])
+        else:
+            refStepIdxList.append(point[2])
+            refNullIdxList.append([])
+    
+    for i in range(len(refStepIdxList)-1):
+        head = refStepIdxList[i]
+        tail = refStepIdxList[i+1]
+        srcWidth = samplePts[tail][0] - samplePts[head][0]
+        tgtWidth = Landmarks[tail][0] - Landmarks[head][0] + ZERO
+        stepRatio = srcWidth / tgtWidth
+        for nullIdx in refNullIdxList[i]:
+            resWidth = (samplePts[nullIdx][0] - samplePts[head][0]) / stepRatio
+            Landmarks[nullIdx][0] = [Landmarks[head][0] + resWidth]
 
     return Landmarks
 
@@ -106,15 +147,7 @@ def getProfileLandmarks(imgPath):
     profileLandmarks = getLandmarkForNeckNose(imgPath, profileLandmarks)
     profileLandmarks = getLandmarkGenerate(imgPath, profileLandmarks)
     
+    return profileLandmarks  
 
-    
-
-    
-
-    
-    
-
-
-    return profileLandmarks
 def mainProcess(image:UploadFile):
     return getProfileLandmarks(storeImage(image))

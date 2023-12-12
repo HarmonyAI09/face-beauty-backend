@@ -1,21 +1,20 @@
 import uvicorn
 from fastapi import FastAPI, UploadFile, Request
 from starlette.middleware.cors import CORSMiddleware
-from schemas import frontProfileSchema, sideProfileSchema
+from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
+
 import ProfileScoreCalcFront
 import ProfileScoreCalcSide
 import AutomateLandmarkFront
 import AutomateLandmarkSide
-import CreateCheckoutSession
-import MyWebhookView
+import ImageOverviewCreate
 import Auth
-import stripe
-import os
-from dotenv import load_dotenv
+import Payment
 
 app = FastAPI()
 
 app.include_router(Auth.router, prefix="/api")
+app.include_router(Payment.router, prefix="/")
 
 @app.post('/getfrontscore')
 def getFrontProfileScore(body:frontProfileSchema):
@@ -32,24 +31,14 @@ async def automateLandmarkFrontProfile(image:UploadFile):
 @app.post('/sidemagic')
 async def automateLandmarkSideProfile(image:UploadFile):
     return AutomateLandmarkSide.mainProcess(image)
+    return True
 
-@app.post('/create-checkout-session')
-async def createCheckoutSession(request: Request):
-    return CreateCheckoutSession.mainProcess(Request)
+@app.post('/create')
+async def createImageOverview(body:ImageOverviewSchema):
+    return ImageOverviewCreate.mainProcess(body)
 
-@app.post("/webhook")
-async def myWebhookView(request: Request):
-    return MyWebhookView.mainProcess(Request)
 
 if __name__ == "__main__":
-    load_dotenv()
-    client = MongoClient(os.getenv("MONGO_URL"))
-    db = client[os.getenv("DB_NAME")]
-    users_collection = db[os.getenv("DB_COLLECTION")]
-    
-
-    stripe.api_key = os.getenv("STRIPE_KEY")
-    endpoint_secret = os.getenv("WEBHOOK_SK")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # Allows all origins

@@ -1,48 +1,42 @@
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from fastapi import APIRouter
+from schemas import UserSchema, PremiumSchema
+from datetime import datetime, timedelta
 from pymongo import MongoClient
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 router = APIRouter()
-mongo_uri = MONGO_URL
-client = MongoClient(mongo_uri)
-db = client[DB_NAME]
-users_collection = db[DB_COLLECTION]
 
-class UserSignIn(BaseModel):
-    email: str
-    password: str
-
-class UserSignUp(BaseModel):
-    username: str
-    email: str
-    password: str
+mongoURL = os.getenv("MONGO_URL")
+client = MongoClient(mongoURL)
+db = client[os.getenv("DB")]
+userCollection = db[os.getenv("DB_COLLECTION")]
 
 @router.post("/signin")
-def sign_in(user: UserSignIn):
-    # Find the user by email and password in the MongoDB collection
-    result = users_collection.find_one({"email": user.email, "password": user.password})
-
-    if result:
-        return {"message": "Sign-in successful", "name": result["username"], "mail": result["email"], "level": result["lvl"], "expire": result["expire_day"]}
+def signIn(user : UserSchema):
+    one = userCollection.find_one({"email": user.email, "password": user.password})
+    if one:
+        return {"success":True, "status": "Sign-in success.", "name": one["username"], "mail": one["email"], "level": one["lvl"], "expire": one["expire_day"]} 
     else:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-
+        return {"success":False, "status": "Sign-in failed."}
+    
 @router.post("/signup")
-def sign_up(user: UserSignUp):
-    # Check if the username or email already exists in the MongoDB collection
-    existing_user = users_collection.find_one({"$or": [{"username": user.username}, {"email": user.email}]})
-
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Username or email already exists")
-
-    new_user = {
-        "username": user.username,
-        "email": user.email,
-        "password": user.password,
-        "lvl": 0,
-        "expire_day": None
-    }
-    users_collection.insert_one(new_user)
-
-    return {"message": "Sign-up successful"}
+def signUp(user : UserSchema):
+    one = userCollection.find_one({"email": user.email})
+    if one:
+        return {"success":False, "status": "Already exists."}
+    else:
+        new = {
+            "username" : user.name,
+            "email" : user.mail,
+            "password" : user.pswd,
+            "lvl" : 0,
+            "expire_day" : None
+        }
+        userCollection.insert_one(new)
+        return {"success":True, "status": "Sign-up success."}
+    
+def update(user : PremiumSchema):
+    return userCollection.update_one({"email": user.mail}, {"$set": {"lvl": user.plan, "expire_day": datetime.now() + timedelta(days=30)}})
