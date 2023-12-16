@@ -21,6 +21,15 @@ import Payment
 
 app = FastAPI()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router, prefix="/cash")
 
@@ -83,12 +92,4 @@ async def generateImageOverview(
     return StreamingResponse(io.BytesIO(zip_buffer.read()), headers=headers)
 
 if __name__ == "__main__":
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],  # Allows all origins
-        allow_credentials=True,
-        allow_methods=["*"],  # Allows all methods
-        allow_headers=["*"],  # Allows all headers
-    )
-
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
