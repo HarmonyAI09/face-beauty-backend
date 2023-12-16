@@ -24,7 +24,7 @@ app = FastAPI()
 app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router, prefix="/cash")
 
-@app.post('/')
+@app.get('/')
 def basic():
     return {"message":"Harmony Backend Run Successfully"}
 
