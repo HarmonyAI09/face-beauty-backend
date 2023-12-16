@@ -16,7 +16,7 @@ userCollection = db[os.getenv("DB_COLLECTION")]
 
 @router.post("/signin")
 def signIn(user : UserSchema):
-    one = userCollection.find_one({"email": user.email, "password": user.password})
+    one = userCollection.find_one({"email": user.mail, "password": user.password})
     if one:
         return {"success":True, "status": "Sign-in success.", "name": one["username"], "mail": one["email"], "level": one["lvl"], "expire": one["expire_day"]} 
     else:
@@ -24,7 +24,7 @@ def signIn(user : UserSchema):
     
 @router.post("/signup")
 def signUp(user : UserSchema):
-    one = userCollection.find_one({"email": user.email})
+    one = userCollection.find_one({"email": user.mail})
     if one:
         return {"success":False, "status": "Already exists."}
     else:
