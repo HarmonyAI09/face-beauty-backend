@@ -22,7 +22,7 @@ import Payment
 app = FastAPI()
 
 app.include_router(Auth.router, prefix="/api")
-app.include_router(Payment.router, prefix="/")
+app.include_router(Payment.router, prefix="/cash")
 
 @app.post('/getfrontscore')
 def getFrontProfileScore(body:frontProfileSchema):

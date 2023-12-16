@@ -1,0 +1,12 @@
+fastapi[all]
+numpy
+scikit-image
+protobuf
+dlib
+torch
+torchvision
+enum34
+opencv-python
+mediapipe
+pymongo
+stripe
