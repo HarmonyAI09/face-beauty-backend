@@ -24,6 +24,10 @@ app = FastAPI()
 app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router, prefix="/cash")
 
+@app.post('/')
+def basic():
+    return {"message":"Harmony Backend Run Successfully"}
+
 @app.post('/getfrontscore')
 def getFrontProfileScore(body:frontProfileSchema):
     return ProfileScoreCalcFront.mainProcess(body)
