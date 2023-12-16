@@ -1,13 +1,21 @@
 import uvicorn
-from fastapi import FastAPI, UploadFile, Request
+from fastapi import FastAPI, UploadFile, Form
+from fastapi.responses import StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
+from datetime import datetime
+from pathlib import Path
+import hashlib
+import json
+import io
+import zipfile
 
 import ProfileScoreCalcFront
 import ProfileScoreCalcSide
 import AutomateLandmarkFront
 import AutomateLandmarkSide
 import ImageOverviewCreate
+import CreateReportImages
 import Auth
 import Payment
 
@@ -31,12 +39,44 @@ async def automateLandmarkFrontProfile(image:UploadFile):
 @app.post('/sidemagic')
 async def automateLandmarkSideProfile(image:UploadFile):
     return AutomateLandmarkSide.mainProcess(image)
-    return True
 
 @app.post('/create')
 async def createImageOverview(body:ImageOverviewSchema):
     return ImageOverviewCreate.mainProcess(body)
 
+@app.post('/generate')
+async def generateImageOverview(
+    front:UploadFile = Form(...),
+    side:UploadFile = Form(...),
+    points: str = Form(...)):
+    currentIndex = hashlib.md5(str(datetime.now()).encode()).hexdigest()
+
+    # Save frontImage with currentIndex name
+    frontImgPth = f"UPLOADS/{currentIndex}_0.jpg"
+    with open(frontImgPth, "wb") as f:
+        f.write(front.file.read())
+    # Save sideImage with currentIndex name
+    sideImgPth = f"UPLOADS/{currentIndex}_1.jpg"
+    with open(sideImgPth, "wb") as f:
+        f.write(side.file.read())
+    await CreateReportImages.createReportImages(frontImgPth, sideImgPth, json.JSONDecoder().decode(points))
+
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        for i in range(1, 46):
+            image_path = Path(f"REPORTS/{currentIndex}") / f"{i}.jpg"
+            zip_file.write(image_path, arcname=image_path.name)
+            print(image_path)
+
+    # Rewind the buffer to the beginning
+    zip_buffer.seek(0)
+
+    headers = {
+        "Content-Disposition": "attachment; filename=images.zip",
+        "Content-Type": "application/zip",
+    }
+
+    return StreamingResponse(io.BytesIO(zip_buffer.read()), headers=headers)
 
 if __name__ == "__main__":
     app.add_middleware(

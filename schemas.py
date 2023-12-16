@@ -240,6 +240,7 @@ class Rect:
         return resPts
 
 class ImageOverviewSchema(BaseModel):
+    ID: str
     front: str
     side: str
     points: List[Any]
