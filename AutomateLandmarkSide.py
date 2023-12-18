@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime
 import hashlib
 from fastapi import UploadFile
 from PIL import Image
@@ -17,6 +17,7 @@ SAMPLE_POINTS_FILE = "REFERENCE/f15.pts"
 DEFAULT_LENGTH = 800
 SAMPLE_RATIO = 1.0
 ZERO = 0.001
+INFINITE = 801
 
 def storeImage(image:UploadFile):
     # Create a folder if it doesn't exist
@@ -38,7 +39,7 @@ def storeImage(image:UploadFile):
     imageResize.save(imageStorePath)
     response = requests.post(os.getenv("BG_REMOVE_API"), 
             files={'image_file':open(imageStorePath, 'rb')},
-            data={'size':'auto'},
+            data={'size':'auto', 'format':'jpg'},
             headers={'X-Api-key':os.getenv("BG_REMOVE_KEY")})    
     if response.status_code == requests.codes.ok:
         with open(imageStorePath, 'wb') as out :
@@ -65,22 +66,25 @@ def getLandmarkUsingLib(imgPath, Landmarks):
     indexListRes = [57, 42, 48, 50, 51, 52, 49, 38, 32, 36, 39, 41, 43, 57, 33, 45, 46, 58]
 
     for i, indexLib  in enumerate(indexListLib):
-        Landmarks[indexListRes[i]-30] = [landmarks[indexLib]]
+        Landmarks[indexListRes[i]-30] = landmarks[indexLib]
     
     return Landmarks
 def getLandmarkForNeckNose(imgPath, Landmarks):
     imgSrc = cv2.imread(imgPath, 0)
     height, width = imgSrc.shape
+    print(height, width)
+    Landmarks[10] = [INFINITE, INFINITE]
     for i in range(height//4, height):
         for j in range(width):
-            if imgSrc[i][j]!=0:
-                if Landmarks[25][0][0] < j:
-                    Landmarks[25][0][0] = j
-                    Landmarks[25][0][1] = i
-                if Landmarks[25][0][0] > j and i < height//4*3:
-                    Landmarks[10][0][0] = j
-                    Landmarks[10][0][1] = i
+            if imgSrc[i][j]!=255:
+                if Landmarks[25][0] < j:
+                    Landmarks[25][0] = j
+                    Landmarks[25][1] = i
+                if Landmarks[10][0] > j and i < height//4*3:
+                    Landmarks[10][0] = j
+                    Landmarks[10][1] = i
                 break
+    print(Landmarks[10], Landmarks[25], "*************")
     return Landmarks
 def getLandmarkGenerate(imgPath, Landmarks):
     with open(SAMPLE_POINTS_FILE, 'r') as file:
@@ -90,13 +94,13 @@ def getLandmarkGenerate(imgPath, Landmarks):
     for i, ptData in enumerate(ptsDt[ptsDt.index('{')+1:ptsDt.index('}')].split('\n')):
         if ptData.strip() != '':
             x, y = map(float, ptData.strip().split())
-            samplePts.append([x, y, i])
+            samplePts.append([x, y, i-1])
 
-    ##### SET X-value of Point0 #####
+    ##### SET Y-value of Point0 #####
     SAMPLE_RATIO = (samplePts[25][1]-samplePts[0][1])/(samplePts[25][1]-samplePts[2][1])
     Landmarks[0] = [0, Landmarks[25][1] - (Landmarks[25][1]-Landmarks[2][1]) * SAMPLE_RATIO]
 
-    ##### SET X-values #####
+    ##### SET Y-values #####
     sortedPts = sorted(samplePts, key=lambda p: p[1])
     refStepIdxList = []
     refNullIdxList = []
@@ -117,11 +121,13 @@ def getLandmarkGenerate(imgPath, Landmarks):
             resHeight = (samplePts[nullIdx][1] - samplePts[head][1]) / stepRatio
             Landmarks[nullIdx] = [0, Landmarks[head][1] + resHeight]
 
-    ##### SET Y-values #####
+    ##### SET X-values #####
     sortedPts = sorted(samplePts, key=lambda p: p[0])
+    print(sortedPts)
     refStepIdxList = []
     refNullIdxList = []
     for point in sortedPts:
+        print(Landmarks, point, refNullIdxList)
         if Landmarks[point[2]][0] == 0:
             refNullIdxList[-1].append(point[2])
         else:
@@ -136,18 +142,18 @@ def getLandmarkGenerate(imgPath, Landmarks):
         stepRatio = srcWidth / tgtWidth
         for nullIdx in refNullIdxList[i]:
             resWidth = (samplePts[nullIdx][0] - samplePts[head][0]) / stepRatio
-            Landmarks[nullIdx][0] = [Landmarks[head][0] + resWidth]
+            Landmarks[nullIdx][0] = Landmarks[head][0] + resWidth
 
     return Landmarks
 
 def getProfileLandmarks(imgPath):
-    profileLandmarks = np.zeros((30, 1, 2))
+    profileLandmarks = np.zeros((30, 2))
 
     profileLandmarks = getLandmarkUsingLib(imgPath, profileLandmarks)
     profileLandmarks = getLandmarkForNeckNose(imgPath, profileLandmarks)
     profileLandmarks = getLandmarkGenerate(imgPath, profileLandmarks)
     
-    return profileLandmarks  
+    return profileLandmarks.tolist()
 
 def mainProcess(image:UploadFile):
-    return getProfileLandmarks(storeImage(image))
+    return {"points":getProfileLandmarks(storeImage(image))}

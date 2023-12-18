@@ -77,6 +77,7 @@ class MeasurementOverview:
 class profileResponseSchema:
     score = 0.0
     detailScores = []
+    values = []
     notes = []
     maxScores = []
     idealRanges = []
@@ -86,15 +87,18 @@ class profileResponseSchema:
     def update(self, overview:MeasurementOverview):
         self.score = self.score + overview.score
         self.detailScores.append(overview.score)
+        self.values.append(overview.value)
         self.notes.append(overview.note)
         self.maxScores.append(overview.max)
         self.idealRanges.append(overview.range)
-        self.advice.append(overview.advice)
+        self.advices.append(overview.advice)
+        self.measureNames.append(overview.name)
 
     def result(self):
         resp = {
             "score" : self.score,
             "scores" : self.detailScores,
+            "values" : self.values,
             "notes" : self.notes,
             "maxs" : self.maxScores,
             "ranges" : self.idealRanges,

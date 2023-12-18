@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime
 import hashlib
 from fastapi import UploadFile
 from PIL import Image
@@ -80,7 +80,7 @@ def getLandmarksUsingMP(imgPath, IndexList, Landmarks):
         for face in faces.multi_face_landmarks:
             for index in range(len(IndexList)):
                 Landmarks[IndexList[index][1], IndexList[index][2], 0] = int(face.landmark[IndexList[index][0]].x*width)
-                Landmarks[IndexList[index][1], IndexList[index][2], 1] = int(face.landmark[IndexList[index][0]].x*height)
+                Landmarks[IndexList[index][1], IndexList[index][2], 1] = int(face.landmark[IndexList[index][0]].y*height)
             Landmarks[3, 0, 0] = int(face.landmark[105].x*width)
             Landmarks[3, 0, 1] = int((face.landmark[105].y - DELTA)*height)
             Landmarks[4, 0, 0] = int(face.landmark[105].x*width)
@@ -167,8 +167,7 @@ def getProfileLandmarks(imgPath):
     profileLandmarks = getLandmarksUsing68(imgPath, IndexListUsing68, profileLandmarks)
     profileLandmarks = getLandmarksUsing81(imgPath, IndexListUsing81, profileLandmarks)
     profileLandmarks = getLandmarksUsingMP(imgPath, IndexListUsingMP, profileLandmarks)
-
-    return profileLandmarks
+    return profileLandmarks.tolist()
 
 def mainProcess(image:UploadFile):
-    return getProfileLandmarks(storeImage(image))
+    return {"points":getProfileLandmarks(storeImage(image))}
