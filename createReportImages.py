@@ -1,4 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+import cv2
 import os
 
 position_lists = [
@@ -1824,40 +1826,39 @@ def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
 ###side
 #23
 def create_gonial_angle_image(img_url, mark_points, DIR, index):
-    img = Image.open(img_url)
-    
+    # Load the image using OpenCV
+    img = cv2.imread(img_url)
+
     # Calculate the updated dimensions while maintaining aspect ratio
-    if img.height >= img.width:
+    if img.shape[0] >= img.shape[1]:
         updated_height = 800
-        updated_width = img.width * 800 / img.height
+        updated_width = int(img.shape[1] * 800 / img.shape[0])
     else:
         updated_width = 800
-        updated_height = img.height * 800 / img.width
+        updated_height = int(img.shape[0] * 800 / img.shape[1])
 
-    img = img.resize((int(updated_width), int(updated_height)))
-    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
+    # Resize the image
+    img = cv2.resize(img, (updated_width, updated_height))
 
-    x_offset = (800 - img.width) // 2
-    y_offset = (800 - img.height) // 2
+    # Create a black canvas
+    canvas = np.zeros((800, 800, 3), dtype=np.uint8)
 
-    canvas.paste(img, (x_offset, y_offset))
-    draw = ImageDraw.Draw(canvas)  
+    # Calculate offsets for pasting the resized image onto the canvas
+    x_offset = (800 - img.shape[1]) // 2
+    y_offset = (800 - img.shape[0]) // 2
 
-    x1 = mark_points[38][0]["x"]
-    y1 = mark_points[38][0]["y"]
-    x2 = mark_points[49][0]["x"]
-    y2 = mark_points[49][0]["y"]
-    x3 = mark_points[52][0]["x"]
-    y3 = mark_points[52][0]["y"]
-    
+    # Paste the resized image onto the canvas
+    canvas[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
 
-    x_min = min(x1,x2,x3)
-    x_max = max(x1,x2,x3)
-    y_min = min(y1,y2,y3)
-    y_max = max(y1,y2,y3)
-    
-    center_x = (x_min + x_max) / 2
-    center_y = (y_min + y_max) / 2
+    # Draw on the canvas using OpenCV functions
+    x1, y1 = mark_points[38][0]["x"], mark_points[38][0]["y"]
+    x2, y2 = mark_points[49][0]["x"], mark_points[49][0]["y"]
+    x3, y3 = mark_points[52][0]["x"], mark_points[52][0]["y"]
+
+    x_min, x_max = min(x1, x2, x3), max(x1, x2, x3)
+    y_min, y_max = min(y1, y2, y3), max(y1, y2, y3)
+
+    center_x, center_y = (x_min + x_max) / 2, (y_min + y_max) / 2
     half_side_length = max(x_max - center_x, y_max - center_y)
 
     # Define the square's bounding coordinates
@@ -1867,21 +1868,25 @@ def create_gonial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
-    cropped_img = cropped_img.resize((300, 300))
-    width = half_side_length*2+20
-    start_x = center_x - half_side_length - 10
-    start_y = center_y - half_side_length -10
+    cropped_img = canvas[int(square_y_min) - 10:int(square_y_max) + 10, int(square_x_min) - 10:int(square_x_max) + 10]
+    cropped_img = cv2.resize(cropped_img, (300, 300))
+
+    # Rescale the marked points
+    width = int(half_side_length * 2 + 20)
+    start_x, start_y = int(center_x - half_side_length - 10), int(center_y - half_side_length - 10)
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
-    draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    output_filename = os.path.join(DIR, f"{create_gonial_angle_image.__name__}.jpg")
+
+    # Draw ellipses and lines on the cropped image
+    cv2.ellipse(cropped_img, (int(x1), int(y1)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
+    cv2.ellipse(cropped_img, (int(x2), int(y2)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
+    cv2.ellipse(cropped_img, (int(x3), int(y3)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
+    cv2.line(cropped_img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 1, lineType=cv2.LINE_AA)
+    cv2.line(cropped_img, (int(x2), int(y2)), (int(x3), int(y3)), (0, 255, 0), 1, lineType=cv2.LINE_AA)
+
+    # Save the output image
     output_filename = os.path.join(DIR, f"{index}.jpg")
-    cropped_img.save(output_filename)
+    cv2.imwrite(output_filename, cropped_img)
+
     return True
 
 #24
