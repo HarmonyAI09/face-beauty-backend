@@ -1180,7 +1180,7 @@ def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
     draw_vertical_line(draw, (x3, y3))
     draw_vertical_line(draw, (x4, y4))
     draw_solid_line(draw,(x2,y2),(x1,y2))
-    draw_dotted_line(draw,(x2,y2),(x3,y3))
+    draw_dotted_line(draw,(x2,y2+20),(x3,y2+20))
     draw_solid_line(draw,(x3,y3),(x4,y3))
     output_filename = os.path.join(DIR, f"{create_eye_spacing_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -3077,138 +3077,52 @@ async def createReportImages(front_img_url, side_img_url, position_lists):
     DIR = "./REPORTS/" + (os.path.basename(front_img_url))[:-6]+"/"
     os.makedirs(DIR, exist_ok=True)
 
-    create_eye_separation_ratio_create(front_img_url, position_lists, DIR, 1)
-    
-
-    create_facial_thirds_image(front_img_url, position_lists, DIR, 2)
-        
-
+    create_eye_separation_ratio_create(front_img_url, position_lists, DIR, 1) 
+    create_facial_thirds_image(front_img_url, position_lists, DIR, 2)       
     create_lateral_canthal_tilt_image(front_img_url, position_lists, DIR, 3)
-        
-
     create_facial_width_to_height_ratio_image(front_img_url, position_lists, DIR, 4)
-        
-
     create_jaw_frontal_angle_image(front_img_url, position_lists, DIR, 5)
-        
-
     create_cheekbone_height_image(front_img_url, position_lists, DIR, 6)
-        
-
     create_total_facial_height_to_width_ratio_image(front_img_url, position_lists, DIR, 7)
-        
-
     create_bigonial_width_image(front_img_url, position_lists, DIR, 8)
-        
-
     create_chin_to_philtrum_ratio_image(front_img_url, position_lists, DIR, 9)
-        
-
     create_Neck_width__image(front_img_url, position_lists, DIR, 10)
-        
-
     create_mouth_width_to_nose_width_ratio_image(front_img_url, position_lists, DIR, 11)
-        
-
     create_midface_ratio_image(front_img_url, position_lists, DIR, 12)
-        
-
     create_eyebrow_position_ratio_image(front_img_url, position_lists, DIR, 13)
-        
-
     create_eye_spacing_ratio_image(front_img_url, position_lists, DIR, 14)
-        
-
     create_eye_aspect_ratio_image(front_img_url, position_lists, DIR, 15)
-        
-
     create_lower_lip_to_upper_lip_ratio_image(front_img_url, position_lists, DIR, 16)
-        
-
     create_deviation_of_iaa_image(front_img_url, position_lists, DIR, 17)
-        
-
     create_eyebrow_tilt_image(front_img_url, position_lists, DIR, 18)
-        
-
     create_bitemporal_width_image(front_img_url, position_lists, DIR, 19)
-        
-
     create_lower_third_proportion_image(front_img_url, position_lists, DIR, 20)
-        
-
     create_ipsilateral_alar_angle_image(front_img_url, position_lists, DIR, 21)
-        
-
     create_medial_canthal_angle_image(front_img_url, position_lists, DIR, 22)
-        
 
     ###Side Functions
     create_gonial_angle_image(side_img_url, position_lists, DIR, 23)
-        
-
     create_nasofrontal_angle_image(side_img_url, position_lists, DIR, 24)
-        
-
     create_mandibular_plane_angle_image(side_img_url, position_lists, DIR, 25)
-        
-
     create_ramus_to_mandible_ratio_image(side_img_url, position_lists, DIR, 26)
-        
-
     create_facial_convexity_glabella_image(side_img_url, position_lists, DIR, 27)
-        
-
     create_submental_cervical_angle_image(side_img_url, position_lists, DIR, 28)
-        
-
     create_nasofacial_angle_image(side_img_url, position_lists, DIR, 29)
-        
-
     create_nasolabial_angle_image(side_img_url, position_lists, DIR, 30)
-        
-
     create_orbital_vector_image(side_img_url, position_lists, DIR, 31)
-        
-
     create_total_facial_convexity_image(side_img_url, position_lists, DIR, 32)
-        
-
     create_mentolabial_angle_image(side_img_url, position_lists, DIR, 33)
-        
-
     create_facial_convexity_nasion_image(side_img_url, position_lists, DIR, 34)
-        
-
     create_nasal_projection_image(side_img_url, position_lists, DIR, 35)
-        
-
     create_nasal_w_to_h_ratio_image(side_img_url, position_lists, DIR, 36)
-        
-
     create_ricketts_e_line_image(side_img_url, position_lists, DIR, 37)
-        
-
     create_holdaway_h_line_image(side_img_url, position_lists, DIR, 38)
-        
-
     create_steiner_s_line_image(side_img_url, position_lists, DIR, 39)
-        
-
     create_burstone_line_image(side_img_url, position_lists, DIR, 40)
-        
-
     create_nasomental_angle_image(side_img_url, position_lists, DIR, 41)
-        
-
     create_gonion_to_mouth_relationship_image(side_img_url, position_lists, DIR, 42)
-        
-
     create_recession_relative_to_frankfort_plane_image(side_img_url, position_lists, DIR, 43)
-        
-
     create_browridge_inclination_angle_image(side_img_url, position_lists, DIR, 44)
-        
-
     create_nasal_tip_angle_image(side_img_url, position_lists, DIR, 45)
 
+create_nasal_projection_image("./side.jpg", position_lists, "./REPORTS", 1)

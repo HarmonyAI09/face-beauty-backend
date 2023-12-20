@@ -94,6 +94,16 @@ class profileResponseSchema:
         self.advices.append(overview.advice)
         self.measureNames.append(overview.name)
 
+    def clear(self):
+        self.score = 0.0
+        self.detailScores = []
+        self.values = []
+        self.notes = []
+        self.maxScores = []
+        self.idealRanges = []
+        self.measureNames = []
+        self.advices = []
+        
     def result(self):
         resp = {
             "score" : self.score,

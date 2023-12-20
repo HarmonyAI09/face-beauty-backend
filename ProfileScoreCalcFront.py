@@ -544,6 +544,7 @@ def funcMedialCanthalAngle(p:frontProfileSchema):
 
 def mainProcess(frontProfile:frontProfileSchema):
     mainProcess = profileResponseSchema()
+    mainProcess.clear()
     mainProcess.update(funcEyeSeparationRatio(frontProfile))
     mainProcess.update(funcFacialThirds(frontProfile))
     mainProcess.update(funcLateralCanthalTilt(frontProfile))

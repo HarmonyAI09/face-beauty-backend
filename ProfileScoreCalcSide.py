@@ -480,6 +480,7 @@ def funcNasalTipAngle(p:sideProfileSchema):
 
 def mainProcess(sideProfile:sideProfileSchema):
     mainProcess = profileResponseSchema()
+    mainProcess.clear()
     mainProcess.update(funcGonialAngle(sideProfile))
     mainProcess.update(funcNasofrontalAngle(sideProfile))
     mainProcess.update(funcMandibularPlaneAngle(sideProfile))
