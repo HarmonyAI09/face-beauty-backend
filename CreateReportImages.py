@@ -156,31 +156,82 @@ position_lists = [
     [{ "x": 185, "y": 428 }], #59
   ]
 
+ZERO = 0.0001
+
 def midpoint(x1, y1, x2, y2):
     return (x1 + x2) / 2, (y1 + y2) / 2
 
-def draw_dotted_line(draw, point1, point2, color=(0, 255, 0), width=1, dot_length=6, space_length=3):
-    # Calculate the distance between the two points
-    dx = point2[0] - point1[0]
-    dy = point2[1] - point1[1]
-    length = (dx**2 + dy**2)**0.5
-    if length == 0:
-        return  # Avoid division by zero if points are the same
 
-    # Normalize the direction vector
-    dx, dy = dx / length, dy / length
+def draw_point(draw, point, dot_color=(255, 0, 0), dot_size=2):
+    draw.ellipse((point[0]-dot_size*2, point[1]-dot_size*2, point[0]+dot_size*2, point[1]+dot_size*2), dot_color)
 
-    # Draw the dotted line
-    current_length = 0
-    while current_length < length:
-        segment_length = min(dot_length, length - current_length)
-        start_x = point1[0] + current_length * dx
-        start_y = point1[1] + current_length * dy
-        end_x = start_x + segment_length * dx
-        end_y = start_y + segment_length * dy
-        draw.line([(start_x, start_y), (end_x, end_y)], fill=color, width=width)
+def draw_dotted_line(draw, point1, point2, dot_spacing=10, dot_color=(0, 255, 0), dot_size=2):
+    delta_x = point2[0] - point1[0]
+    delta_y = point2[1] - point1[1]
+    line_length = (delta_x**2 + delta_y**2)**0.5
+    num_dots = int(line_length / dot_spacing)
+    step_x = delta_x / (num_dots + ZERO)
+    step_y = delta_y / (num_dots + ZERO)
+    for i in range(num_dots):
+        x = int(point1[0] + i * step_x)
+        y = int(point1[1] + i * step_y)
+        draw.ellipse((x-dot_size, y-dot_size, x+dot_size, y+dot_size), fill=dot_color)        
+    draw.ellipse((point1[0]-dot_size*2, point1[1]-dot_size*2, point1[0]+dot_size*2, point1[1]+dot_size*2), (255, 0, 0))
+    draw.ellipse((point2[0]-dot_size*2, point2[1]-dot_size*2, point2[0]+dot_size*2, point2[1]+dot_size*2), (255, 0, 0))
+def draw_dotted_line_p_vertical_line(draw, point1, point2, dot_spacing=10, dot_color=(0, 255, 0), dot_size=2, line_color=(0, 255, 0), line_width=4):
+    # Draw the dotted line between point1 and point2
+    delta_x = point2[0] - point1[0]
+    delta_y = 0
+    line_length = (delta_x**2 + delta_y**2)**0.5
+    num_dots = int(line_length / dot_spacing)
+    step_x = delta_x / (num_dots + ZERO)
+    step_y = delta_y / (num_dots + ZERO)
+    for i in range(num_dots):
+        x = int(point1[0] + i * step_x)
+        y = int(point1[1] + i * step_y)
+        draw.ellipse((x - dot_size, y - dot_size, x + dot_size, y + dot_size), fill=dot_color)
 
-        current_length += segment_length + space_length
+    # Draw circles at the specified points
+    draw.ellipse((point1[0] - dot_size * 2, point1[1] - dot_size * 2, point1[0] + dot_size * 2, point1[1] + dot_size * 2), (255, 0, 0))
+    draw.ellipse((point2[0] - dot_size * 2, point2[1] - dot_size * 2, point2[0] + dot_size * 2, point2[1] + dot_size * 2), (255, 0, 0))
+def draw_solid_line(draw, point1, point2, line_color=(0, 255, 0), line_width=4, dot_size=2):
+    draw.line([point1, point2], fill=line_color, width=line_width)
+    draw.ellipse((point1[0]-dot_size*2, point1[1]-dot_size*2, point1[0]+dot_size*2, point1[1]+dot_size*2), (255, 0, 0))
+    draw.ellipse((point2[0]-dot_size*2, point2[1]-dot_size*2, point2[0]+dot_size*2, point2[1]+dot_size*2), (255, 0, 0))
+def draw_infinite_line(draw, point1, point2, line_color=(57, 208, 192), line_width=1, dot_size=2):
+    x1, y1 = point1
+    x2, y2 = point2
+    slope = (y2 - y1) / (x2 - x1) if x2 - x1 != 0 else float('inf')
+    y_intercept = y1 - slope * x1 if x2 - x1 != 0 else None
+    width, height = draw.im.size
+    x_min, x_max = 0, width
+    y_min, y_max = 0, height
+    if slope == float('inf'):
+        draw.line([(x1, y_min), (x1, y_max)], fill=line_color, width=line_width)
+    else:
+        draw.line([(x_min, int(slope * x_min + y_intercept)), (x_max, int(slope * x_max + y_intercept))], fill=line_color, width=line_width)
+    draw.ellipse((point1[0] - dot_size * 2, point1[1] - dot_size * 2, point1[0] + dot_size * 2, point1[1] + dot_size * 2), (255, 0, 0))
+    draw.ellipse((point2[0] - dot_size * 2, point2[1] - dot_size * 2, point2[0] + dot_size * 2, point2[1] + dot_size * 2), (255, 0, 0))
+
+def draw_horizontal_line(draw, point, line_color=(57, 208, 192), line_width=1, ellipse_color=(255, 0, 0), ellipse_radius=4):
+    y = point[1]
+    width = draw.im.size[0]
+    draw.line((0, y, width, y), fill=line_color, width=line_width)
+    draw.ellipse((point[0] - ellipse_radius, y - ellipse_radius, point[0] + ellipse_radius, y + ellipse_radius), fill=ellipse_color)
+def draw_vertical_line(draw, point, line_color=(57, 208, 192), line_width=1, ellipse_color=(255, 0, 0), ellipse_radius=4):
+    x = point[0]
+    height = draw.im.size[1]
+    draw.line((x, 0, x, height), fill=line_color, width=line_width)
+    draw.ellipse((x - ellipse_radius, point[1] - ellipse_radius, x + ellipse_radius, point[1] + ellipse_radius), fill=ellipse_color)
+def draw_solid_line_p_vertical_line(draw, point1, point2, line_color=(0, 255, 0), line_width=4, dot_size=2):
+    print(point1, point2)
+    draw.line([(point1[0], point1[1]), (point2[0], point1[1])], fill=line_color, width=line_width)
+    draw.ellipse((point1[0]-dot_size*2, point1[1]-dot_size*2, point1[0]+dot_size*2, point1[1]+dot_size*2), (255, 0, 0))
+
+def draw_solid_line_p_horizontal_line(draw, point1, point2, line_color=(0, 255, 0), line_width=4, dot_size=2):
+    print(point1, point2)
+    draw.line([(point1[0], point1[1]), (point1[0], point2[1])], fill=line_color, width=line_width)
+    draw.ellipse((point1[0]-dot_size*2, point1[1]-dot_size*2, point1[0]+dot_size*2, point1[1]+dot_size*2), (255, 0, 0))
 
 def draw_full_length_dotted_line(draw, point1, point2, image_size, color=(0, 255, 0), width=1, dot_length=10, space_length=5):
     # Calculate the direction vector and its length
@@ -296,21 +347,8 @@ def create_eye_separation_ratio_create(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1, x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1, y1, x2, y2), fill=(0, 255, 0), width=1)
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x3, y3, x4, y4), fill=(0, 255, 0), width=1)
-    output_filename = os.path.join(DIR, f"{create_eye_separation_ratio_create.__name__}.jpg")
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_solid_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -368,22 +406,22 @@ def create_facial_thirds_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((0, y1, 800, y1), fill=(57, 208, 192), width=1)
-    draw.line((0, y2, 800, y2), fill=(57, 208, 192), width=1)
-    draw.line((0, y3, 800, y3), fill=(57, 208, 192), width=1)
-    draw.line((0, y4, 800, y4), fill=(57, 208, 192), width=1)
     draw.line((x4,y4,x4,y1), fill=(0,255,0), width=1)
+    draw_vertical_line(draw, (x4, y4))
+    draw_horizontal_line(draw, (x1,y1))
+    draw_horizontal_line(draw, (x2,y2))
+    draw_horizontal_line(draw, (x3,y3))
+    draw_horizontal_line(draw, (x4,y4))
+    draw_dotted_line(draw, (x4, y1), (x4, y2), dot_color=(255, 0, 0))
+    draw_dotted_line(draw, (x4, y2), (x4, y3), dot_color=(0, 255, 0))
+    draw_dotted_line(draw, (x4, y3), (x4, y4), dot_color=(0, 0, 255))
     output_filename = os.path.join(DIR, f"{create_facial_thirds_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     
 
     return True
-#3???
+#3
 def create_lateral_canthal_tilt_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
     
@@ -443,7 +481,7 @@ def create_lateral_canthal_tilt_image(img_url, mark_points, DIR, index):
     draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
     draw_dotted_line(draw, [x2,y2], [x1,y1])
     draw_dotted_line(draw, [x3,y3], [x4,y4])
-    draw_full_length_dotted_line(draw, [x2,y2], [x3,y3], (800,800))
+    draw_infinite_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_lateral_canthal_tilt_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -502,21 +540,10 @@ def create_facial_width_to_height_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1, x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 + 20, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((0,y2, 800,y2), fill=(57, 208, 192), width=1)
-    draw.line((x3,y3, x4,y4), fill=(0, 255, 0), width=1)
-    draw.line((x1,y1, x1,y2), fill=(0, 255, 0), width=1)
+    draw_horizontal_line(draw, (x2, y2))
+    draw_horizontal_line(draw, (x1, y1))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
+    draw_solid_line(draw, (x1, y1), (x1, y2))
     output_filename = os.path.join(DIR, f"{create_facial_width_to_height_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -576,12 +603,8 @@ def create_jaw_frontal_angle_image(img_url, mark_points, DIR, index):
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
     intersection_point = find_intersection([(x1,y1),(x2,y2)], [(x3,y3),(x4,y4)])
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,intersection_point[0],intersection_point[1]), fill=(0,255,0), width=1)
-    draw.line((x4,y4,intersection_point[0],intersection_point[1]), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (intersection_point[0],intersection_point[1]))
+    draw_dotted_line(draw, (x4, y4), (intersection_point[0],intersection_point[1]))
 
     output_filename = os.path.join(DIR, f"{create_jaw_frontal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -643,23 +666,11 @@ def create_cheekbone_height_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    draw.line((0,y5,800,y5), fill=(57, 208, 192), width=1)
-    draw.line(((x1+x2)/2,(y1+y2)/2,(x1+x2)/2,y5), fill=(57, 208, 192), width=2)
-    draw.line(((x1+x2)/2-50,y3,(x1+x2)/2-50,y5), fill=(57, 208, 192), width=2)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint((x1+x2)/2,(y1+y2)/2,(x1+x2)/2,y5)
-    mid_x2, mid_y2 = midpoint((x1+x2)/2-50,y3, (x1+x2)/2-50,y5)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_solid_line(draw, (x1, y1), (x2, y2), (57, 208, 192))
+    draw_solid_line(draw, (x3, y3), (x4, y4), (57, 208, 192))
+    draw_solid_line(draw, ((x1+x2)/2,(y1+y2)/2), ((x1+x2)/2,y5))
+    draw_dotted_line(draw, ((x1+x2)/2-20,(y3+y4)/2), ((x1+x2)/2-20,y5))
+    draw_horizontal_line(draw, (x5, y5))
     output_filename = os.path.join(DIR, f"{create_cheekbone_height_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -719,20 +730,8 @@ def create_total_facial_height_to_width_ratio_image(img_url, mark_points, DIR, i
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 50), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 + 50, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_solid_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{create_total_facial_height_to_width_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -792,20 +791,8 @@ def create_bigonial_width_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_solid_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{create_bigonial_width_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -865,20 +852,10 @@ def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_horizontal_line(draw, (x2, y2))
+    draw_dotted_line(draw, (x1, y1), (x1, y2))
+    draw_solid_line(draw, (x3, y3), (x4, y4))
+
     output_filename = os.path.join(DIR, f"{create_chin_to_philtrum_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -938,20 +915,8 @@ def create_Neck_width__image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_solid_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{create_Neck_width__image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1011,20 +976,8 @@ def create_mouth_width_to_nose_width_ratio_image(img_url, mark_points, DIR, inde
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3, y3, x4, y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_solid_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{create_mouth_width_to_nose_width_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1085,17 +1038,9 @@ def create_midface_ratio_image(img_url, mark_points, DIR, index):
     draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
     draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
     draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x3, y1), fill=(0,255,0), width=1)
-    draw.line((0,y3,300, y3), fill=(57, 208, 192), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x3,y3,x3, y1)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_horizontal_line(draw, (x3, y3))
+    draw_dotted_line(draw, (x1, y1), (x2, y2), dot_color=(57, 208, 192))
+    draw_solid_line(draw, ((x1+x2)/2, (y1+y2)/2), ((x1+x2)/2, y3))
     output_filename = os.path.join(DIR, f"{create_midface_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1163,29 +1108,11 @@ def create_eyebrow_position_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), (x8, y8)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), (x8, y8)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.ellipse((x5-3, y5-3, x5+3, y5+3), fill=(255, 0, 0))
-    draw.ellipse((x6-3, y6-3, x6+3, y6+3), fill=(255, 0, 0))
-    draw.ellipse((x7-3, y7-3, x7+3, y7+3), fill=(255, 0, 0))
-    draw.ellipse((x8-3, y8-3, x8+3, y8+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    draw.line((x5,y5,x5,y3), fill=(0,255,0), width=1)
-    draw.line((x6,y6,x6,y3), fill=(0,255,0), width=1)
-    draw.line((x7,y7,x8,y8), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y1 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x7,y7,x8, y8)
-    mid_x3, mid_y3 = midpoint(x6,y6,x6,y3)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x3 - 10, mid_y3 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_infinite_line(draw, (x3, y3), (x4, y4))
+    draw_solid_line(draw, (x1, y1), (x2, y2))
+    draw_solid_line(draw, (x7, y7), (x8, y8))
+    draw_dotted_line(draw, (x5, y5), (x5, y3))
+    draw_dotted_line(draw, (x6, y6), (x6, y3))
     output_filename = os.path.join(DIR, f"{create_eyebrow_position_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1213,8 +1140,8 @@ def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
     canvas.paste(img, (x_offset, y_offset))
     draw = ImageDraw.Draw(canvas)  
 
-    x1 = mark_points[11][0]["x"]
-    y1 = mark_points[11][0]["y"]
+    x1 = mark_points[9][0]["x"]
+    y1 = mark_points[9][0]["y"]
     x2 = mark_points[16][0]["x"]
     y2 = mark_points[16][0]["y"]
     x3 = mark_points[16][1]["x"]
@@ -1248,25 +1175,13 @@ def create_eye_spacing_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,0,x1,300), fill=(57, 208, 192), width=1)
-    draw.line((x2,y2,x1,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y3), fill=(0,255,0), width=1)
-    draw.line((x4,0,x4,300), fill=(57, 208, 192), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1, y2 ,x2, y2)
-    mid_x2, mid_y2 = midpoint(x2,y2,x3, y3)
-    mid_x3, mid_y3 = midpoint(x3,y3,x4,y3)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x3 - 10, mid_y3 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_vertical_line(draw, (x1, y1))
+    draw_vertical_line(draw, (x2, y2))
+    draw_vertical_line(draw, (x3, y3))
+    draw_vertical_line(draw, (x4, y4))
+    draw_solid_line(draw,(x2,y2),(x1,y2))
+    draw_dotted_line(draw,(x2,y2+20),(x3,y2+20))
+    draw_solid_line(draw,(x3,y3),(x4,y3))
     output_filename = os.path.join(DIR, f"{create_eye_spacing_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1301,12 +1216,20 @@ def create_eye_aspect_ratio_image(img_url, mark_points, DIR, index):
     y3 = mark_points[16][1]["y"]
     x4 = mark_points[11][1]["x"]
     y4 = mark_points[11][1]["y"]
+    x5 = mark_points[10][0]["x"]
+    y5 = mark_points[10][0]["y"]
+    x6 = mark_points[14][0]["x"]
+    y6 = mark_points[14][0]["y"]
+    x7 = mark_points[16][0]["x"]
+    y7 = mark_points[16][0]["y"]
+    x8 = mark_points[11][0]["x"]
+    y8 = mark_points[11][0]["y"]
     
 
-    x_min = min(x1,x2,x3,x4)
-    x_max = max(x1,x2,x3,x4)
-    y_min = min(y1,y2,y3,y4)
-    y_max = max(y1,y2,y3,y4)
+    x_min = min(x1,x2,x3,x4,x5,x6,x7,x8)
+    x_max = max(x1,x2,x3,x4,x5,x6,x7,x8)
+    y_min = min(y1,y2,y3,y4,y5,y6,y7,y8)
+    y_max = max(y1,y2,y3,y4,y5,y6,y7,y8)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -1324,22 +1247,12 @@ def create_eye_aspect_ratio_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5,y5),(x6,y6),(x7,y7),(x8,y8)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5,y5),(x6,y6),(x7,y7),(x8,y8)])
     draw = ImageDraw.Draw(cropped_img)
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1,y1,x2,y2)
-    mid_x2, mid_y2 = midpoint(x3,y3,x4,y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter2, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter1, font=font, fill=(0, 0, 0))
+    draw_solid_line(draw, (x1,y1),(x2,y2))
+    draw_solid_line(draw, (x5,y5),(x6,y6))
+    draw_dotted_line(draw, (x3,y3),(x4,y4))
+    draw_dotted_line(draw, (x7,y7),(x8,y8))
     output_filename = os.path.join(DIR, f"{create_eye_aspect_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1397,20 +1310,9 @@ def create_lower_lip_to_upper_lip_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((0,y1,300,y1), fill=(57, 208, 192), width=1)
-    draw.line((x2+2,y2-2,x2+2,y1), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x2,y2,x3,y3)
-    mid_x2, mid_y2 = midpoint(x2+2,y2-2,x2+2,y1)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_horizontal_line(draw, (x1, y1))
+    draw_solid_line(draw, (x2, y2), (x2, y1))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_lower_lip_to_upper_lip_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1477,17 +1379,10 @@ def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), intersection] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), intersection])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.ellipse((x5-3, y5-3, x5+3, y5+3), fill=(255, 0, 0))
-    draw.ellipse((x6-3, y6-3, x6+3, y6+3), fill=(255, 0, 0))
-    draw.ellipse((x7-3, y7-3, x7+3, y7+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x3,y3), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    draw.line((x4,y4,intersection[0],intersection[1]), fill=(0,255,0), width=1)
-    draw.line((x5,y5,intersection[0],intersection[1]), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x3, y3))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
+    draw_dotted_line(draw, (x4, y4), (intersection[0],intersection[1]))
+    draw_dotted_line(draw, (x5, y5), (intersection[0],intersection[1]))
     output_filename = os.path.join(DIR, f"{create_deviation_of_iaa_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1518,12 +1413,15 @@ def create_eyebrow_tilt_image(img_url, mark_points, DIR, index):
     y1 = mark_points[7][1]["y"]
     x2 = mark_points[4][1]["x"]
     y2 = mark_points[4][1]["y"]
-    
+    x3 = mark_points[7][0]["x"]
+    y3 = mark_points[7][0]["y"]
+    x4 = mark_points[4][0]["x"]
+    y4 = mark_points[4][0]["y"]
 
-    x_min = min(x1,x2)
-    x_max = max(x1,x2)
-    y_min = min(y1,y2)
-    y_max = max(y1,y2)
+    x_min = min(x1,x2,x3,x4)
+    x_max = max(x1,x2,x3,x4)
+    y_min = min(y1,y2,y3,y4)
+    y_max = max(y1,y2,y3,y4)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -1541,12 +1439,12 @@ def create_eyebrow_tilt_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
+    [(x1, y1), (x2, y2),(x3,y3),(x4,y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2),(x3,y3),(x4,y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((0,y1,300,y1), fill=(57, 208, 192), width=1)
+    draw_infinite_line(draw, (x1, y1), (x3, y3))
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
+
     output_filename = os.path.join(DIR, f"{create_eyebrow_tilt_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1606,20 +1504,8 @@ def create_bitemporal_width_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x3,y3,x4,y4), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1,y1,x2,y2)
-    mid_x2, mid_y2 = midpoint(x3,y3,x4,y4)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_solid_line(draw, (x3, y3), (x4, y4))
     output_filename = os.path.join(DIR, f"{create_bitemporal_width_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1677,22 +1563,11 @@ def create_lower_third_proportion_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((0,y1,800,y1), fill=(57, 208, 192), width=1)
-    draw.line((0,y2,800,y2), fill=(57, 208, 192), width=1)
-    draw.line((0,y3,800,y3), fill=(57, 208, 192), width=1)
-    draw.line((x2,y2, x2,y1), fill=(0,255,0), width=1)
-    draw.line((x3-20,y3,x3-20,y1), fill=(0,255,0), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x2,y2, x2,y1)
-    mid_x2, mid_y2 = midpoint(x3-20,y3,x3-20,y1)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
+    draw_horizontal_line(draw, (x1, y1))
+    draw_horizontal_line(draw, (x2, y2))
+    draw_horizontal_line(draw, (x3, y3))
+    draw_dotted_line(draw, (x2, y2), (x2, y1))
+    draw_solid_line(draw, (x3-20, y3), (x3-20, y1))
     output_filename = os.path.join(DIR, f"{create_lower_third_proportion_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1749,11 +1624,8 @@ def create_ipsilateral_alar_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x3,y3), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x3, y3))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
 
     output_filename = os.path.join(DIR, f"{create_ipsilateral_alar_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1812,11 +1684,8 @@ def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x1,y1,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x1, y1))
     output_filename = os.path.join(DIR, f"{create_medial_canthal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -1826,39 +1695,40 @@ def create_medial_canthal_angle_image(img_url, mark_points, DIR, index):
 ###side
 #23
 def create_gonial_angle_image(img_url, mark_points, DIR, index):
-    # Load the image using OpenCV
-    img = cv2.imread(img_url)
-
+    img = Image.open(img_url)
+    
     # Calculate the updated dimensions while maintaining aspect ratio
-    if img.shape[0] >= img.shape[1]:
+    if img.height >= img.width:
         updated_height = 800
-        updated_width = int(img.shape[1] * 800 / img.shape[0])
+        updated_width = img.width * 800 / img.height
     else:
         updated_width = 800
-        updated_height = int(img.shape[0] * 800 / img.shape[1])
+        updated_height = img.height * 800 / img.width
 
-    # Resize the image
-    img = cv2.resize(img, (updated_width, updated_height))
+    img = img.resize((int(updated_width), int(updated_height)))
+    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
 
-    # Create a black canvas
-    canvas = np.zeros((800, 800, 3), dtype=np.uint8)
+    x_offset = (800 - img.width) // 2
+    y_offset = (800 - img.height) // 2
 
-    # Calculate offsets for pasting the resized image onto the canvas
-    x_offset = (800 - img.shape[1]) // 2
-    y_offset = (800 - img.shape[0]) // 2
+    canvas.paste(img, (x_offset, y_offset))
+    draw = ImageDraw.Draw(canvas)  
 
-    # Paste the resized image onto the canvas
-    canvas[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
+    x1 = mark_points[38][0]["x"]
+    y1 = mark_points[38][0]["y"]
+    x2 = mark_points[49][0]["x"]
+    y2 = mark_points[49][0]["y"]
+    x3 = mark_points[52][0]["x"]
+    y3 = mark_points[52][0]["y"]
+    
 
-    # Draw on the canvas using OpenCV functions
-    x1, y1 = mark_points[38][0]["x"], mark_points[38][0]["y"]
-    x2, y2 = mark_points[49][0]["x"], mark_points[49][0]["y"]
-    x3, y3 = mark_points[52][0]["x"], mark_points[52][0]["y"]
-
-    x_min, x_max = min(x1, x2, x3), max(x1, x2, x3)
-    y_min, y_max = min(y1, y2, y3), max(y1, y2, y3)
-
-    center_x, center_y = (x_min + x_max) / 2, (y_min + y_max) / 2
+    x_min = min(x1,x2,x3)
+    x_max = max(x1,x2,x3)
+    y_min = min(y1,y2,y3)
+    y_max = max(y1,y2,y3)
+    
+    center_x = (x_min + x_max) / 2
+    center_y = (y_min + y_max) / 2
     half_side_length = max(x_max - center_x, y_max - center_y)
 
     # Define the square's bounding coordinates
@@ -1868,25 +1738,21 @@ def create_gonial_angle_image(img_url, mark_points, DIR, index):
     square_y_max = min(center_y + half_side_length, 800)
 
     # Crop the image to the square
-    cropped_img = canvas[int(square_y_min) - 10:int(square_y_max) + 10, int(square_x_min) - 10:int(square_x_max) + 10]
-    cropped_img = cv2.resize(cropped_img, (300, 300))
-
-    # Rescale the marked points
-    width = int(half_side_length * 2 + 20)
-    start_x, start_y = int(center_x - half_side_length - 10), int(center_y - half_side_length - 10)
+    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
+    cropped_img = cropped_img.resize((300, 300))
+    width = half_side_length*2+20
+    start_x = center_x - half_side_length - 10
+    start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
-
-    # Draw ellipses and lines on the cropped image
-    cv2.ellipse(cropped_img, (int(x1), int(y1)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
-    cv2.ellipse(cropped_img, (int(x2), int(y2)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
-    cv2.ellipse(cropped_img, (int(x3), int(y3)), (3, 3), 0, 0, 360, (0, 0, 255), -1)
-    cv2.line(cropped_img, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 1, lineType=cv2.LINE_AA)
-    cv2.line(cropped_img, (int(x2), int(y2)), (int(x3), int(y3)), (0, 255, 0), 1, lineType=cv2.LINE_AA)
-
-    # Save the output image
+    draw = ImageDraw.Draw(cropped_img)  
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
+    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
+    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
+    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
+    output_filename = os.path.join(DIR, f"{create_gonial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
-    cv2.imwrite(output_filename, cropped_img)
-
+    cropped_img.save(output_filename)
     return True
 
 #24
@@ -1941,11 +1807,11 @@ def create_nasofrontal_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
     draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
     draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
     output_filename = os.path.join(DIR, f"{create_nasofrontal_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2002,11 +1868,8 @@ def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_horizontal_line(draw, (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
 
     output_filename = os.path.join(DIR, f"{create_mandibular_plane_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -2065,27 +1928,19 @@ def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_solid_line(draw, (x2, y2), (x3, y3))
+    draw.line((x3,0,x3,300), fill=(57, 208, 192), width=1)
     draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
     draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
     draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    draw.line((x3,0,x3,300), fill=(57, 208, 192), width=1)
-    font_size = 20
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size)
-    letter1 = 'a'  # Replace with your desired letter
-    letter2 = 'b'
-    mid_x1, mid_y1 = midpoint(x1,y1, x2,y2)
-    mid_x2, mid_y2 = midpoint(x2,y2,x3,y3)
-    draw.text((mid_x1 - 10, mid_y1 - 10), letter1, font=font, fill=(0, 0, 0))
-    draw.text((mid_x2 - 10, mid_y2 - 10), letter2, font=font, fill=(0, 0, 0))
     output_filename = os.path.join(DIR, f"{create_ramus_to_mandible_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
 
 #27
-def create_facial_convexity_image(img_url, mark_points, DIR, index):
+def create_facial_convexity_glabella_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
     
     # Calculate the updated dimensions while maintaining aspect ratio
@@ -2136,12 +1991,8 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    output_filename = os.path.join(DIR, f"{create_facial_convexity_image.__name__}.jpg")
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -2197,12 +2048,9 @@ def create_submental_cervical_angle_image(img_url, mark_points, DIR, index):
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
-    draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw = ImageDraw.Draw(cropped_img)    
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_submental_cervical_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2260,11 +2108,8 @@ def create_nasofacial_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_nasofacial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2322,11 +2167,8 @@ def create_nasolabial_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_nasolabial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2363,13 +2205,8 @@ def create_orbital_vector_image(img_url, mark_points, DIR, index):
     y4 = mark_points[37][0]["y"]
     x5 = mark_points[57][0]["x"]
     y5 = mark_points[57][0]["y"]
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.ellipse((x5-3, y5-3, x5+3, y5+3), fill=(255, 0, 0))
-    draw.line((x1,0,x1,800), fill=(57, 208, 192), width=1)
-    draw.line((0,y2,800,y2), fill=(57, 208, 192), width=1)
+    draw_vertical_line(draw, (x1, y1))
+    draw_solid_line_p_vertical_line(draw, (x5, y5), (x1, y1))
 
     
     x_min = min(x1,x2,x3,x4)
@@ -2447,11 +2284,8 @@ def create_total_facial_convexity_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img) 
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1) 
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_total_facial_convexity_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2509,18 +2343,15 @@ def create_mentolabial_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{create_mentolabial_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
 
 #34
-def create_facial_convexity_image(img_url, mark_points, DIR, index):
+def create_facial_convexity_nasion_image(img_url, mark_points, DIR, index):
     img = Image.open(img_url)
     
     # Calculate the updated dimensions while maintaining aspect ratio
@@ -2571,12 +2402,8 @@ def create_facial_convexity_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
-    output_filename = os.path.join(DIR, f"{create_facial_convexity_image.__name__}.jpg")
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x2, y2), (x3, y3))
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -2636,18 +2463,10 @@ def create_nasal_projection_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    # draw.ellipse((x5-3, y5-3, x5+3, y5+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x5,y5), fill=(0,255,0), width=1)
-    draw.line((x4,y4+10,x4,y3-10), fill=(0,255,0), width=1)
-    draw.line((x1,y1,x4,y1), fill=(0,255,0), width=1)
-    draw.line((x1,0,x1,300), fill=(57, 208, 192), width=1)
-    draw.line((x4,0,x4,300), fill=(57, 208, 192), width=1)
-    draw.line((0,y2,300,y2), fill=(57, 208, 192), width=1)
+    draw_vertical_line(draw, (x4, y4))
+    draw_dotted_line(draw, (x1, y1), (x4, y1))
+    draw_solid_line(draw, (x1, y1), (x5, y5))
+    draw_solid_line(draw, (x1, y1), (x2, y2))
     output_filename = os.path.join(DIR, f"{create_nasal_projection_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2708,17 +2527,12 @@ def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
-    draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.ellipse((x4-3, y4-3, x4+3, y4+3), fill=(255, 0, 0))
-    draw.ellipse((x5-3, y5-3, x5+3, y5+3), fill=(255, 0, 0))
-    draw.line((x2,y2,x3,y2), fill=(0,255,0), width=1)
-    draw.line((0,y1,300,y1), fill=(57, 208, 192), width=1)
-    draw.line((0,y4,300,y4), fill=(57, 208, 192), width=1)
-    draw.line((x2,0,x2,300), fill=(57, 208, 192), width=1)
-    draw.line((x3,0,x3,300), fill=(57, 208, 192), width=1)
+    draw = ImageDraw.Draw(cropped_img) 
+    draw_vertical_line(draw, (x3, y3))
+    draw_vertical_line(draw, (x2, y2))
+    draw_horizontal_line(draw, (x1, y1))
+    draw_dotted_line_p_vertical_line(draw, (x2, y2), (x3, y3))
+    draw_solid_line(draw, (x2, y2), (x2, y1))
     output_filename = os.path.join(DIR, f"{create_nasal_w_to_h_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2749,7 +2563,10 @@ def create_ricketts_e_line_image(img_url, mark_points, DIR, index):
     y1 = mark_points[40][0]["y"]
     x2 = mark_points[50][0]["x"]
     y2 = mark_points[50][0]["y"]
-    
+    x3 = mark_points[45][0]["x"]
+    y3 = mark_points[45][0]["y"]
+    x4 = mark_points[47][0]["x"]
+    y4 = mark_points[47][0]["y"]
 
     x_min = min(x1,x2)
     x_max = max(x1,x2)
@@ -2772,11 +2589,11 @@ def create_ricketts_e_line_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_point(draw, (x3, y3))
+    draw_point(draw, (x4, y4))
     output_filename = os.path.join(DIR, f"{create_ricketts_e_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2832,9 +2649,7 @@ def create_holdaway_h_line_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
     draw = ImageDraw.Draw(cropped_img) 
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1) 
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
     output_filename = os.path.join(DIR, f"{create_holdaway_h_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2865,6 +2680,10 @@ def create_steiner_s_line_image(img_url, mark_points, DIR, index):
     y1 = mark_points[59][0]["y"]
     x2 = mark_points[50][0]["x"]
     y2 = mark_points[50][0]["y"]
+    x3 = mark_points[45][0]["x"]
+    y3 = mark_points[45][0]["y"]
+    x4 = mark_points[47][0]["x"]
+    y4 = mark_points[47][0]["y"]
     
 
     x_min = min(x1,x2)
@@ -2888,11 +2707,11 @@ def create_steiner_s_line_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_point(draw, (x3, y3))
+    draw_point(draw, (x4, y4))
     output_filename = os.path.join(DIR, f"{create_steiner_s_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2948,9 +2767,7 @@ def create_burstone_line_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
     output_filename = os.path.join(DIR, f"{create_burstone_line_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3008,11 +2825,8 @@ def create_nasomental_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1,  y1), (x2, y2))
+    draw_dotted_line(draw, (x3,  y3), (x2, y2))
     output_filename = os.path.join(DIR, f"{create_nasomental_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3039,8 +2853,8 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     canvas.paste(img, (x_offset, y_offset))
     draw = ImageDraw.Draw(canvas)  
 
-    x1 = mark_points[47][0]["x"]
-    y1 = mark_points[47][0]["y"]
+    x1 = mark_points[46][0]["x"]
+    y1 = mark_points[46][0]["y"]
     x2 = mark_points[49][0]["x"]
     y2 = mark_points[49][0]["y"]
     
@@ -3068,9 +2882,8 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
+    draw_horizontal_line(draw, (x1, y1))
+    draw_solid_line_p_horizontal_line(draw, (x2, y2), (x1, y1))
     output_filename = os.path.join(DIR, f"{create_gonion_to_mouth_relationship_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3101,12 +2914,17 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
     y1 = mark_points[35][0]["y"]
     x2 = mark_points[54][0]["x"]
     y2 = mark_points[54][0]["y"]
-    
+    x3 = mark_points[36][0]["x"]
+    y3 = mark_points[36][0]["y"]
+    x4 = mark_points[37][0]["x"]
+    y4 = mark_points[37][0]["y"]
+    x5 = mark_points[38][0]["x"]
+    y5 = mark_points[38][0]["y"]
 
-    x_min = min(x1,x2)
-    x_max = max(x1,x2)
-    y_min = min(y1,y2)
-    y_max = max(y1,y2)
+    x_min = min(x1,x2,x3,x4,x5)
+    x_max = max(x1,x2,x3,x4,x5)
+    y_min = min(y1,y2,y3,y4,y5)
+    y_max = max(y1,y2,y3,y4,y5)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -3124,11 +2942,13 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x2,0,x2,800), fill=(0,255,0), width=1)  
+    draw_infinite_line(draw, (x5, y5), (x4, y4))
+    draw_vertical_line(draw, (x2, y2))
+    draw_solid_line_p_vertical_line(draw, (x1, y1), (x2, y2))
+    draw_point(draw, (x3, y3))
+    draw_point(draw, (x5, y5))
     output_filename = os.path.join(DIR, f"{create_recession_relative_to_frankfort_plane_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3163,7 +2983,7 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
 
     x_min = min(x1,x2)
     x_max = max(x1,x2)
-    y_min = min(y1,y2)
+    y_min = min(y1,y2,y1/3*2)
     y_max = max(y1,y2)
     
     center_x = (x_min + x_max) / 2
@@ -3184,10 +3004,10 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.line((x1,0,x1,y1+50), fill=(0,255,0), width=1)
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
+    draw_vertical_line(draw, (x1, y1))
+    draw_dotted_line(draw, (x1, 0), (x1, y1))
+    draw_dotted_line(draw, (x2, y2), (x1, y1))
+
     output_filename = os.path.join(DIR, f"{create_browridge_inclination_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3214,8 +3034,8 @@ def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     canvas.paste(img, (x_offset, y_offset))
     draw = ImageDraw.Draw(canvas)  
 
-    x1 = mark_points[36][0]["x"]
-    y1 = mark_points[36][0]["y"]
+    x1 = mark_points[39][0]["x"]
+    y1 = mark_points[39][0]["y"]
     x2 = mark_points[40][0]["x"]
     y2 = mark_points[40][0]["y"]
     x3 = mark_points[41][0]["x"]
@@ -3245,11 +3065,8 @@ def create_nasal_tip_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    draw.line((x1,y1,x2,y2), fill=(0,255,0), width=1)
-    draw.line((x2,y2,x3,y3), fill=(0,255,0), width=1)
+    draw_dotted_line(draw, (x1, y1), (x2, y2))
+    draw_dotted_line(draw, (x3, y3), (x2, y2))
     output_filename = os.path.join(DIR, f"{create_nasal_tip_angle_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -3260,138 +3077,52 @@ async def createReportImages(front_img_url, side_img_url, position_lists):
     DIR = "./REPORTS/" + (os.path.basename(front_img_url))[:-6]+"/"
     os.makedirs(DIR, exist_ok=True)
 
-    create_eye_separation_ratio_create(front_img_url, position_lists, DIR, 1)
-    
-
-    create_facial_thirds_image(front_img_url, position_lists, DIR, 2)
-        
-
+    create_eye_separation_ratio_create(front_img_url, position_lists, DIR, 1) 
+    create_facial_thirds_image(front_img_url, position_lists, DIR, 2)       
     create_lateral_canthal_tilt_image(front_img_url, position_lists, DIR, 3)
-        
-
     create_facial_width_to_height_ratio_image(front_img_url, position_lists, DIR, 4)
-        
-
     create_jaw_frontal_angle_image(front_img_url, position_lists, DIR, 5)
-        
-
     create_cheekbone_height_image(front_img_url, position_lists, DIR, 6)
-        
-
     create_total_facial_height_to_width_ratio_image(front_img_url, position_lists, DIR, 7)
-        
-
     create_bigonial_width_image(front_img_url, position_lists, DIR, 8)
-        
-
     create_chin_to_philtrum_ratio_image(front_img_url, position_lists, DIR, 9)
-        
-
     create_Neck_width__image(front_img_url, position_lists, DIR, 10)
-        
-
     create_mouth_width_to_nose_width_ratio_image(front_img_url, position_lists, DIR, 11)
-        
-
     create_midface_ratio_image(front_img_url, position_lists, DIR, 12)
-        
-
     create_eyebrow_position_ratio_image(front_img_url, position_lists, DIR, 13)
-        
-
     create_eye_spacing_ratio_image(front_img_url, position_lists, DIR, 14)
-        
-
     create_eye_aspect_ratio_image(front_img_url, position_lists, DIR, 15)
-        
-
     create_lower_lip_to_upper_lip_ratio_image(front_img_url, position_lists, DIR, 16)
-        
-
     create_deviation_of_iaa_image(front_img_url, position_lists, DIR, 17)
-        
-
     create_eyebrow_tilt_image(front_img_url, position_lists, DIR, 18)
-        
-
     create_bitemporal_width_image(front_img_url, position_lists, DIR, 19)
-        
-
     create_lower_third_proportion_image(front_img_url, position_lists, DIR, 20)
-        
-
     create_ipsilateral_alar_angle_image(front_img_url, position_lists, DIR, 21)
-        
-
     create_medial_canthal_angle_image(front_img_url, position_lists, DIR, 22)
-        
 
     ###Side Functions
     create_gonial_angle_image(side_img_url, position_lists, DIR, 23)
-        
-
     create_nasofrontal_angle_image(side_img_url, position_lists, DIR, 24)
-        
-
     create_mandibular_plane_angle_image(side_img_url, position_lists, DIR, 25)
-        
-
     create_ramus_to_mandible_ratio_image(side_img_url, position_lists, DIR, 26)
-        
-
-    create_facial_convexity_image(side_img_url, position_lists, DIR, 27)
-        
-
+    create_facial_convexity_glabella_image(side_img_url, position_lists, DIR, 27)
     create_submental_cervical_angle_image(side_img_url, position_lists, DIR, 28)
-        
-
     create_nasofacial_angle_image(side_img_url, position_lists, DIR, 29)
-        
-
     create_nasolabial_angle_image(side_img_url, position_lists, DIR, 30)
-        
-
     create_orbital_vector_image(side_img_url, position_lists, DIR, 31)
-        
-
     create_total_facial_convexity_image(side_img_url, position_lists, DIR, 32)
-        
-
     create_mentolabial_angle_image(side_img_url, position_lists, DIR, 33)
-        
-
-    create_facial_convexity_image(side_img_url, position_lists, DIR, 34)
-        
-
+    create_facial_convexity_nasion_image(side_img_url, position_lists, DIR, 34)
     create_nasal_projection_image(side_img_url, position_lists, DIR, 35)
-        
-
     create_nasal_w_to_h_ratio_image(side_img_url, position_lists, DIR, 36)
-        
-
     create_ricketts_e_line_image(side_img_url, position_lists, DIR, 37)
-        
-
     create_holdaway_h_line_image(side_img_url, position_lists, DIR, 38)
-        
-
     create_steiner_s_line_image(side_img_url, position_lists, DIR, 39)
-        
-
     create_burstone_line_image(side_img_url, position_lists, DIR, 40)
-        
-
     create_nasomental_angle_image(side_img_url, position_lists, DIR, 41)
-        
-
     create_gonion_to_mouth_relationship_image(side_img_url, position_lists, DIR, 42)
-        
-
     create_recession_relative_to_frankfort_plane_image(side_img_url, position_lists, DIR, 43)
-        
-
     create_browridge_inclination_angle_image(side_img_url, position_lists, DIR, 44)
-        
-
     create_nasal_tip_angle_image(side_img_url, position_lists, DIR, 45)
 
+create_nasal_projection_image("./side.jpg", position_lists, "./REPORTS", 1)

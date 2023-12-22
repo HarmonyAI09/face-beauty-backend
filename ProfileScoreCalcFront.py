@@ -349,7 +349,7 @@ def funcEyebrowPositionRatio(p:frontProfileSchema):
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyeSpacingRatio(p:frontProfileSchema):
     measureName = "Eye spacing ratio"
-    defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0.3,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
+    defaultRacingVal = {"Caucasian":0.02, "African":0.02, "East Asian":0.32,"South Asian":0.02, "Hispanic": 0.02, "Middle eastern": 0.02,"Other":0.02}
     lvlCnt = 7
     minArray = [[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4],[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4]]
     maxArray = [[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2],[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2]]
@@ -544,6 +544,7 @@ def funcMedialCanthalAngle(p:frontProfileSchema):
 
 def mainProcess(frontProfile:frontProfileSchema):
     mainProcess = profileResponseSchema()
+    mainProcess.clear()
     mainProcess.update(funcEyeSeparationRatio(frontProfile))
     mainProcess.update(funcFacialThirds(frontProfile))
     mainProcess.update(funcLateralCanthalTilt(frontProfile))
