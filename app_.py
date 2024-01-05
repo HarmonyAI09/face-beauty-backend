@@ -23,7 +23,7 @@ from datetime import datetime, timedelta
 
 import face_landmarks
 import side_landmarks
-import createReportImages
+import CreateReportImages
 from fastapi import Form
 
 import json
@@ -1164,7 +1164,7 @@ async def GenerateMeasurementImages(
     with open(sideImage_path, "wb") as f:
         f.write(side.file.read())
 
-    await createReportImages.createReportImages(frontImage_path, sideImage_path, json.JSONDecoder().decode(points))
+    await CreateReportImages.createReportImages(frontImage_path, sideImage_path, json.JSONDecoder().decode(points))
 
     print(currentIndex)
     image_directory =  Path(f"REPORTS/{currentIndex}_0")

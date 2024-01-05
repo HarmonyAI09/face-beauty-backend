@@ -33,6 +33,7 @@ def storeImage(image:UploadFile):
     imageFileName = imageID + ".jpg"
     imageStorePath = os.path.join(UPLOAD_DIR, imageFileName)
     imageSrc = Image.open(image.file)
+    imageSrc = imageSrc.convert('RGB')
     if imageSrc.width > imageSrc.height:
         width = DEFAULT_LENGTH
         height = int(imageSrc.height*DEFAULT_LENGTH/imageSrc.width)
@@ -40,7 +41,7 @@ def storeImage(image:UploadFile):
         height = DEFAULT_LENGTH
         width = int(imageSrc.width*DEFAULT_LENGTH/imageSrc.height)
     imageResize = imageSrc.resize((width, height))
-    imageResize.save(imageStorePath)
+    imageResize.save(imageStorePath, format="JPEG")
     return imageStorePath
 
 def getLandmarksUsing68(imgPath, IndexList, Landmarks):

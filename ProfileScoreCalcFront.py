@@ -243,9 +243,9 @@ def funcChin2PhiltrumRatio(p:frontProfileSchema):
     maxArray = [[2.55, 2.73, 2.85, 3.2, 3.55, 3.85, 5.0],[2.5, 2.65, 2.8, 3, 3.15, 3.8, 5.0]]
     scoreArray = [12.5, 6.25, 3.125, 1.5625, -6.25, -12.5, -25]
     notes = [
-        "Your chin is harmoniously proportioned relative to your philtrum. This indicates that neither your chin or philtrum are too long or short.",
-        "While not perfectly ideal, your chin is harmoniously proportioned relative to your philtrum. This indicates that neither your chin or philtrum are not excessively long or short.",
-        "While not perfectly ideal, your chin is normally proportioned relative to your philtrum. This indicates that neither your chin or philtrum are not excessively long or short.",
+        "Your chin is harmoniously proportioned relative to your philtrum. This indicates that neither your chin or philtrum are excessively long or short.",
+        "While not perfectly ideal, your chin is normally proportioned relative to your philtrum. This indicates that neither your chin or philtrum are excessively long or short.",
+        "While not perfectly ideal, your chin is normally proportioned relative to your philtrum. This indicates that neither your chin or philtrum are excessively long or short.",
         "Your chin is somewhat abnormally proportioned relative to your philtrum. This can indicate that your chin is too short (low values) or tall (high values) relative to your philtrum.",
         "Your chin is abnormally proportioned relative to your philtrum. This can indicate that your chin is too short (low values) or tall (high values) relative to your philtrum.",
         "Your chin is abnormally proportioned relative to your philtrum. This can indicate that your chin is too short (low values) or tall (high values) relative to your philtrum.",
@@ -349,13 +349,13 @@ def funcEyebrowPositionRatio(p:frontProfileSchema):
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyeSpacingRatio(p:frontProfileSchema):
     measureName = "Eye spacing ratio"
-    defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0.3,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
+    defaultRacingVal = {"Caucasian":0.03, "African":0.03, "East Asian":0.06,"South Asian":0.03, "Hispanic": 0.03, "Middle eastern": 0.03,"Other":0.03}
     lvlCnt = 7
     minArray = [[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4],[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4]]
     maxArray = [[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2],[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2]]
     scoreArray = [10, 5, 2.5, 0, -5, -10, -20]
     notes = [
-        "Your eyes have a harmonious spacing relative to one another.",
+        "Your eyes have a harmonious spacing relative to one another.", 
         "Your eyes have a generally harmonious spacing relative to one another.",
         "Although not ideal, your eyes have a normal spacing relative to one another. They may appear slightly close together (low values) or far apart (high values), but it is nothing extreme.",
         "Although not ideal, your eyes have a normal spacing relative to one another. They may appear somewhat close together (low values) or far apart (high values), but it is nothing extreme.",
@@ -544,6 +544,7 @@ def funcMedialCanthalAngle(p:frontProfileSchema):
 
 def mainProcess(frontProfile:frontProfileSchema):
     mainProcess = profileResponseSchema()
+    mainProcess.clear()
     mainProcess.update(funcEyeSeparationRatio(frontProfile))
     mainProcess.update(funcFacialThirds(frontProfile))
     mainProcess.update(funcLateralCanthalTilt(frontProfile))

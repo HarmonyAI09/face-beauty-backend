@@ -1,3 +1,5 @@
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import uvicorn
 from fastapi import FastAPI, UploadFile, Form
 from fastapi.responses import StreamingResponse

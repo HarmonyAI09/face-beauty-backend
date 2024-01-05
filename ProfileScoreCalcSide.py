@@ -271,7 +271,7 @@ def funcFacialConvexityNasion(p:sideProfileSchema):
     defaultRacingVal = {"Caucasian":0, "African":2, "East Asian":1,"South Asian":-2, "Hispanic":3, "Middle eastern":-3,"Other":0}
     lvlCnt = 6
     minArray = [[163, 160, 158, 155, 152, 120], [161, 158, 156, 153, 152, 120]]
-    maxArray = [[179, 173, 175, 178, 181, 195], [179, 173, 175, 178, 181, 195]]
+    maxArray = [[170, 173, 175, 178, 181, 195], [170, 173, 175, 178, 181, 195]]
     scoreArray = [5, 2.5, 1.25, 0.625, -5, -15]
     notes = [
         "You have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with no severe overjet or underbite.",
@@ -303,6 +303,7 @@ def funcNasalProjection(p:sideProfileSchema):
     ]
     advice = '''Rhinoplasty to reduce nasal projection is the primary way to address an overly projected nose. Increasing nasal projection is not as common, but some form of Rhinoplasty would also apply.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.nasalProjection)
+    print(p.nasalProjection)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasalProjection, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
@@ -480,6 +481,7 @@ def funcNasalTipAngle(p:sideProfileSchema):
 
 def mainProcess(sideProfile:sideProfileSchema):
     mainProcess = profileResponseSchema()
+    mainProcess.clear()
     mainProcess.update(funcGonialAngle(sideProfile))
     mainProcess.update(funcNasofrontalAngle(sideProfile))
     mainProcess.update(funcMandibularPlaneAngle(sideProfile))
