@@ -1,8 +1,8 @@
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import uvicorn
-from fastapi import FastAPI, UploadFile, Form
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, HTTPException, UploadFile, Form
+from fastapi.responses import FileResponse, StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
 from datetime import datetime
@@ -90,8 +90,19 @@ async def generateImageOverview(
         "Content-Disposition": "attachment; filename=images.zip",
         "Content-Type": "application/zip",
     }
-
+    
+    return currentIndex
     return StreamingResponse(io.BytesIO(zip_buffer.read()), headers=headers)
+
+@app.get('/image')
+async def get_image_overview(hash: str, index: int):
+    try:
+        image_path = Path(f"REPORTS/{hash}") / f"{index}.jpg"
+        if not image_path.is_file():
+            raise HTTPException(status_code=404, detail="Image not found")
+        return FileResponse(image_path, media_type="image/jpeg")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
