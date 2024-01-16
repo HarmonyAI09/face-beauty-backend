@@ -47,15 +47,14 @@ def funcNasofrontalAngle(p:sideProfileSchema):
     notes = [
         "The angle formed between your brow ridge and nose is pleasant. Your brow region is neither too soft or harsh.",
         "Although not ideal, the angle formed between your brow ridge and nose is generally pleasant. Your brow region is neither too soft or harsh.",
-        "Although not ideal, the angle formed between your brow ridge and nose is within a normal range. Your brow region is may begin to appear too protrusive (low values) or soft (high values).",
-        "Although not ideal, the angle formed between your brow ridge and nose is within a reasonably normal range. Your brow region is may appear too protrusive (low values) or soft (high values).",
-        "The angle formed between your brow ridge and nose is outside of a normal range. Your brow region is may appear too protrusive (low values) or soft (high values).",
-        "The angle formed between your brow ridge and nose is outside at the extremes, indicating a lack of facial harmony. Your brow region is may appear too protrusive (low values) or soft (high values).",
+        "Although not ideal, the angle formed between your brow ridge and nose is within a normal range. Your brow region may begin to appear too protrusive (low values) or soft (high values).",
+        "Although not ideal, the angle formed between your brow ridge and nose is within a reasonably normal range. Your brow region may appear too protrusive (low values) or soft (high values).",
+        "The angle formed between your brow ridge and nose is outside of a normal range. Your brow region may appear too protrusive (low values) or soft (high values).",
+        "The angle formed between your brow ridge and nose is outside at the extremes, indicating a lack of facial harmony. Your brow region may appear too protrusive (low values) or soft (high values).",
     ]
-    advice = '''While difficult to change the morphology of the brow region, there are a few ways to improve your nasofrontal angle. 
-    This is a sensitive area to change and it is not as common as other procedures.
-    1) Rhinoplasty can change the shape of the area around your nasion and dorsum, which can alter the angle.
-    2) custom forehead implants around the brow region can add projection and lower the angle if desired.'''
+    advice = '''While it is difficult to change the morphology of the brow region, there are a few ways to improve your nasofrontal angle. This is a sensitive area to change and it is not as common as other procedures.
+1) Rhinoplasty can change the shape of the area around your nasion and dorsum, which can alter the angle.
+2) custom forehead implants around the brow region can add projection and lower the angle if desired.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.nasofrontalAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasofrontalAngle, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
