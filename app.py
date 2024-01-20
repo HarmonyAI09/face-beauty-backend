@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, Form
 from fastapi.responses import FileResponse, StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
+from ReportProcess import ReportStoreSchema
 from datetime import datetime
 from pathlib import Path
 import hashlib
@@ -74,35 +75,25 @@ async def generateImageOverview(
     sideImgPth = f"UPLOADS/{currentIndex}_1.jpg"
     with open(sideImgPth, "wb") as f:
         f.write(side.file.read())
-    await CreateReportImages.createReportImages(frontImgPth, sideImgPth, json.JSONDecoder().decode(points))
-
-    zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
-        for i in range(1, 46):
-            image_path = Path(f"REPORTS/{currentIndex}") / f"{i}.jpg"
-            zip_file.write(image_path, arcname=image_path.name)
-            print(image_path)
-
-    # Rewind the buffer to the beginning
-    zip_buffer.seek(0)
-
-    headers = {
-        "Content-Disposition": "attachment; filename=images.zip",
-        "Content-Type": "application/zip",
-    }
+    await CreateReportImages.createReportImages(frontImgPth, sideImgPth, json.JSONDecoder().decode(points))    
+    return {"id" : currentIndex}
     
-    return currentIndex
-    return StreamingResponse(io.BytesIO(zip_buffer.read()), headers=headers)
+@app.get("/get_image/{id}/{image_index}")
+async def get_image(id: str, image_index: int):
+    file_path = f"REPORTS/{id}/{image_index}.jpg"
+    return FileResponse(file_path, media_type="image/jpeg")
 
-@app.get('/image')
-async def get_image_overview(hash: str, index: int):
-    try:
-        image_path = Path(f"REPORTS/{hash}") / f"{index}.jpg"
-        if not image_path.is_file():
-            raise HTTPException(status_code=404, detail="Image not found")
-        return FileResponse(image_path, media_type="image/jpeg")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+@app.post('/save')
+async def saveReport(body:ReportStoreSchema):
+    return body.store()
+
+@app.get("/reports/{mail}")
+async def getReportsByEmail(mail: str):
+    return ReportStoreSchema.getReports(mail)
+
+@app.get("/details/{id}")
+async def getDetails(id: str):
+    return ReportStoreSchema.getDetails(id)
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)

@@ -1,7 +1,7 @@
 from typing import Optional, List, Any
 from pydantic import BaseModel, Field
 import math
-from PIL import ImageDraw, ImageFont
+from PIL import ImageFont
 
 
 class frontProfileSchema(BaseModel):

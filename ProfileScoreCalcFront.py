@@ -8,7 +8,7 @@ def getMeasurementLevel(p:frontProfileSchema, racingValueDict:dict, minArray, ma
     return 0
 
 def funcEyeSeparationRatio(p:frontProfileSchema):
-    measureName = "Eye separation ratio"
+    measureName = "Eye separation ratio (%)"
     defaultRacingVal = {"Caucasian":0, "African":1, "East Asian":-0.7,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[44.3, 43.6, 43.1, 42.6, 42, 41, 35],[45, 44.3, 43.8, 43.3, 42.7, 42, 35]]
@@ -412,7 +412,7 @@ def funcLowerUpperLipRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcDeviationIAA(p:frontProfileSchema):
-    measureName = "Deviation of IAA(Ipsilateral alar angle) & JFA(Jaw frontal angle)"
+    measureName = "Deviation of IAA(Ipsilateral alar angle) & JFA(Jaw frontal angle) (°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[0, 2.5, 5, 10, 15, 20], [0, 2.5, 5, 10, 15, 20]]
@@ -431,7 +431,7 @@ def funcDeviationIAA(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A")
 def funcEyebrowTilt(p:frontProfileSchema):
-    measureName = "Eyebrow tilt"
+    measureName = "Eyebrow tilt (°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[5, 3, 0, -2, -4, -15], [11, 9, 6, 4, 2, -15]]
@@ -452,7 +452,7 @@ def funcEyebrowTilt(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcBitemporalWidth(p:frontProfileSchema):
-    measureName = "Bitemporal width"
+    measureName = "Bitemporal width (%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":-2, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 74, 71, 50], [79, 76, 73, 70, 67, 65, 50]]
@@ -477,7 +477,7 @@ def funcBitemporalWidth(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLowerThirdProporation(p:frontProfileSchema):
-    measureName = "Lower third proportion"
+    measureName = "Lower third proportion (%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[30.6, 29.6, 28.4, 27.2, 26.6, 20],[31.2, 30.2, 29.2, 28.2, 27.2, 20]]
@@ -500,7 +500,7 @@ def funcLowerThirdProporation(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLpsilateralAlarAngle(p:frontProfileSchema):
-    measureName = "Ipsilateral alar angle"
+    measureName = "Ipsilateral alar angle (°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 75, 73, 50], [84, 82, 79, 77, 75, 73, 50]]
@@ -521,7 +521,7 @@ def funcLpsilateralAlarAngle(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMedialCanthalAngle(p:frontProfileSchema):
-    measureName = "Medial canthal angle"
+    measureName = "Medial canthal angle (°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":8,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[20, 17, 15, 13, 11, 9, 5], [22, 20, 17, 15, 13, 11, 5]]

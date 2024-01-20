@@ -7,7 +7,7 @@ router = APIRouter()
 mongo_uri = MONGO_URL
 client = MongoClient(mongo_uri)
 db = client[DB_NAME]
-users_collection = db[DB_COLLECTION]
+users_collection = db[USER_COLLECTION]
 
 class UserSignIn(BaseModel):
     email: str

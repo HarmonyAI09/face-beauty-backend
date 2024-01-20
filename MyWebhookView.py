@@ -9,7 +9,7 @@ load_dotenv()
 
 client = MongoClient(os.getenv("MONGO_URL"))
 db = client[os.getenv("DB_NAME")]
-users_collection = db[os.getenv("DB_COLLECTION")]
+users_collection = db[os.getenv("USER_COLLECTION")]
 
 stripe.api_key = os.getenv("STRIPE_KEY")
 endpoint_secret = os.getenv("WEBHOOK_SK")

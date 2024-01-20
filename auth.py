@@ -12,7 +12,7 @@ router = APIRouter()
 mongoURL = os.getenv("MONGO_URL")
 client = MongoClient(mongoURL)
 db = client[os.getenv("DB")]
-userCollection = db[os.getenv("DB_COLLECTION")]
+userCollection = db[os.getenv("USER_COLLECTION")]
 
 @router.post("/signin")
 def signIn(user : UserSchema):
