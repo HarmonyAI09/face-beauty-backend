@@ -1,7 +1,7 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 import numpy as np
-import cv2
 import os
+import ImageOperation
 
 position_lists = [
     [
@@ -212,6 +212,49 @@ def draw_infinite_line(draw, point1, point2, line_color=(57, 208, 192), line_wid
         draw.line([(x_min, int(slope * x_min + y_intercept)), (x_max, int(slope * x_max + y_intercept))], fill=line_color, width=line_width)
     draw.ellipse((point1[0] - dot_size * 2, point1[1] - dot_size * 2, point1[0] + dot_size * 2, point1[1] + dot_size * 2), (255, 0, 0))
     draw.ellipse((point2[0] - dot_size * 2, point2[1] - dot_size * 2, point2[0] + dot_size * 2, point2[1] + dot_size * 2), (255, 0, 0))
+
+def draw_parallel_line(draw, point1, point2, point3, line_color=(57, 208, 192), line_width=1, dot_size=2):
+    x1, y1 = point1
+    x2, y2 = point2
+    x3, y3 = point3
+    slope = (y2 - y1) / (x2 - x1) if x2 - x1 != 0 else float('inf')
+    y_intercept = y1 - slope * x1 if x2 - x1 != 0 else None
+    parallel_y_intercept = y3 - slope * x3
+    width, height = draw.im.size
+    x_min, x_max = 0, width
+    if slope == float('inf'):
+        draw.line([(x1, 0), (x1, height)], fill=line_color, width=line_width)
+    else:
+        draw.line([(x_min, int(slope * x_min + y_intercept)), (x_max, int(slope * x_max + y_intercept))], fill=line_color, width=line_width)
+        draw.line([(x_min, int(slope * x_min + parallel_y_intercept)), (x_max, int(slope * x_max + parallel_y_intercept))], fill=line_color, width=line_width)
+    
+    draw.ellipse((point1[0] - dot_size * 2, point1[1] - dot_size * 2, point1[0] + dot_size * 2, point1[1] + dot_size * 2), (255, 0, 0))
+    draw.ellipse((point2[0] - dot_size * 2, point2[1] - dot_size * 2, point2[0] + dot_size * 2, point2[1] + dot_size * 2), (255, 0, 0))
+    draw.ellipse((point3[0] - dot_size * 2, point3[1] - dot_size * 2, point3[0] + dot_size * 2, point3[1] + dot_size * 2), (255, 0, 0))
+def draw_vertical_line_(draw, point1, point2, point3, line_color=(57, 208, 192), line_width=1, dot_size=2):
+    x1, y1 = point1
+    x2, y2 = point2
+    x3, y3 = point3
+    slope = (y2 - y1) / (x2 - x1) if x2 - x1 != 0 else float('inf')
+    y_intercept = y1 - slope * x1 if x2 - x1 != 0 else None
+    width, height = draw.im.size
+    x_min, x_max = 0, width
+    if slope == 0:  # If the original line is horizontal
+        draw.line([(x3, 0), (x3, height)], fill=line_color, width=line_width)
+    elif slope == float('inf'):  # If the original line is vertical
+        draw.line([(0, y3), (width, y3)], fill=line_color, width=line_width)
+    else:
+        perpendicular_slope = -1 / slope
+        perpendicular_y_intercept = y3 - perpendicular_slope * x3
+        draw.line(
+            [(x_min, int(perpendicular_slope * x_min + perpendicular_y_intercept)),
+             (x_max, int(perpendicular_slope * x_max + perpendicular_y_intercept))],
+            fill=line_color, width=line_width
+        )
+    draw_infinite_line(draw, (x1, y1), (x2, y2))
+    draw.ellipse((point1[0] - dot_size * 2, point1[1] - dot_size * 2, point1[0] + dot_size * 2, point1[1] + dot_size * 2),(255, 0, 0))
+    draw.ellipse((point2[0] - dot_size * 2, point2[1] - dot_size * 2, point2[0] + dot_size * 2, point2[1] + dot_size * 2),(255, 0, 0))
+    draw.ellipse((point3[0] - dot_size * 2, point3[1] - dot_size * 2, point3[0] + dot_size * 2, point3[1] + dot_size * 2),(255, 0, 0))
 
 def draw_horizontal_line(draw, point, line_color=(57, 208, 192), line_width=1, ellipse_color=(255, 0, 0), ellipse_radius=4):
     y = point[1]
@@ -853,10 +896,9 @@ def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
     draw_horizontal_line(draw, (x2, y2))
+    draw_horizontal_line(draw, (x4, y4))
     draw_dotted_line(draw, (x1, y1), (x1, y2))
-    draw_solid_line(draw, (x3, y3), (x4, y4))
-
-    output_filename = os.path.join(DIR, f"{create_chin_to_philtrum_ratio_image.__name__}.jpg")
+    draw_solid_line(draw, (x3, y3), (x3, y4))
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -1339,10 +1381,10 @@ def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
     canvas.paste(img, (x_offset, y_offset))
     draw = ImageDraw.Draw(canvas)  
 
-    x1 = mark_points[11][0]["x"]
-    y1 = mark_points[11][0]["y"]
-    x2 = mark_points[11][1]["x"]
-    y2 = mark_points[11][1]["y"]
+    x1 = mark_points[9][0]["x"]
+    y1 = mark_points[9][0]["y"]
+    x2 = mark_points[9][1]["x"]
+    y2 = mark_points[9][1]["y"]
     x3 = mark_points[19][0]["x"]
     y3 = mark_points[19][0]["y"]
     x4 = mark_points[26][0]["x"]
@@ -1844,11 +1886,15 @@ def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
     y2 = mark_points[49][0]["y"]
     x3 = mark_points[52][0]["x"]
     y3 = mark_points[52][0]["y"]
+    x4 = mark_points[37][0]["x"]
+    y4 = mark_points[37][0]["y"]
+    x5 = mark_points[38][0]["x"]
+    y5 = mark_points[38][0]["y"]
     
-    x_min = min(x1,x2,x3)
-    x_max = max(x1,x2,x3)
-    y_min = min(y1,y2,y3)
-    y_max = max(y1,y2,y3)
+    x_min = min(x1,x2,x3,x4,x5)
+    x_max = max(x1,x2,x3,x4,x5)
+    y_min = min(y1,y2,y3,y4,y5)
+    y_max = max(y1,y2,y3,y4,y5)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -1866,9 +1912,9 @@ def create_mandibular_plane_angle_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw_horizontal_line(draw, (x2, y2))
+    draw_parallel_line(draw, (x4, y4), (x5, y5), (x2, y2))
     draw_dotted_line(draw, (x2, y2), (x3, y3))
 
     output_filename = os.path.join(DIR, f"{create_mandibular_plane_angle_image.__name__}.jpg")
@@ -1901,14 +1947,22 @@ def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
     y1 = mark_points[38][0]["y"]
     x2 = mark_points[49][0]["x"]
     y2 = mark_points[49][0]["y"]
-    x3 = mark_points[54][0]["x"]
-    y3 = mark_points[54][0]["y"]
+    x3 = mark_points[50][0]["x"]
+    y3 = mark_points[50][0]["y"]
+    x4 = mark_points[37][0]["x"]
+    y4 = mark_points[37][0]["y"]
+    x5 = mark_points[38][0]["x"]
+    y5 = mark_points[38][0]["y"]
+    x6 = mark_points[52][0]["x"]
+    y6 = mark_points[52][0]["y"]
+    x7,y7 = ImageOperation.find_intersection_point_vertical((x3,y3),(x6,y6),(x2,y2))
+    print(x7,y7)
     
 
-    x_min = min(x1,x2,x3)
-    x_max = max(x1,x2,x3)
-    y_min = min(y1,y2,y3)
-    y_max = max(y1,y2,y3)
+    x_min = min(x1,x2,x3,x4,x5,x6,x7)
+    x_max = max(x1,x2,x3,x4,x5,x6,x7)
+    y_min = min(y1,y2,y3,y4,y5,y6,y7)
+    y_max = max(y1,y2,y3,y4,y5,y6,y7)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -1926,15 +1980,13 @@ def create_ramus_to_mandible_ratio_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5),(x6,y6),(x7,y7)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5),(x6,y6),(x7,y7)])
     draw = ImageDraw.Draw(cropped_img)  
+    draw_solid_line(draw, (x2, y2), (x7, y7))
+    draw_vertical_line_(draw, (x4, y4), (x5, y5), (x3, y3))
     draw_dotted_line(draw, (x1, y1), (x2, y2))
-    draw_solid_line(draw, (x2, y2), (x3, y3))
-    draw.line((x3,0,x3,300), fill=(57, 208, 192), width=1)
-    draw.ellipse((x1-3, y1-3, x1+3, y1+3), fill=(255, 0, 0))
-    draw.ellipse((x2-3, y2-3, x2+3, y2+3), fill=(255, 0, 0))
-    draw.ellipse((x3-3, y3-3, x3+3, y3+3), fill=(255, 0, 0))
-    output_filename = os.path.join(DIR, f"{create_ramus_to_mandible_ratio_image.__name__}.jpg")
+    draw_point(draw, (x6, y6))
+    
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -2205,7 +2257,7 @@ def create_orbital_vector_image(img_url, mark_points, DIR, index):
     y4 = mark_points[37][0]["y"]
     x5 = mark_points[57][0]["x"]
     y5 = mark_points[57][0]["y"]
-    draw_vertical_line(draw, (x1, y1))
+    draw_vertical_line_(draw, (x4, y4), (x2, y2), (x1, y1))
     draw_solid_line_p_vertical_line(draw, (x5, y5), (x1, y1))
 
     
@@ -2439,11 +2491,15 @@ def create_nasal_projection_image(img_url, mark_points, DIR, index):
     y4 = mark_points[42][0]["y"]
     x5 = x4
     y5 = (x3*y2-x4*y2+x4*y3-x2*y3)/(x3-x2)
+    x6 = mark_points[37][0]["x"]
+    y6 = mark_points[37][0]["y"]
+    x7 = mark_points[38][0]["x"]
+    y7 = mark_points[38][0]["y"]
 
-    x_min = min(x1,x2,x3,x4,x5)
-    x_max = max(x1,x2,x3,x4,x5)
-    y_min = min(y1,y2,y3,y4,y5)
-    y_max = max(y1,y2,y3,y4,y5)
+    x_min = min(x1,x2,x3,x4,x5,x6,x7)
+    x_max = max(x1,x2,x3,x4,x5,x6,x7)
+    y_min = min(y1,y2,y3,y4,y5,y6,y7)
+    y_max = max(y1,y2,y3,y4,y5,y6,y7)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -2461,13 +2517,12 @@ def create_nasal_projection_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7)] = rescale((start_x, start_y), width,  [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw_vertical_line(draw, (x4, y4))
+    draw_vertical_line_(draw, (x6, y6), (x7, y7), (x4, y4))
     draw_dotted_line(draw, (x1, y1), (x4, y1))
     draw_solid_line(draw, (x1, y1), (x5, y5))
-    draw_solid_line(draw, (x1, y1), (x2, y2))
-    output_filename = os.path.join(DIR, f"{create_nasal_projection_image.__name__}.jpg")
+    draw_point(draw, (x2, y2))
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
     return True
@@ -2503,12 +2558,16 @@ def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
     y4 = mark_points[36][0]["y"]
     x5 = mark_points[56][0]["x"]
     y5 = mark_points[56][0]["y"]
+    x6 = mark_points[37][0]["x"]
+    y6 = mark_points[37][0]["y"]
+    x7 = mark_points[38][0]["x"]
+    y7 = mark_points[38][0]["y"]
     
 
-    x_min = min(x1,x2,x3,x4,x5)
-    x_max = max(x1,x2,x3,x4,x5)
-    y_min = min(y1,y2,y3,y4,y5)
-    y_max = max(y1,y2,y3,y4,y5)
+    x_min = min(x1,x2,x3,x4,x5,x6,x7)
+    x_max = max(x1,x2,x3,x4,x5,x6,x7)
+    y_min = min(y1,y2,y3,y4,y5,y6,y7)
+    y_max = max(y1,y2,y3,y4,y5,y6,y7)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -2526,13 +2585,19 @@ def create_nasal_w_to_h_ratio_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
+    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7)])
     draw = ImageDraw.Draw(cropped_img) 
-    draw_vertical_line(draw, (x3, y3))
-    draw_vertical_line(draw, (x2, y2))
-    draw_horizontal_line(draw, (x1, y1))
-    draw_dotted_line_p_vertical_line(draw, (x2, y2), (x3, y3))
-    draw_solid_line(draw, (x2, y2), (x2, y1))
+    draw_infinite_line(draw, (x6, y6), (x7, y7))
+    draw_parallel_line(draw, (x6, y6), (x7, y7), (x1, y1))
+    draw_vertical_line_(draw, (x6, y6), (x7, y7), (x3, y3))
+    draw_vertical_line_(draw, (x6, y6), (x7, y7), (x2, y2))
+    a, b = ImageOperation.find_line_coefficients((x6, y6), (x7, y7), (x1, y1))
+    ImageOperation.draw_line_to_intersection(draw, x2, y2, a, b)
+    a, b = ImageOperation.find_perpendicular_line_coefficients((x6, y6), (x7, y7), (x3, y3))
+    if a != float('inf'):
+        ImageOperation.draw_line_to_intersection(draw, x2, y2, a, b)
+    else:
+        draw_dotted_line(draw, (x2, y2), (x3, y2))
     output_filename = os.path.join(DIR, f"{create_nasal_w_to_h_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2856,13 +2921,17 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     x1 = mark_points[46][0]["x"]
     y1 = mark_points[46][0]["y"]
     x2 = mark_points[49][0]["x"]
-    y2 = mark_points[49][0]["y"]
+    y2 = mark_points[49][0]["y"]    
+    x4 = mark_points[37][0]["x"]
+    y4 = mark_points[37][0]["y"]
+    x5 = mark_points[38][0]["x"]
+    y5 = mark_points[38][0]["y"]
     
 
-    x_min = min(x1,x2)
-    x_max = max(x1,x2)
-    y_min = min(y1,y2)
-    y_max = max(y1,y2)
+    x_min = min(x1,x2,x4,x5)
+    x_max = max(x1,x2,x4,x5)
+    y_min = min(y1,y2,y4,y5)
+    y_max = max(y1,y2,y4,y5)
     
     center_x = (x_min + x_max) / 2
     center_y = (y_min + y_max) / 2
@@ -2880,10 +2949,11 @@ def create_gonion_to_mouth_relationship_image(img_url, mark_points, DIR, index):
     width = half_side_length*2+20
     start_x = center_x - half_side_length - 10
     start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
+    [(x1, y1), (x2, y2), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw_horizontal_line(draw, (x1, y1))
-    draw_solid_line_p_horizontal_line(draw, (x2, y2), (x1, y1))
+    draw_parallel_line(draw, (x4, y4), (x5, y5), (x1, y1))
+    a, b = ImageOperation.find_line_coefficients((x4, y4), (x5, y5), (x1, y1))
+    ImageOperation.draw_line_to_intersection(draw, x2, y2, a, b)
     output_filename = os.path.join(DIR, f"{create_gonion_to_mouth_relationship_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2912,8 +2982,8 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
 
     x1 = mark_points[35][0]["x"]
     y1 = mark_points[35][0]["y"]
-    x2 = mark_points[54][0]["x"]
-    y2 = mark_points[54][0]["y"]
+    x2 = mark_points[50][0]["x"]
+    y2 = mark_points[50][0]["y"]
     x3 = mark_points[36][0]["x"]
     y3 = mark_points[36][0]["y"]
     x4 = mark_points[37][0]["x"]
@@ -2945,10 +3015,13 @@ def create_recession_relative_to_frankfort_plane_image(img_url, mark_points, DIR
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5)])
     draw = ImageDraw.Draw(cropped_img)
     draw_infinite_line(draw, (x5, y5), (x4, y4))
-    draw_vertical_line(draw, (x2, y2))
-    draw_solid_line_p_vertical_line(draw, (x1, y1), (x2, y2))
-    draw_point(draw, (x3, y3))
-    draw_point(draw, (x5, y5))
+    draw_vertical_line_(draw, (x4, y4), (x5, y5), (x2, y2))
+    a, b = ImageOperation.find_perpendicular_line_coefficients((x4, y4), (x5, y5), (x2, y2))
+    print(a, b)
+    if a == float('inf'):
+        draw_solid_line_p_vertical_line(draw, (x1, y1), (x2, y2))
+    else:
+        ImageOperation.draw_line_to_intersection(draw, x1, y1, a, b)
     output_filename = os.path.join(DIR, f"{create_recession_relative_to_frankfort_plane_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
     cropped_img.save(output_filename)
@@ -2979,6 +3052,10 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
     y1 = mark_points[32][0]["y"]
     x2 = mark_points[31][0]["x"]
     y2 = mark_points[31][0]["y"]
+    x4 = mark_points[37][0]["x"]
+    y4 = mark_points[37][0]["y"]
+    x5 = mark_points[38][0]["x"]
+    y5 = mark_points[38][0]["y"]
     
 
     x_min = min(x1,x2)
@@ -3004,8 +3081,7 @@ def create_browridge_inclination_angle_image(img_url, mark_points, DIR, index):
     start_y = center_y - half_side_length -10
     [(x1, y1), (x2, y2)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2)])
     draw = ImageDraw.Draw(cropped_img)  
-    draw_vertical_line(draw, (x1, y1))
-    draw_dotted_line(draw, (x1, 0), (x1, y1))
+    draw_vertical_line_(draw, (x4, y4), (x5, y5), (x1, y1))
     draw_dotted_line(draw, (x2, y2), (x1, y1))
 
     output_filename = os.path.join(DIR, f"{create_browridge_inclination_angle_image.__name__}.jpg")
@@ -3125,4 +3201,4 @@ async def createReportImages(front_img_url, side_img_url, position_lists):
     create_browridge_inclination_angle_image(side_img_url, position_lists, DIR, 44)
     create_nasal_tip_angle_image(side_img_url, position_lists, DIR, 45)
 
-create_nasal_projection_image("./side.jpg", position_lists, "./REPORTS", 1)
+create_ramus_to_mandible_ratio_image("./side.jpg", position_lists, "./REPORTS", 21)
