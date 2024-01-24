@@ -3124,5 +3124,3 @@ async def createReportImages(front_img_url, side_img_url, position_lists):
     create_recession_relative_to_frankfort_plane_image(side_img_url, position_lists, DIR, 43)
     create_browridge_inclination_angle_image(side_img_url, position_lists, DIR, 44)
     create_nasal_tip_angle_image(side_img_url, position_lists, DIR, 45)
-
-create_nasal_projection_image("./side.jpg", position_lists, "./REPORTS", 1)
