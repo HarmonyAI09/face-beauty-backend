@@ -72,10 +72,10 @@ class ReportStoreSchema(BaseModel):
     
     def getReports(mail: str):
         reports = reportCollection.find({"mail": mail})
-        report_list = []
+        reportList = []
         for report in reports:
-            report_list.extend(report.get('reports', []))
-        return report_list
+            reportList.extend(report.get('reports', []))
+        return reportList
     
     def getDetails(id: str):
         detail = keypointCollection.find_one({"reportID": id})

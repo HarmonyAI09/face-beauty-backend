@@ -20,6 +20,7 @@ import ImageOverviewCreate
 import CreateReportImages
 import Auth
 import Payment
+import Static
 
 app = FastAPI()
 load_dotenv()
@@ -35,6 +36,7 @@ app.add_middleware(
 
 app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router, prefix="/cash")
+app.include_router(Static.router, prefix="/static")
 
 @app.get('/')
 def basic():
@@ -143,9 +145,7 @@ async def getReportsByEmail(mail: str):
 
 @app.get("/details/{id}")
 async def getDetails(id: str):
-    result = ReportStoreSchema.getDetails(id)
-
-    return result
+    return ReportStoreSchema.getDetails(id)
 
 
 

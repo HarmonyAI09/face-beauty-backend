@@ -567,5 +567,4 @@ def mainProcess(frontProfile:frontProfileSchema):
     mainProcess.update(funcLowerThirdProporation(frontProfile))
     mainProcess.update(funcLpsilateralAlarAngle(frontProfile))
     mainProcess.update(funcMedialCanthalAngle(frontProfile))
-    # return {"message":"Checking Front Profile"}
     return mainProcess.result()
