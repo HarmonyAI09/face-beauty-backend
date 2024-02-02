@@ -6,11 +6,12 @@ from fastapi.responses import FileResponse, StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
 from ReportProcess import ReportStoreSchema
-from datetime import datetime
+from datetime import datetime, date
 from dotenv import load_dotenv
 from pathlib import Path
 import hashlib
 import json
+from pymongo import MongoClient
 
 import ProfileScoreCalcFront
 import ProfileScoreCalcSide
@@ -20,6 +21,14 @@ import ImageOverviewCreate
 import CreateReportImages
 import Auth
 import Payment
+
+
+mongoURL = os.getenv("MONGO_URL")
+client = MongoClient(mongoURL)
+db = client[os.getenv("DB")]
+userCollection = db[os.getenv("USER_COLLECTION")]
+reportCollection = db[os.getenv("REPORT_COLLECTION")]
+
 
 app = FastAPI()
 load_dotenv()
@@ -34,7 +43,7 @@ app.add_middleware(
 )
 
 app.include_router(Auth.router, prefix="/api")
-app.include_router(Payment.router, prefix="/cash")
+app.include_router(Payment.router)
 
 @app.get('/')
 def basic():
@@ -104,6 +113,23 @@ async def saveReport(frontImage:UploadFile = Form(...),
     race: str = Form(...),
     reportOwner: str = Form(...),
     keyPoints: list = Form(...)):
+
+    def userCanSave(email):
+        found_user = userCollection.find_one({"email": email})
+        if not found_user:
+            return False
+        if found_user["lvl"] == 0:
+            return False
+        if found_user["expire_day"].date() < datetime.now().date():
+            return False
+        
+        found_report = reportCollection.find_one({"mail": email})
+        if found_report and len(found_report["reports"]) >= 5:
+            return False
+        return True
+    
+    if userCanSave(mail) == False:
+        return {"success": False, "error": "Please upgrade your tier"}
 
     currentIndex = hashlib.md5(str(datetime.now()).encode()).hexdigest()
 
