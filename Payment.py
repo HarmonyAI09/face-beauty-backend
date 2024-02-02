@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException
 import stripe
 import os
-
 import Auth
 from schemas import PremiumSchema
 
@@ -11,7 +10,7 @@ stripe.api_key = os.getenv("STRIPE_KEY")
 
 router = APIRouter()
 
-@router.post('/create-checkout-session')
+@router.post('/cash/create-checkout-session')
 async def createCheckoutSession(request : Request):
     data = await request.json()
     plan = data.get("plan")
@@ -38,9 +37,11 @@ async def createCheckoutSession(request : Request):
 
 @router.post('/webhook')
 async def catchWebhook(request : Request):
+    print('inside webhook')
     payload = await request.body()
     sign = request.headers.get('stripe-signature')
     event = None
+
 
     try:
         event = stripe.Webhook.construct_event(payload, sign, os.getenv("WEBHOOK_SK"))
@@ -53,6 +54,8 @@ async def catchWebhook(request : Request):
         session = event['data']['object']
         plan = session['metadata']['plan']
         mail = session['metadata']['userEmail']
+
+        print(session['metadata'])
 
         if plan == os.getenv("PRODUCT_TYPE_PREMIUM"):
             if Auth.update(PremiumSchema(mail, 1)).modified_count:
