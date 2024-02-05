@@ -13,7 +13,7 @@ def getStaticMeasurementLevel(valueArray, lvlCnt, value):
     return 0
 
 def funcGonialAngle(p:sideProfileSchema):
-    measureName = "Gonial angle(°)"
+    measureName = "Gonial Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":4,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}    
     lvlCnt = 7
     minArray = [[112, 109.5, 106, 102, 97, 92, 80],[114, 111, 108, 104, 99, 94, 80]]
@@ -38,7 +38,7 @@ def funcGonialAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)  
 def funcNasofrontalAngle(p:sideProfileSchema):
-    measureName = "Nasofrontal angle (°)"
+    measureName = "Nasofrontal Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":-4, "East Asian":4,"South Asian":0, "Hispanic": 0, "Middle eastern": 4,"Other":0}    
     lvlCnt = 6
     minArray = [[106, 101, 97, 94, 88, 70], [122, 117, 113, 110, 107, 70]]
@@ -61,7 +61,7 @@ def funcNasofrontalAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMandibularPlaneAngle(p:sideProfileSchema):
-    measureName = "Mandibular plane angle (°)"
+    measureName = "Mandibular Plane Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":2,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[15, 14, 12.5, 10, 8, 0], [15, 14, 12.5, 10, 8, 0]]
@@ -87,7 +87,7 @@ def funcMandibularPlaneAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcRamusMandibleRatio(p:sideProfileSchema):  
-    measureName = "Ramus to Mandible ratio"
+    measureName = "Ramus-Mandible Ratio"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[0.59, 0.54, 0.49, 0.41, 0.33, 0.1],[0.52, 0.48, 0.42, 0.34, 0.26, 0.1]]
@@ -112,7 +112,7 @@ def funcRamusMandibleRatio(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcFacialConvexityGlabella(p:sideProfileSchema):
-    measureName = "Facial convexity (glabella) (°)"
+    measureName = "Facial Convexity(Glabella)(°)"
     defaultRacingVal = {"Caucasian":0, "African":2, "East Asian":1,"South Asian":-2, "Hispanic": 3, "Middle eastern": -3,"Other":0}
     lvlCnt = 6
     minArray = [[168, 161, 163, 160, 155, 140], [166, 163, 161, 159, 155, 140]]
@@ -138,7 +138,7 @@ def funcFacialConvexityGlabella(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcSubmentalCervicalAngle(p:sideProfileSchema):
-    measureName = "Submental cervical angle (°)"
+    measureName = "Submental Cervical Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 5
     minArray = [[91, 81, 81, 75, 50], [91, 81, 81, 75, 50]]
@@ -160,7 +160,7 @@ def funcSubmentalCervicalAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNasofacialAngle(p:sideProfileSchema):
-    measureName = "Nasofacial angle (°)"
+    measureName = "Nasofacial Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":2, "East Asian":-3,"South Asian":-3, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[30, 36, 28, 26.5, 25.5, 10], [30, 36, 28, 26.5, 25.5, 10]]
@@ -182,7 +182,7 @@ def funcNasofacialAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNasolabialAngle(p:sideProfileSchema):
-    measureName = "Nasolabial angle (°)"
+    measureName = "Nasolabial Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":-11, "East Asian":-4,"South Asian":6, "Hispanic": 4, "Middle eastern": -8,"Other":0}
     lvlCnt = 7
     minArray = [[94, 90, 85, 81, 70, 65, 30], [96, 92, 87, 83, 79, 74, 30]]
@@ -203,7 +203,7 @@ def funcNasolabialAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcOrbitalVector(p:sideProfileSchema):
-    measureName = "Orbital vector"
+    measureName = "Orbital Vector"
     lvlCnt = 5
     valueArray = ["positive", "slightly positive", "neutral", "slightly negative", "very negative"]
     scoreArray = [7.5, 3.75, 1.88, -3.75, -7.5]
@@ -220,7 +220,7 @@ def funcOrbitalVector(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.orbitalVector)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.orbitalVector, [valueArray[0]], notes[index], "N/A" if index == 0 else advice)
 def funcTotalFacialConvexity(p:sideProfileSchema):
-    measureName = "Total facial convexity"
+    measureName = "Total Facial Convexity"
     defaultRacingVal = {"Caucasian":0, "African":5, "East Asian":4,"South Asian":-1, "Hispanic": 2, "Middle eastern": -3,"Other":0}
     lvlCnt = 7
     minArray = [[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100],[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100]]
@@ -242,7 +242,7 @@ def funcTotalFacialConvexity(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMentolabialAngle(p:sideProfileSchema):   
-    measureName = "Mentolabial angle"
+    measureName = "Mentolabial Angle"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic":0, "Middle eastern":0,"Other":0}
     lvlCnt = 6
     minArray = [[108, 94, 80, 75, 65, 40], [93, 79, 70, 65, 62, 40]]
@@ -267,7 +267,7 @@ def funcMentolabialAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcFacialConvexityNasion(p:sideProfileSchema):
-    measureName = "Facial convexity (nasion)"
+    measureName = "Facial Convexity(Nasion)"
     defaultRacingVal = {"Caucasian":0, "African":2, "East Asian":1,"South Asian":-2, "Hispanic":3, "Middle eastern":-3,"Other":0}
     lvlCnt = 6
     minArray = [[163, 160, 158, 155, 152, 120], [161, 158, 156, 153, 152, 120]]
@@ -287,7 +287,7 @@ def funcFacialConvexityNasion(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNasalProjection(p:sideProfileSchema):
-    measureName = "Nasal projection"
+    measureName = "Nasal Projection"
     defaultRacingVal = {"Caucasian":0, "African":-0.1, "East Asian":-0.1,"South Asian":0, "Hispanic":-0.07, "Middle eastern":0,"Other":0}
     lvlCnt = 6
     minArray = [[0.55, 0.5, 0.45, 0.37, 0.3, 0.1],[0.52, 0.47, 0.42, 0.34, 0.3, 0.1]]
@@ -307,7 +307,7 @@ def funcNasalProjection(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNasalWHRatio(p:sideProfileSchema):
-    measureName = "Nasal W to H ratio"
+    measureName = "Nasal W-H Ratio"
     defaultRacingVal = {"Caucasian":0, "African":-0.05, "East Asian":-0.12,"South Asian":0, "Hispanic":-0.03, "Middle eastern":-0.03,"Other":0}
     lvlCnt = 6
     minArray = [[0.62, 0.55, 0.49, 0.45, 0.4, 0.1],[0.68, 0.61, 0.55, 0.51, 0.45, 0.1]]
@@ -329,7 +329,7 @@ def funcNasalWHRatio(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcRickettsELine(p:sideProfileSchema):
-    measureName = "Ricketts' E line"
+    measureName = "Ricketts'E Line"
     lvlCnt = 3
     valueArray = ["ideal", "near ideal", "unideal"]
     scoreArray = [5, 2.5, 0]
@@ -344,7 +344,7 @@ def funcRickettsELine(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.rickettsELine)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.rickettsELine, [valueArray[0]], notes[index], "N/A" if index == 0 else advice)
 def funcHoldwayHLine(p:sideProfileSchema):
-    measureName = "Holdaway H line"
+    measureName = "Holdaway H Line"
     lvlCnt = 3
     valueArray = ["ideal", "near ideal", "unideal"]
     scoreArray = [5, 2.5, 0]
@@ -356,7 +356,7 @@ def funcHoldwayHLine(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.holdawayHLine)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.holdawayHLine, [valueArray[0]], notes[index], "N/A")
 def funcSteinerSLine(p:sideProfileSchema):
-    measureName = "Steiner S line"
+    measureName = "Steiner S Line"
     lvlCnt = 3
     valueArray = ["ideal", "near ideal", "unideal"]
     scoreArray = [5, 2.5, 0]
@@ -368,7 +368,7 @@ def funcSteinerSLine(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.steinerSLine)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.steinerSLine, [valueArray[0]], notes[index], "N/A")
 def funcBurstoneLine(p:sideProfileSchema):
-    measureName = "Burstone line"
+    measureName = "Burstone Line"
     lvlCnt = 3
     valueArray = ["ideal", "near ideal", "unideal"]
     scoreArray = [5, 2.5, 0]
@@ -380,7 +380,7 @@ def funcBurstoneLine(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.burstoneLine)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.burstoneLine, [valueArray[0]], notes[index], "N/A")
 def funcNasomentalAngle(p:sideProfileSchema):
-    measureName = "Nasomental angle (°)"
+    measureName = "Nasomental Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":-3, "East Asian":-3,"South Asian":0, "Hispanic": 0, "Middle eastern":0,"Other":0}
     lvlCnt = 6
     minArray = [[125, 120, 118, 116, 114, 100], [125, 120, 118, 116, 114, 100]]
@@ -403,7 +403,7 @@ def funcNasomentalAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcGonionMouthRelationship(p:sideProfileSchema):
-    measureName = "Gonion to mouth relationship"
+    measureName = "Gonion-Mouth Relationship"
     lvlCnt = 4
     valueArray = ["below", "in line", "above", "notably above"]
     scoreArray = [5, 1, 0, -5]
@@ -416,7 +416,7 @@ def funcGonionMouthRelationship(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.gonion2MouthRelationship)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.gonion2MouthRelationship, [valueArray[0]], notes[index], "N/A")
 def funcRecessionRelativeFrankfortPlane(p:sideProfileSchema):
-    measureName = "Recession relative to frankfort plane"
+    measureName = "Recession Rrelative-Frankfort Plane"
     lvlCnt = 4
     valueArray = ["none", "slight", "moderate", "extreme"]
     scoreArray = [5, 1, 0, -10]
@@ -434,7 +434,7 @@ def funcRecessionRelativeFrankfortPlane(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.recessionRelative2FrankfortPlane)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.recessionRelative2FrankfortPlane, [valueArray[0]], notes[index], "N/A" if index == 0 else advice)
 def funcBrowridgeInclinationAngle(p:sideProfileSchema):
-    measureName = "Browridge inclination angle (°)"
+    measureName = "Browridge Inclination Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic":0, "Middle eastern":0,"Other":0}
     lvlCnt = 7
     minArray = [[13, 10, 8, 6, 4, 2, 0], [10, 7, 5, 3, 1, 1, 0]]
@@ -458,7 +458,7 @@ def funcBrowridgeInclinationAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNasalTipAngle(p:sideProfileSchema):
-    measureName = "Nasal tip angle (°)"
+    measureName = "Nasal Tip Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic":0, "Middle eastern":-10,"Other":0}
     lvlCnt = 6
     minArray = [[112, 108, 104, 100, 97, 70], [118, 115, 111, 108, 105, 70]]

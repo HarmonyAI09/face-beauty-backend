@@ -8,7 +8,7 @@ def getMeasurementLevel(p:frontProfileSchema, racingValueDict:dict, minArray, ma
     return 0
 
 def funcEyeSeparationRatio(p:frontProfileSchema):
-    measureName = "Eye separation ratio"
+    measureName = "Eye Separation Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":1, "East Asian":-0.7,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[44.3, 43.6, 43.1, 42.6, 42, 41, 35],[45, 44.3, 43.8, 43.3, 42.7, 42, 35]]
@@ -33,7 +33,7 @@ def funcEyeSeparationRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcFacialThirds(p:frontProfileSchema):
-    measureName = "Facial thirds (%)"
+    measureName = "Facial Thirds(%)"
     defaultRacingVal = {"Caucasian":0, "African":1, "East Asian":-0.7,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray_favor = [[29.5, 28, 26.5, 25, 23.5, 22.5, 18],[30, 29.5, 27, 25, 24, 23, 18]]
@@ -87,7 +87,7 @@ def funcFacialThirds(p:frontProfileSchema):
                                [minArray_basic[1-p.gender][0]+defaultRacingVal[p.racial], maxArray_basic[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[i], "N/A" if index == 0 else advice)
 def funcLateralCanthalTilt(p:frontProfileSchema):
-    measureName = "Lateral Canthal Tilt (°)"
+    measureName = "Lateral Canthal Tilt(°)"
     defaultRacingVal = {"Caucasian":0, "African":1.5, "East Asian":2,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}    
     lvlCnt = 7
     minArray = [[5.2, 4, 3, 0, -2, -4, -10], [6, 4.8, 3.6, 1.5, 0, -3, -10]]
@@ -110,7 +110,7 @@ def funcLateralCanthalTilt(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcFacialWHRatio(p:frontProfileSchema):
-    measureName = "Facial width-to-height ratio"
+    measureName = "Facial With-Height Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0.03, "East Asian":-0.04,"South Asian":0.02, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[1.9, 1.85, 1.8, 1.75, 1.7, 1.66, 1.3],[1.9, 1.85, 1.8, 1.75, 1.7, 1.66, 1.3]]
@@ -136,7 +136,7 @@ def funcFacialWHRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcJawFrontalAngle(p:frontProfileSchema):
-    measureName = "Jaw frontal angle (°)"
+    measureName = "Jaw Frontal Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[84.5, 80.5, 76.5, 72.5, 69.5, 66.5, 40],[86, 82.5, 79, 75.5, 72, 69, 40]]
@@ -162,7 +162,7 @@ def funcJawFrontalAngle(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcCheekboneHighSetedness(p:frontProfileSchema):
-    measureName = "Cheekbone height (%)"
+    measureName = "Cheekbone Height(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[81, 76, 70, 65, 60, 55, 10], [83, 79, 73, 68, 63, 58, 10]]
@@ -183,7 +183,7 @@ def funcCheekboneHighSetedness(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcTotalFacialWHRatio(p:frontProfileSchema):
-    measureName = "Total facial height-to-width ratio"
+    measureName = "Total Facial Height-Width Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[1.33, 1.3, 1.26, 1.23, 1.2, 1.18, 1.0],[1.29, 1.26, 1.22, 1.19, 1.17, 1.15, 1.0]]
@@ -210,7 +210,7 @@ def funcTotalFacialWHRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcBigonialWidth(p:frontProfileSchema):
-    measureName = "Bigonial width (%)"
+    measureName = "Bigonial Width(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[85.5, 83.5, 80.5, 77.5, 75, 70, 50],[81.5, 79.5, 76.5, 73.5, 70.5, 69, 50]]
@@ -236,7 +236,7 @@ def funcBigonialWidth(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcChin2PhiltrumRatio(p:frontProfileSchema):
-    measureName = "Chin to philtrum ratio"
+    measureName = "Chin To Philtrum Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[2.05, 1.87, 1.75, 1.55, 1.2, 1.0, 0.1],[2.0, 1.85, 1.7, 1.5, 1.2, 1.0, 0, 1]]
@@ -261,7 +261,7 @@ def funcChin2PhiltrumRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcNeckWidthRatio(p:frontProfileSchema):
-    measureName = "Neck Width (%)"
+    measureName = "Neck Width(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[90, 85, 80, 75, 70, 65, 30], [75, 69, 67, 65, 62, 57, 30]]
@@ -282,7 +282,7 @@ def funcNeckWidthRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMouthNoseWidthRatio(p:frontProfileSchema):
-    measureName = "Mouth width to nose width ratio"
+    measureName = "Mouth-Nose Width Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":-0.05, "East Asian":-0.04,"South Asian":0, "Hispanic": -0.03, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[1.38, 1.34, 1.3, 1.26, 1.22, 1.18, 0.9],[1.45, 1.4, 1.35, 1.3, 1.25, 1.21, 0.9]]
@@ -304,7 +304,7 @@ def funcMouthNoseWidthRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMidfaceRatio(p:frontProfileSchema):
-    measureName = "Midface ratio"
+    measureName = "Midface Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0.02, "East Asian":0.02,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[0.93, 0.9, 0.88, 0.85, 0.8, 0.77, 0.5],[1.0, 0.97, 0.95, 0.92, 0.87, 0.84, 0.5]]
@@ -326,7 +326,7 @@ def funcMidfaceRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyebrowPositionRatio(p:frontProfileSchema):
-    measureName = "Eyebrow position ratio"
+    measureName = "Eyebrow Position Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0.3,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[0, 0.65, 0.95, 1.2, 1.5, 1.8, 2.1],[0.4, 0.3, 0, 1.15, 1.35, 1.85, 2.1]]
@@ -348,7 +348,7 @@ def funcEyebrowPositionRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyeSpacingRatio(p:frontProfileSchema):
-    measureName = "Eye spacing ratio"
+    measureName = "Eye Spacing Ratio(%)"
     defaultRacingVal = {"Caucasian":0.02, "African":0.02, "East Asian":0.32,"South Asian":0.02, "Hispanic": 0.02, "Middle eastern": 0.02,"Other":0.02}
     lvlCnt = 7
     minArray = [[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4],[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4]]
@@ -369,7 +369,7 @@ def funcEyeSpacingRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyeAspectRatio(p:frontProfileSchema):
-    measureName = "Eye aspect ratio"
+    measureName = "Eye Aspect Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[2.8, 2.6, 2.4, 2.2, 2, 1.8, 0],[2.55, 2.35, 2.15, 1.95, 1.75, 1.8, 0]]
@@ -391,7 +391,7 @@ def funcEyeAspectRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLowerUpperLipRatio(p:frontProfileSchema):
-    measureName = "Lower lip to upper lip ratio"
+    measureName = "Lower-Upper Lip Ratio(%)"
     defaultRacingVal = {"Caucasian":0, "African":-0.2, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[1.4, 1.1, 0.9, 0.7, 0.4, 0.1, 0.1],[1.35, 1.05, 0.85, 0.75, 0.35, 0.1, 0.1]]
@@ -412,7 +412,7 @@ def funcLowerUpperLipRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcDeviationIAA(p:frontProfileSchema):
-    measureName = "Deviation of IAA(Ipsilateral alar angle) & JFA(Jaw frontal angle)"
+    measureName = "Deviation Of IAA&JFA(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[0, 2.5, 5, 10, 15, 20], [0, 2.5, 5, 10, 15, 20]]
@@ -431,7 +431,7 @@ def funcDeviationIAA(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A")
 def funcEyebrowTilt(p:frontProfileSchema):
-    measureName = "Eyebrow tilt"
+    measureName = "Eyebrow Tilt(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[5, 3, 0, -2, -4, -15], [11, 9, 6, 4, 2, -15]]
@@ -452,7 +452,7 @@ def funcEyebrowTilt(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcBitemporalWidth(p:frontProfileSchema):
-    measureName = "Bitemporal width"
+    measureName = "Bitemporal Width(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":-2, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 74, 71, 50], [79, 76, 73, 70, 67, 65, 50]]
@@ -477,7 +477,7 @@ def funcBitemporalWidth(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLowerThirdProporation(p:frontProfileSchema):
-    measureName = "Lower third proportion"
+    measureName = "Lower Third Proporation(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[30.6, 29.6, 28.4, 27.2, 26.6, 20],[31.2, 30.2, 29.2, 28.2, 27.2, 20]]
@@ -500,7 +500,7 @@ def funcLowerThirdProporation(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLpsilateralAlarAngle(p:frontProfileSchema):
-    measureName = "Ipsilateral alar angle"
+    measureName = "Ipsilateral Alar Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 75, 73, 50], [84, 82, 79, 77, 75, 73, 50]]
@@ -521,7 +521,7 @@ def funcLpsilateralAlarAngle(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMedialCanthalAngle(p:frontProfileSchema):
-    measureName = "Medial canthal angle"
+    measureName = "Medial Canthal Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":8,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[20, 17, 15, 13, 11, 9, 5], [22, 20, 17, 15, 13, 11, 5]]
