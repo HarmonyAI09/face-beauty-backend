@@ -12,6 +12,7 @@ from pathlib import Path
 import hashlib
 import json
 from pymongo import MongoClient
+from openpyxl import Workbook
 
 import ProfileScoreCalcFront
 import ProfileScoreCalcSide
@@ -172,6 +173,31 @@ async def getReportsByEmail(mail: str):
 @app.get("/details/{id}")
 async def getDetails(id: str):
     return ReportStoreSchema.getDetails(id)
+
+@app.get("/download/{rid}")
+async def downloadReport(rid: str):
+    xlsx_download_base_path = os.path.join(os.getcwd(), "XLSX")
+    if not os.path.exists(xlsx_download_base_path):
+        os.mkdir(xlsx_download_base_path)
+
+    def saveXlsx(filename):
+        workbook = Workbook()
+        workbook.remove_sheet(workbook.active)
+        sheet = workbook.create_sheet('Front Profile')
+        sheet['a1'] = 'Image'
+        sheet['b1'] = 'Measure Name'
+        sheet['c1'] = 'Value'
+        sheet['d1'] = 'Score'
+        sheet['e1'] = 'Ideal Range'
+        sheet['f1'] = 'Meaning'
+        sheet['g1'] = 'Advice'
+
+        workbook.save(filename=os.path.join(xlsx_download_base_path, filename))
+        workbook.close()
+    
+    saveXlsx(f'{rid}.xlsx')
+    
+    return {"ok": True}
 
 
 
