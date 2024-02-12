@@ -82,3 +82,15 @@ class ReportStoreSchema(BaseModel):
         del detail["_id"]
 
         return detail
+    
+class ReportSaveSchema(BaseModel):
+    report_id: str
+    gender: str
+    name: str
+    percentage: float
+    race: str
+    score: float
+
+class ReportFrontSideSaveSchema(BaseModel):
+    report_id: str
+    profile_data: str

@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, Form
 from fastapi.responses import FileResponse, StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from schemas import frontProfileSchema, sideProfileSchema, ImageOverviewSchema
-from ReportProcess import ReportStoreSchema
+from ReportProcess import ReportStoreSchema, ReportSaveSchema, ReportFrontSideSaveSchema
 from datetime import datetime, date
 from dotenv import load_dotenv
 from pathlib import Path
@@ -33,6 +33,7 @@ client = MongoClient(mongoURL)
 db = client[os.getenv("DB")]
 userCollection = db[os.getenv("USER_COLLECTION")]
 reportCollection = db[os.getenv("REPORT_COLLECTION")]
+storeCollection = db[os.getenv("STORE_COLLECTION")]
 
 
 app = FastAPI()
@@ -166,6 +167,27 @@ async def saveReport(frontImage:UploadFile = Form(...),
         )
 
     return body.store()
+
+@app.post('/store')
+async def storeReport(body: ReportSaveSchema):
+    data = {
+        "report_id": body.report_id,
+        "gender": body.gender,
+        "name": body.name,
+        "percentage": body.percentage,
+        "race": body.race,
+        "score": body.score
+    }
+    storeCollection.insert_one(data)
+    return body
+
+@app.post('/store/{frontOrSide}')
+async def storeReportFront(body: ReportFrontSideSaveSchema, frontOrSide: str):
+    result = storeCollection.update_one(
+        {"report_id": body.report_id},
+        {"$set": {frontOrSide: body.profile_data}}
+        )
+    return result.modified_count
 
 @app.get("/reports/{mail}")
 async def getReportsByEmail(mail: str):
