@@ -12,6 +12,7 @@ from pathlib import Path
 import hashlib
 import json
 from pymongo import MongoClient
+from openpyxl import Workbook
 
 import ProfileScoreCalcFront
 import ProfileScoreCalcSide
@@ -22,6 +23,9 @@ import CreateReportImages
 import Auth
 import Payment
 import Static
+
+from app.api.endpoints.image_router import router as image_router
+from app.db.session import connect_to_mongo, close_mongo_connection
 
 
 mongoURL = os.getenv("MONGO_URL")
@@ -46,6 +50,15 @@ app.add_middleware(
 app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router)
 app.include_router(Static.router, prefix="/static")
+app.include_router(image_router, prefix="/image")
+
+@app.on_event("startup")
+async def startup_event():
+    connect_to_mongo("mongodb+srv://admin:trustkmp123@cluster0.celqdib.mongodb.net", "harmony")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    close_mongo_connection()
 
 @app.get('/')
 def basic():
@@ -72,33 +85,22 @@ async def createImageOverview(body:ImageOverviewSchema):
     return ImageOverviewCreate.mainProcess(body)
 
 @app.post('/generate')
-async def generateImageOverview(
-    front:UploadFile = Form(...),
-    side:UploadFile = Form(...),
-    points: str = Form(...)):
-    currentIndex = hashlib.md5(str(datetime.now()).encode()).hexdigest()
-
+async def generateImageOverview(id: str = Form(...), points: str = Form(...)):
+    print(points)
     currentDirectory = os.path.dirname(__file__)
     uploadFolderPath = os.path.join(currentDirectory, os.getenv("UPLOAD_FOLDER"))
-    front_img_name = f"{currentIndex}_0.jpg"
-    side_img_name = f"{currentIndex}_1.jpg"
+    front_img_name = f"{id}0.jpg"
+    side_img_name = f"{id}1.jpg"
     front_img_path = os.path.join(uploadFolderPath, front_img_name)
     side_img_path = os.path.join(uploadFolderPath, side_img_name)
 
     print({currentDirectory, uploadFolderPath, front_img_name, side_img_name})
-
-    # Save frontImage with currentIndex name
-    with open(front_img_path, "wb") as f:
-        f.write(front.file.read())
-    # Save sideImage with currentIndex name
-    with open(side_img_path, "wb") as f:
-        f.write(side.file.read())
-    await CreateReportImages.createReportImages(front_img_path, side_img_path, json.JSONDecoder().decode(points))    
-    return {"id" : currentIndex}
+    await CreateReportImages.createReportImages(front_img_path, side_img_path, json.JSONDecoder().decode(points)) 
+    return {"id" : id}
     
 @app.get("/get_image/{id}/{image_index}")
 async def get_image(id: str, image_index: int):
-    file_path = f"REPORTS/{id}/{image_index}.jpg"
+    file_path = f"UPLOADS/{id}/{image_index}.jpg"
     return FileResponse(file_path, media_type="image/jpeg")
 
 @app.get("/uploads/{file_name}")
@@ -173,7 +175,32 @@ async def getReportsByEmail(mail: str):
 async def getDetails(id: str):
     return ReportStoreSchema.getDetails(id)
 
+@app.get("/download/{rid}")
+async def downloadReport(rid: str):
+    xlsx_download_base_path = os.path.join(os.getcwd(), "XLSX")
+    if not os.path.exists(xlsx_download_base_path):
+        os.mkdir(xlsx_download_base_path)
+
+    def saveXlsx(filename):
+        workbook = Workbook()
+        workbook.remove_sheet(workbook.active)
+        sheet = workbook.create_sheet('Front Profile')
+        sheet['a1'] = 'Image'
+        sheet['b1'] = 'Measure Name'
+        sheet['c1'] = 'Value'
+        sheet['d1'] = 'Score'
+        sheet['e1'] = 'Ideal Range'
+        sheet['f1'] = 'Meaning'
+        sheet['g1'] = 'Advice'
+
+        workbook.save(filename=os.path.join(xlsx_download_base_path, filename))
+        workbook.close()
+    
+    saveXlsx(f'{rid}.xlsx')
+    
+    return {"ok": True}
+
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
