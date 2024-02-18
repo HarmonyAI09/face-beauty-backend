@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from pydantic import EmailStr
 
 from ..db.session import get_db
 from ..db.schemas.user_schema import UserCreate, UserLogin
@@ -56,3 +57,8 @@ async def update_user_info(user_id: str, user_update: dict):
     await users_collection.update_one({"_id": user_id}, {"$set": user_update})
     updated_user = await users_collection.find_one({"_id": user_id})
     return updated_user
+
+async def update_as_premium(email: EmailStr):
+    db = await get_db()
+    users_collection = db['users']
+    await users_collection.update_one({"email":email}, {"$set": {"lvl": 1}})

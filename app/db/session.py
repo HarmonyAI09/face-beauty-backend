@@ -1,12 +1,12 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
 class MongoDB:
-    client: AsyncIOMotorClient = None
+    client: AsyncIOMotorClient = None # type: ignore
     db = None
 
 mongo_db = MongoDB()
 
-def get_db():
+async def get_db():
     return mongo_db.db
 
 def connect_to_mongo(uri:str, dbname: str):

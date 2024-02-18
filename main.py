@@ -25,6 +25,8 @@ import Payment
 import Static
 
 from app.api.endpoints.image_router import router as image_router
+from app.api.endpoints.profile_router import router as profile_router
+from app.api.endpoints.user_router import router as user_router
 from app.db.session import connect_to_mongo, close_mongo_connection
 
 
@@ -52,6 +54,8 @@ app.include_router(Auth.router, prefix="/api")
 app.include_router(Payment.router)
 app.include_router(Static.router, prefix="/static")
 app.include_router(image_router, prefix="/image")
+app.include_router(profile_router, prefix="/profile")
+app.include_router(user_router, prefix="/user")
 
 @app.on_event("startup")
 async def startup_event():
@@ -102,6 +106,11 @@ async def generateImageOverview(id: str = Form(...), points: str = Form(...)):
 @app.get("/get_image/{id}/{image_index}")
 async def get_image(id: str, image_index: int):
     file_path = f"UPLOADS/{id}/{image_index}.jpg"
+    return FileResponse(file_path, media_type="image/jpeg")
+
+@app.get("/get_image/{id}{flag}")
+async def src_image(id: str, flag: int):
+    file_path = f"UPLOADS/{id}{flag}.jpg"
     return FileResponse(file_path, media_type="image/jpeg")
 
 @app.get("/uploads/{file_name}")
@@ -222,7 +231,9 @@ async def downloadReport(rid: str):
     
     return {"ok": True}
 
-
+@app.get("/store/{id}")
+async def getProfile(id: str):
+    return {"message": "Hello world"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

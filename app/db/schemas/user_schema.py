@@ -16,3 +16,14 @@ class UserLogin(BaseModel):
 
 class UserUpdate(BaseModel):
     level: int
+
+class SubScription(BaseModel):
+    customer_id: str
+    payment_method_id: str
+    price_id: str
+
+class CreateCustomer(BaseModel):
+    email: EmailStr
+
+class PremiumUser(BaseModel):
+    email: EmailStr

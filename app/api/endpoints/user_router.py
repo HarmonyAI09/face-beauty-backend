@@ -1,11 +1,14 @@
 from datetime import timedelta
-from fastapi import APIRouter, HTTPException, Depends, status
+from typing import Annotated
+from fastapi import APIRouter, Body, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import EmailStr
+import stripe
 
 from ...db.models.user_model import User
 from ...api.dependencies.auth import get_current_user
-from ...db.schemas.user_schema import UserRead, UserCreate, UserLogin, UserUpdate
-from ...services.user_service import get_users, create_user, authenticate_user, update_user_info
+from ...db.schemas.user_schema import PremiumUser, UserRead, UserCreate, UserLogin, UserUpdate, SubScription, CreateCustomer
+from ...services.user_service import get_users, create_user, authenticate_user, update_as_premium, update_user_info
 from ...core.jwt_handler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 
 router = APIRouter()
@@ -39,3 +42,38 @@ async def update_user(user_id: str, user_update: UserUpdate, current_user: User 
         raise HTTPException(status_code=403, detail="Not authorize to update this user's information")
     update_user = await update_user_info(user_id, user_update.dict(exclude_unset=True))
     return update_user
+
+@router.post("/create-customer")
+async def create_customer(body: CreateCustomer):
+    try:
+        customer = stripe.Customer.create(email=body.email)
+        return {"customer_id": customer["id"]}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@router.post("/create-subscription")
+async def create_subscription(sub: SubScription):
+    try:
+        # Attach the payment method to the customer
+        stripe.PaymentMethod.attach(
+            sub.payment_method_id,
+            customer=sub.customer_id,
+        )
+        # Set the default payment method
+        stripe.Customer.modify(
+            sub.customer_id,
+            invoice_settings={"default_payment_method": sub.payment_method_id},
+        )
+        # Create the subscription
+        subscription = stripe.Subscription.create(
+            customer=sub.customer_id,
+            items=[{"price": sub.price_id}],
+            expand=["latest_invoice.payment_intent"],
+        )
+        return subscription
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post('/premium')
+async def premium_user(user: PremiumUser):
+    await update_as_premium(user.email)
