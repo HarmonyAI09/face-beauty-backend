@@ -27,7 +27,7 @@ class frontProfileSchema(BaseModel):
     deviationOfJFA2IAA: float = Field(round=2)
     eyebrowTilt: float = Field(round=2)
     bitemporalWidth: float = Field(round=2)
-    lowerThirdProporation: float = Field(round=2)
+    lowerThirdProportion: float = Field(round=2)
     medialCanthalAngle: float = Field(round=2)
 
 class sideProfileSchema(BaseModel):

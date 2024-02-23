@@ -853,8 +853,8 @@ def create_chin_to_philtrum_ratio_image(img_url, mark_points, DIR, index):
     [(x1, y1), (x2, y2), (x3, y3), (x4, y4)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)])
     draw = ImageDraw.Draw(cropped_img)  
     draw_horizontal_line(draw, (x2, y2))
-    draw_dotted_line(draw, (x1, y1), (x1, y2))
-    draw_solid_line(draw, (x3, y3), (x4, y4))
+    draw_solid_line(draw, (x1, y1), (x1, y2))
+    draw_dotted_line(draw, (x3, y3), (x4, y4))
 
     output_filename = os.path.join(DIR, f"{create_chin_to_philtrum_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
@@ -1339,10 +1339,10 @@ def create_deviation_of_iaa_image(img_url, mark_points, DIR, index):
     canvas.paste(img, (x_offset, y_offset))
     draw = ImageDraw.Draw(canvas)  
 
-    x1 = mark_points[11][0]["x"]
-    y1 = mark_points[11][0]["y"]
-    x2 = mark_points[11][1]["x"]
-    y2 = mark_points[11][1]["y"]
+    x1 = mark_points[9][0]["x"]
+    y1 = mark_points[9][0]["y"]
+    x2 = mark_points[9][1]["x"]
+    y2 = mark_points[9][1]["y"]
     x3 = mark_points[19][0]["x"]
     y3 = mark_points[19][0]["y"]
     x4 = mark_points[26][0]["x"]

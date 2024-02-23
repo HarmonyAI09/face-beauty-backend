@@ -60,7 +60,7 @@ def storeImage(image:UploadFile):
 
 def getLandmarkUsingLib(imgPath, Landmarks):
     imgSrc = open_image(imgPath)
-    face = FaceAlignment(LandmarksType._2D, enable_cuda=True, flip_input=False, use_cnn_face_detector=True)
+    face = FaceAlignment(LandmarksType._2D, enable_cuda=False, flip_input=False, use_cnn_face_detector=True)
     landmarks = face.get_landmarks(np.array(imgSrc))[-1]
     indexListLib = [0,1,4,5,7,8,12,15,20,28,29,30,33,36,44,50,54,57]
     indexListRes = [57, 42, 48, 50, 51, 52, 49, 38, 32, 36, 39, 41, 43, 57, 33, 45, 46, 58]

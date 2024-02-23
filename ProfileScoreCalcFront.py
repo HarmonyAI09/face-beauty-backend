@@ -477,7 +477,7 @@ def funcBitemporalWidth(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLowerThirdProporation(p:frontProfileSchema):
-    measureName = "Lower Third Proporation(%)"
+    measureName = "Lower Third Proportion(%)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[30.6, 29.6, 28.4, 27.2, 26.6, 20],[31.2, 30.2, 29.2, 28.2, 27.2, 20]]
@@ -495,8 +495,8 @@ def funcLowerThirdProporation(p:frontProfileSchema):
     1) altering chin height through the various aforementioned methods (i.e., surgery, facial hair)
     2) Rhinoplasty to reduce the droopiness of the nasal tip, thereby increasing this proportion.
     Altering lip size does not substantially affect this proportion.'''
-    index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.lowerThirdProporation)
-    return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.lowerThirdProporation, 
+    index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.lowerThirdProportion)
+    return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.lowerThirdProportion, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcLpsilateralAlarAngle(p:frontProfileSchema):
