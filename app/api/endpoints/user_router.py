@@ -6,7 +6,7 @@ from pydantic import EmailStr
 import stripe
 
 from ...db.models.user_model import User
-from ...api.dependencies.auth import get_current_user
+# from ...api.dependencies.auth import get_current_user
 from ...db.schemas.user_schema import PremiumUser, UserRead, UserCreate, UserLogin, UserUpdate, SubScription, CreateCustomer
 from ...services.user_service import get_users, create_user, authenticate_user, update_as_premium, update_user_info
 from ...core.jwt_handler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
@@ -36,12 +36,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 async def read_users():
     return await get_users()
 
-@router.put("/users/{user_id}", response_model=UserRead)
-async def update_user(user_id: str, user_update: UserUpdate, current_user: User = Depends(get_current_user)):
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Not authorize to update this user's information")
-    update_user = await update_user_info(user_id, user_update.dict(exclude_unset=True))
-    return update_user
+# @router.put("/users/{user_id}", response_model=UserRead)
+# async def update_user(user_id: str, user_update: UserUpdate, current_user: User = Depends(get_current_user)):
+#     if current_user.id != user_id:
+#         raise HTTPException(status_code=403, detail="Not authorize to update this user's information")
+#     update_user = await update_user_info(user_id, user_update.dict(exclude_unset=True))
+#     return update_user
 
 @router.post("/create-customer")
 async def create_customer(body: CreateCustomer):
