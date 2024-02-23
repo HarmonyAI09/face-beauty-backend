@@ -100,7 +100,7 @@ async def download_report(id: str):
         ws['L6'] = "Note"
         ws['M6'] = "Advice"
 
-        for index in range(len(front['measurements'])):
+        for index in range(22):
             item = front['measurements'][index]
             ws['G' + str(7+index)] = index+1
             ws['H' + str(7+index)] = item['name']
@@ -121,7 +121,7 @@ async def download_report(id: str):
         ws['U6'] = "Note"
         ws['V6'] = "Advice"
 
-        for index in range(len(side['measurements'])):
+        for index in range(23):
             item = side['measurements'][index]
             ws['P' + str(7+index)] = index+1
             ws['Q' + str(7+index)] = item['name']
