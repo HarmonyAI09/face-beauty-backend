@@ -9,7 +9,7 @@ from ...db.models.user_model import User
 # from ...api.dependencies.auth import get_current_user
 from ...db.schemas.user_schema import PremiumUser, UserRead, UserCreate, UserLogin, UserUpdate, SubScription, CreateCustomer
 from ...services.user_service import get_users, create_user, authenticate_user, update_as_premium, update_user_info
-from ...core.jwt_handler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
+# from ...core.jwt_handler import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 
 router = APIRouter()
 
@@ -17,8 +17,8 @@ router = APIRouter()
 async def signup_user(user: UserCreate):
     return await create_user(user)
 
-@router.post("/signin", response_model=UserRead)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+# @router.post("/signin", response_model=UserRead)
+# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
