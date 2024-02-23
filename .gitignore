@@ -4,3 +4,7 @@
 /.vscode
 /XLSX
 /face_alignment/__pycache__
+*.pyc
+*.pyc
+*.pyc
+*.xlsx

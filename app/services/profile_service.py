@@ -87,48 +87,50 @@ async def download_report(id: str):
     ws['C5'] = "Max Score"
     ws['D5'] = "Percentage"
 
-    front = json.loads(data["front"])
-    side = json.loads(data["side"])
+    front = json.loads(data["front"]) if "front" in data else None
+    side = json.loads(data["side"]) if "side" in data else None
 
-    ws['G5'] = "Front Profile"
-    ws['G6'] = "No"
-    ws['H6'] = "Feature"
-    ws['I6'] = "Value"
-    ws['J6'] = "Score"
-    ws['K6'] = "Ideal Range"
-    ws['L6'] = "Note"
-    ws['M6'] = "Advice"
+    if front:
+        ws['G5'] = "Front Profile"
+        ws['G6'] = "No"
+        ws['H6'] = "Feature"
+        ws['I6'] = "Value"
+        ws['J6'] = "Score"
+        ws['K6'] = "Ideal Range"
+        ws['L6'] = "Note"
+        ws['M6'] = "Advice"
 
-    for index in range(len(front['measurements'])):
-        item = front['measurements'][index]
-        ws['G' + str(7+index)] = index+1
-        ws['H' + str(7+index)] = item['name']
-        ws['H' + str(7+index)].hyperlink = "http://localhost:8000/get_image/"+data['report_id']+"/"+item['index']
-        ws['I' + str(7+index)] = str(item['value'])
-        ws['J' + str(7+index)] = item['score']
-        ws['K' + str(7+index)] = str(item['ideal'])
-        ws['L' + str(7+index)] = item['mean']
-        ws['M' + str(7+index)] = item['advice']
+        for index in range(len(front['measurements'])):
+            item = front['measurements'][index]
+            ws['G' + str(7+index)] = index+1
+            ws['H' + str(7+index)] = item['name']
+            ws['H' + str(7+index)].hyperlink = "http://localhost:8000/get_image/"+data['report_id']+"/"+item['index']
+            ws['I' + str(7+index)] = str(item['value'])
+            ws['J' + str(7+index)] = item['score']
+            ws['K' + str(7+index)] = str(item['ideal'])
+            ws['L' + str(7+index)] = item['mean']
+            ws['M' + str(7+index)] = item['advice']
 
-    ws['P5'] = "Side Profile"
-    ws['P6'] = "No"
-    ws['Q6'] = "Feature"
-    ws['R6'] = "Value"
-    ws['S6'] = "Score"
-    ws['T6'] = "Ideal Range"
-    ws['U6'] = "Note"
-    ws['V6'] = "Advice"
+    if side:
+        ws['P5'] = "Side Profile"
+        ws['P6'] = "No"
+        ws['Q6'] = "Feature"
+        ws['R6'] = "Value"
+        ws['S6'] = "Score"
+        ws['T6'] = "Ideal Range"
+        ws['U6'] = "Note"
+        ws['V6'] = "Advice"
 
-    for index in range(len(side['measurements'])):
-        item = side['measurements'][index]
-        ws['P' + str(7+index)] = index+1
-        ws['Q' + str(7+index)] = item['name']
-        ws['Q' + str(7+index)].hyperlink = "http://localhost:8000/get_image/"+data['report_id']+"/"+str(index+22)
-        ws['R' + str(7+index)] = str(item['value'])
-        ws['S' + str(7+index)] = item['score']
-        ws['T' + str(7+index)] = str(item['ideal'])
-        ws['U' + str(7+index)] = item['mean']
-        ws['V' + str(7+index)] = item['advice']
+        for index in range(len(side['measurements'])):
+            item = side['measurements'][index]
+            ws['P' + str(7+index)] = index+1
+            ws['Q' + str(7+index)] = item['name']
+            ws['Q' + str(7+index)].hyperlink = "http://localhost:8000/get_image/"+data['report_id']+"/"+str(index+22)
+            ws['R' + str(7+index)] = str(item['value'])
+            ws['S' + str(7+index)] = item['score']
+            ws['T' + str(7+index)] = str(item['ideal'])
+            ws['U' + str(7+index)] = item['mean']
+            ws['V' + str(7+index)] = item['advice']
 
     ws['C7'] = 304.5
     ws['C8'] = 195.5
