@@ -62,9 +62,9 @@ def getParallel(a, ref):
 def getVertical(a, ref):
     slope_ref = getSlope(ref[0], ref[1])
     if slope_ref == 0:
-        b = {'x': a[0], 'y': a[1] + 1}
+        b = {'x': a['x'], 'y': a['y'] + 1}
     elif slope_ref == float('inf'):
-        b = {'x': a[0] + 1, 'y': a[1]}
+        b = {'x': a['x'] + 1, 'y': a['y']}
     else:
         slope_perpendicular = -1 / slope_ref
         delta_x = 1
