@@ -52,7 +52,7 @@ def getSlope(point1, point2):
 def getParallel(a, ref):
     slope_ref = getSlope(ref[0], ref[1])
     if slope_ref == float('inf'):
-        b = {'x': a[0], 'y': a[1] + 1}
+        b = {'x': a['x'], 'y': a['y'] + 1}
     else:
         delta_x = 1
         delta_y = slope_ref * delta_x
