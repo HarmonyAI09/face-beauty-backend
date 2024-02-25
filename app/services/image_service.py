@@ -1,6 +1,6 @@
 import os
 from fastapi import HTTPException, UploadFile
-from PIL import Image
+from PIL import Image, ImageDraw
 import io
 
 async def save_image(id: str, flag: int, file: UploadFile):
