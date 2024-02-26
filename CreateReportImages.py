@@ -1934,7 +1934,6 @@ def create_nasal_tip_angle_image(points, RLs, DIR, index, canvas):
     crop.save(output_filename)
 
 async def createReportImages(f_url = None, s_url = None, position_lists = None):
-    print(f_url, s_url)
     position_lists = list(position_lists.values())
     # f_url = r"E:\WorkSpace\face-beauty-backend\UPLOADS\0.jpg"
     # s_url = r"E:\WorkSpace\face-beauty-backend\UPLOADS\1.jpg"
@@ -1971,7 +1970,6 @@ async def createReportImages(f_url = None, s_url = None, position_lists = None):
         create_lower_third_proportion_image(f_url, position_lists, DIR, 19)
         create_ipsilateral_alar_angle_image(f_url, position_lists, DIR, 20)
         create_medial_canthal_angle_image(f_url, position_lists, DIR, 21)
-
     if os.path.exists(s_url):
         s_canvas = GetCanva(s_url)
         create_gonial_angle_image(points, RLs, DIR, 22, s_canvas)
@@ -1997,5 +1995,3 @@ async def createReportImages(f_url = None, s_url = None, position_lists = None):
         create_recession_relative_to_frankfort_plane_image(points, RLs, DIR, 42, s_canvas)
         create_browridge_inclination_angle_image(points, RLs, DIR, 43, s_canvas)
         create_nasal_tip_angle_image(points, RLs, DIR, 44, s_canvas)
-
-# createReportImages()

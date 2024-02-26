@@ -1,4 +1,6 @@
 import os
+
+from app.services.draw_service import CompleteMarkPoints, GetReferenceLines
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import uvicorn
 from fastapi import FastAPI, HTTPException, UploadFile, Form
@@ -88,6 +90,13 @@ async def automateLandmarkSideProfile(image:UploadFile):
 @app.post('/create')
 async def createImageOverview(body:ImageOverviewSchema):
     return ImageOverviewCreate.mainProcess(body)
+
+@app.post('/repair')
+async def RepairLandmarks(points: list = Form(...)):
+    points = json.loads(points[0])
+    points = points['markPoints']
+    points = CompleteMarkPoints(points, GetReferenceLines(points))
+    return {"points": points}
 
 @app.post('/generate')
 async def generateImageOverview(id: str = Form(...), points: str = Form(...)):
@@ -205,31 +214,6 @@ async def getReportsByEmail(mail: str):
 @app.get("/details/{id}")
 async def getDetails(id: str):
     return ReportStoreSchema.getDetails(id)
-
-@app.get("/download/{rid}")
-async def downloadReport(rid: str):
-    xlsx_download_base_path = os.path.join(os.getcwd(), "XLSX")
-    if not os.path.exists(xlsx_download_base_path):
-        os.mkdir(xlsx_download_base_path)
-
-    def saveXlsx(filename):
-        workbook = Workbook()
-        workbook.remove_sheet(workbook.active)
-        sheet = workbook.create_sheet('Front Profile')
-        sheet['a1'] = 'Image'
-        sheet['b1'] = 'Measure Name'
-        sheet['c1'] = 'Value'
-        sheet['d1'] = 'Score'
-        sheet['e1'] = 'Ideal Range'
-        sheet['f1'] = 'Meaning'
-        sheet['g1'] = 'Advice'
-
-        workbook.save(filename=os.path.join(xlsx_download_base_path, filename))
-        workbook.close()
-    
-    saveXlsx(f'{rid}.xlsx')
-    
-    return {"ok": True}
 
 @app.get("/store/{id}")
 async def getProfile(id: str):
