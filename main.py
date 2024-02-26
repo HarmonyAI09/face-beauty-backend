@@ -95,8 +95,9 @@ async def createImageOverview(body:ImageOverviewSchema):
 async def RepairLandmarks(points: list = Form(...)):
     points = json.loads(points[0])
     points = points['markPoints']
-    points = CompleteMarkPoints(points, GetReferenceLines(points))
-    return {"points": points}
+    RLs = GetReferenceLines(points)
+    points = CompleteMarkPoints(points, RLs)
+    return {"points": points, "RLs": RLs}
 
 @app.post('/generate')
 async def generateImageOverview(id: str = Form(...), points: str = Form(...)):
