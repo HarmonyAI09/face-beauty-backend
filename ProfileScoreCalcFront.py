@@ -304,7 +304,7 @@ def funcMouthNoseWidthRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMidfaceRatio(p:frontProfileSchema):
-    measureName = "Midface Ratio(%)"
+    measureName = "Midface Ratio"
     defaultRacingVal = {"Caucasian":0, "African":0.02, "East Asian":0.02,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 7
     minArray = [[0.93, 0.9, 0.88, 0.85, 0.8, 0.77, 0.5],[1.0, 0.97, 0.95, 0.92, 0.87, 0.84, 0.5]]
@@ -348,7 +348,7 @@ def funcEyebrowPositionRatio(p:frontProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcEyeSpacingRatio(p:frontProfileSchema):
-    measureName = "Eye Spacing Ratio(%)"
+    measureName = "Eye Spacing Ratio"
     defaultRacingVal = {"Caucasian":0.02, "African":0.02, "East Asian":0.32,"South Asian":0.02, "Hispanic": 0.02, "Middle eastern": 0.02,"Other":0.02}
     lvlCnt = 7
     minArray = [[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4],[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4]]
