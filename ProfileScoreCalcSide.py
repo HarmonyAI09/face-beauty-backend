@@ -220,7 +220,7 @@ def funcOrbitalVector(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.orbitalVector)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.orbitalVector, [valueArray[0]], notes[index], "N/A" if index == 0 else advice)
 def funcTotalFacialConvexity(p:sideProfileSchema):
-    measureName = "Total Facial Convexity"
+    measureName = "Total Facial Convexity(°)"
     defaultRacingVal = {"Caucasian":0, "African":5, "East Asian":4,"South Asian":-1, "Hispanic": 2, "Middle eastern": -3,"Other":0}
     lvlCnt = 7
     minArray = [[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100],[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100]]
@@ -242,7 +242,7 @@ def funcTotalFacialConvexity(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcMentolabialAngle(p:sideProfileSchema):   
-    measureName = "Mentolabial Angle"
+    measureName = "Mentolabial Angle(°)"
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic":0, "Middle eastern":0,"Other":0}
     lvlCnt = 6
     minArray = [[108, 94, 80, 75, 65, 40], [93, 79, 70, 65, 62, 40]]
@@ -267,7 +267,7 @@ def funcMentolabialAngle(p:sideProfileSchema):
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
 def funcFacialConvexityNasion(p:sideProfileSchema):
-    measureName = "Facial Convexity(Nasion)"
+    measureName = "Facial Convexity(Nasion)(°)"
     defaultRacingVal = {"Caucasian":0, "African":2, "East Asian":1,"South Asian":-2, "Hispanic":3, "Middle eastern":-3,"Other":0}
     lvlCnt = 6
     minArray = [[163, 160, 158, 155, 152, 120], [161, 158, 156, 153, 152, 120]]
@@ -416,7 +416,7 @@ def funcGonionMouthRelationship(p:sideProfileSchema):
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.gonion2MouthRelationship)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.gonion2MouthRelationship, [valueArray[0]], notes[index], "N/A")
 def funcRecessionRelativeFrankfortPlane(p:sideProfileSchema):
-    measureName = "Recession Rrelative-Frankfort Plane"
+    measureName = "Recession Relative-Frankfort Plane"
     lvlCnt = 4
     valueArray = ["none", "slight", "moderate", "extreme"]
     scoreArray = [5, 1, 0, -10]
@@ -504,5 +504,4 @@ def mainProcess(sideProfile:sideProfileSchema):
     mainProcess.update(funcRecessionRelativeFrankfortPlane(sideProfile))    
     mainProcess.update(funcBrowridgeInclinationAngle(sideProfile))
     mainProcess.update(funcNasalTipAngle(sideProfile))
-
     return mainProcess.result()

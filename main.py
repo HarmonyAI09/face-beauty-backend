@@ -101,15 +101,12 @@ async def RepairLandmarks(points: list = Form(...)):
 
 @app.post('/generate')
 async def generateImageOverview(id: str = Form(...), points: str = Form(...)):
-    print(points)
     currentDirectory = os.path.dirname(__file__)
     uploadFolderPath = os.path.join(currentDirectory, os.getenv("UPLOAD_FOLDER"))
     front_img_name = f"{id}0.jpg"
     side_img_name = f"{id}1.jpg"
     front_img_path = os.path.join(uploadFolderPath, front_img_name)
     side_img_path = os.path.join(uploadFolderPath, side_img_name)
-
-    print(json.JSONDecoder().decode(points))
     await CreateReportImages.createReportImages(front_img_path, side_img_path, json.JSONDecoder().decode(points)) 
     return {"id" : id}
     

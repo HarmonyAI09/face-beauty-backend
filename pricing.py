@@ -43,5 +43,4 @@ def buy_professional(purchase_data: PurchasePlan):
 
 @router.get("/")
 def helps():
-    print("Running")
     return {"message": "Connection successful"}

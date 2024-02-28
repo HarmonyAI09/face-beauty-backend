@@ -72,7 +72,6 @@ def getLandmarkUsingLib(imgPath, Landmarks):
 def getLandmarkForNeckNose(imgPath, Landmarks):
     imgSrc = cv2.imread(imgPath, 0)
     height, width = imgSrc.shape
-    print(height, width)
     Landmarks[10] = [INFINITE, INFINITE]
     for i in range(height//4, height):
         for j in range(width):
@@ -84,7 +83,6 @@ def getLandmarkForNeckNose(imgPath, Landmarks):
                     Landmarks[10][0] = j
                     Landmarks[10][1] = i
                 break
-    print(Landmarks[10], Landmarks[25], "*************")
     return Landmarks
 def getLandmarkGenerate(imgPath, Landmarks):
     with open(SAMPLE_POINTS_FILE, 'r') as file:
@@ -123,11 +121,9 @@ def getLandmarkGenerate(imgPath, Landmarks):
 
     ##### SET X-values #####
     sortedPts = sorted(samplePts, key=lambda p: p[0])
-    print(sortedPts)
     refStepIdxList = []
     refNullIdxList = []
     for point in sortedPts:
-        print(Landmarks, point, refNullIdxList)
         if Landmarks[point[2]][0] == 0:
             refNullIdxList[-1].append(point[2])
         else:
