@@ -62,7 +62,7 @@ class MeasurementOverview:
     score = 0
     max = 0
     value = 0
-    range = ""
+    range = []
     note = ""
     advice = ""
     def __init__(self, name, score, max, value, range, note, advice) -> None:
