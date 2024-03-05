@@ -24,10 +24,10 @@ def funcEyeSeparationRatio(p:frontProfileSchema):
         "Your eyes have an extremely abnormal spacing relative to your facial width. They appear either too close set (low values) or wide set (high values).",
     ]
     advice = '''While extremely difficult to change the actual underlying morphology of your eyes, there are a few ways to improve this assessment:
-    1) lose body-fat to create a thinner face, thereby increasing your ESR and making your eyes appear wider set. The opposite also holds true -- if you have overly wide set eyes, gaining some weight on your face can lead to the appearance of more normally spaced eyes.
-    2) hairstyles to alter your perceived facial width. Along the same lines as facial fat, you can play around with hairstyles that add width to your face or reduce it. For example, if you have extremely wide set eyes, longer hairstyles that cover the sides of your face or add width can improve your perceived facial harmony. If your eyes are closer set, shorter hairstyles with shorter sides may suit your face better.
+    1) Lose body-fat to create a thinner face, thereby increasing your ESR and making your eyes appear wider set. The opposite also holds true -- if you have overly wide set eyes, gaining some weight on your face can lead to the appearance of more normally spaced eyes.
+    2) Hairstyles to alter your perceived facial width. Along the same lines as facial fat, you can play around with hairstyles that add width to your face or reduce it. For example, if you have extremely wide set eyes, longer hairstyles that cover the sides of your face or add width can improve your perceived facial harmony. If your eyes are closer set, shorter hairstyles with shorter sides may suit your face better.
     3) Cheekbone implants to increase the width of your face. Or, zygomatic reduction surgery to do the opposite. 
-    Overall, the only thing you can do is alter your facial width, but not the actual spacing of your eyes themselves.'''
+    Overall, the only thing you can do is alter your facial width, but not the actual spacing of your eyes themselves. Craniofacial surgery can be used to correct severe cases of facial deformity, but it is not typically used to make minor corrections to eye spacing.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.eyeSeparationRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.eyeSeparationRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -129,7 +129,8 @@ def funcFacialWHRatio(p:frontProfileSchema):
     1) gaining or losing facial- fat can either increase or reduce your FWHR, respectively. 
     2) Cheekbone implants can increase facial width, thereby increasing FWHR slightly.
     3) upper lip filler can reduce the vertical distance of your midface, thereby increasing FWHR slightly. 
-    4) lowering the brow position is not really surgically possible or advised, but if you can grow eyebrow hair more interior towards your nose, that can increase FWHR.
+    4)  You can grow eyebrow hair more interior towards your nose, which can increase FWHR.
+    5) Brow implants or filler may marginally lower your brow position, thereby increasing FWHR.
     Reducing FWHR is not as possible aside from losing facial fat and invasive zygomatic remodeling (cheekbone reduction surgery).'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.facialWHRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.facialWHRatio, 
@@ -152,10 +153,10 @@ def funcJawFrontalAngle(p:frontProfileSchema):
         "Your jaw has an extremely unideal contour in the front profile. It is considered either slightly too flat (high values) or steep (low values).",
     ]
     advice = '''There are a few ways to improve the contour of your jaw:
-    1) losing facial-fat can reveal your jaw contour better, often resulting in a more pleasant angle.
-    2) Custom jaw implants to specifically design your jaw's desired shape.
-    3) fixing malocclusion in the same way that it would address your MPA. Your JFA is heavily tied to your MPA.
-    4) Chin implants -- a wider chin tends to reduce this angle, while a narrower chin increased it. Facial hair can also conceptually do this to some degree.
+    1) Losing facial-fat can reveal your jaw contour better, often resulting in a more pleasant angle.
+    2) Custom jaw implants can be used to specifically design your jaw's desired shape.
+    3) Fixing malocclusion can improve your jaw in the same way that it would address your MPA. Your JFA is heavily tied to your MPA.
+    4) Chin implants -- a wider chin tends to reduce this angle, while a narrower chin increases it. Facial hair can also conceptually do this to some degree.
     5) Masseter reduction surgery. An overly wide jaw can tend to increase this angle. Conversely, increasing your jaw width through chewing exercises can increase this angle if yours is on the lower end.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.jawFrontalAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.jawFrontalAngle, 
@@ -204,7 +205,8 @@ def funcTotalFacialWHRatio(p:frontProfileSchema):
     3) Hairstyles can manipulate the perceived dimensions of your face similar to the facial thirds. If your face is overly long, a wider hairstyle may help and vice versa. 
     4) Facial hair can add height to your face is your ratio is too low.
     5) Correcting any hyper/hypo divergent growth pattern at the orthodontist or maxillofacial surgeon can increase the harmony of your face's vertical height.
-    6) Overly clenching and wearing down your teeth can result in a deep bite and reduce your facial height, thereby reducing this ratio. Although, this is not suggested as a method of improvement; rather, it is more so to avoid a reduction in facial height along with jaw joint problems.'''
+    6) Overly clenching and wearing down your teeth can result in a deep bite and reduce your facial height, thereby reducing this ratio. Although, this is not suggested as a method of improvement; rather, it is more so to avoid a reduction in facial height along with jaw joint problems.
+    7) Correcting hair loss through minoxidil or a hairline transplant can lower this ratio. Severe hairline recession can often lead to abnormally high ratios.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.totalFacialWHRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.totalFacialWHRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -219,11 +221,11 @@ def funcBigonialWidth(p:frontProfileSchema):
     notes = [
         "You have an ideal jaw width. Your jaw is neither too wide or narrow relative to your total facial width.",
         "You have a near ideal jaw width. Your jaw is neither too wide or narrow relative to your total facial width.",
-        "Although not ideal, you have a normal width. Your jaw may be slightly too narrow (low values) or wide (high values).",
-        "You have a normal width. Your jaw may be either slightly too narrow (low values) or wide (high values), but it does not likely appear abnormal in terms of facial harmony.",
-        "You have an abnormal width. Your jaw can be considered either too narrow (low values) or wide (high values).",
-        "You have an abnormal width. Your jaw can be considered either too narrow (low values) or wide (high values).",
-        "You have an extremely abnormal width. Your jaw can be considered either too narrow (low values) or wide (high values).",
+        "Although not ideal, you have a normal jaw width. Your jaw may be slightly too narrow (low values) or wide (high values).",
+        "You have a normal jaw width. Your jaw may be either slightly too narrow (low values) or wide (high values), but it does not likely appear abnormal in terms of facial harmony.",
+        "You have an abnormal jaw width. Your jaw can be considered either too narrow (low values) or wide (high values).",
+        "You have an abnormal jaw width. Your jaw can be considered either too narrow (low values) or wide (high values).",
+        "You have an extremely abnormal jaw width. Your jaw can be considered either too narrow (low values) or wide (high values).",
     ]
     advice = '''There are a few ways to alter this ratio:
     1) Increasing the cross-sectional muscle area of your masseter muscle through chewing tough foods can increase your jaw width if your ratio is low.
@@ -253,9 +255,9 @@ def funcChin2PhiltrumRatio(p:frontProfileSchema):
     advice = '''To alter this ratio we want to consider the chin and lips. Altering the position of the subnasale is not really possible.
     1) chin implants to increase this ratio.
     2) correcting malocclusion to fix any excessive or lacking chin projection and height.
-    3) facial hair to increase perceived chin height and increase this ratio
-    4) upper lip filler to increase this ratio
-    5) lower lip filler to reduce this ratio'''
+    3) facial hair to increase perceived chin height and increase this ratio.
+    4) upper lip filler to increase this ratio.
+    5) lower lip filler to reduce this ratio.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.chin2PhiltrumRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.chin2PhiltrumRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -297,8 +299,9 @@ def funcMouthNoseWidthRatio(p:frontProfileSchema):
         "Your mouth width harmonizes poorly with your nose width. Your nose/mouth may be considered too narrow or wide, resulting in a less than ideal proportion.",
         "Your mouth width harmonizes extremely poorly with your nose width. Your nose/mouth may be considered too narrow or wide, resulting in a less than ideal proportion.",
     ]
-    advice = '''To alter this ratio, we primarily want to change the nasal width as altering mouth width is more invasive and does not tend to produce as favorable results.
-    Rhinoplasty can be used to reduce your nasal width (higher ratios), or increase it (lower ratios). The latter is less common, but possible.'''
+    advice = '''To alter this ratio, we primarily want to change the nasal width. Altering mouth width is more invasive and does not tend to produce as favorable results.
+    A Commissuroplasty is a possible method to increase one's mouth width. Rhinoplasty can be used to reduce your nasal width (higher ratios), or increase it (lower ratios). 
+    The latter is less common, but possible.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.mouthWidth2NoseWidthRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.mouthWidth2NoseWidthRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -319,7 +322,7 @@ def funcMidfaceRatio(p:frontProfileSchema):
         "You have an extremely unharmonious interior (or central) midface structure. It can be considered too elongated (low values) or compact (high values).",
         "You have an extremely unharmonious interior (or central) midface structure. It can be considered too elongated (low values) or compact (high values).",
     ]
-    advice = '''Since we cannot really alter the distance between your pupils, the only way to really alter this ratio is through upper lip filler to increase the ratio.
+    advice = '''Since altering the distance between your pupils through craniofacial surgery is usually reserved for facial abnormalities,  upper lip filler to increase the ratio is a more realistic option.
     Some more invasive midface procedures like Lefort 1 can make the midface more vertically compact. thereby reducing the ratio further. Other forms of orthognathic surgery may result in some changes to the midface structure as well.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.midFaceRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.midFaceRatio, 
@@ -351,8 +354,8 @@ def funcEyeSpacingRatio(p:frontProfileSchema):
     measureName = "Eye Spacing Ratio"
     defaultRacingVal = {"Caucasian":0.02, "African":0.02, "East Asian":0.32,"South Asian":0.02, "Hispanic": 0.02, "Middle eastern": 0.02,"Other":0.02}
     lvlCnt = 7
-    minArray = [[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4],[0.9, 0.86, 0.81, 0.76, 0.65, 0.6, 0.4]]
-    maxArray = [[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2],[1.01, 1.05, 1.07, 1.14, 1.2, 1.4, 2]]
+    minArray = [[0.93, 0.88, 0.83, 0.78, 0.67, 0.62, 0.42],[0.93, 0.88, 0.83, 0.78, 0.67, 0.62, 0.42]]
+    maxArray = [[1.04, 1.07, 1.10, 1.17, 1.23, 1.43, 2.03],[1.04, 1.07, 1.10, 1.17, 1.23, 1.43, 2.03]]
     scoreArray = [10, 5, 2.5, 0, -2.5, -5, -10]
     notes = [
         "Your eyes have a harmonious spacing relative to one another.",
@@ -363,7 +366,8 @@ def funcEyeSpacingRatio(p:frontProfileSchema):
         "Your eyes have an extremely abnormal spacing relative to one another. They may appear either overly close together (low values) or far apart (high values).",
         "Your eyes have an extremely abnormal spacing relative to one another. They may appear either overly close together (low values) or far apart (high values).",
     ]
-    advice = '''Aside from illusions in the form of makeup and lash length, there is no real way to change the structural distance between your eyes.'''
+    advice = '''Aside from illusions in the form of makeup and lash length, there is no real way to change the structural distance between your eyes.
+    Craniofacial surgery is an option in extreme cases of orbital hypertelorism. In those cases, the eyes may be 2 or more eye's widths apart.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.eyeSpacingRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.eyeSpacingRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -384,7 +388,7 @@ def funcEyeAspectRatio(p:frontProfileSchema):
         "Your eyes have an extremely abnormal shape in terms of their width and height. Your eyes may be considered either too round (low values) or narrow (high values) in shape. Overly round eyes can begin to look too beady and overly narrow one's lack the ability to display emotional cues as well. Both extremes are generally not attractive.",
         "Your eyes have an extremely abnormal shape in terms of their width and height. Your eyes may be considered either too round (low values) or narrow (high values) in shape. Overly round eyes can begin to look too beady and overly narrow one's lack the ability to display emotional cues as well. Both extremes are generally not attractive.",
     ]
-    advice = '''Lower lid blepharoplasty can increase this ratio if a sagging lower lid is the culprit. 
+    advice = '''Lower lid blepharoplasty can increase this ratio if a sagging lower lid is the culprit.
     In the cases of overlying soft tissue in the upper lid region, blepharoplasty can increase the perceived height and roundness of your eyes.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.eyeAspectRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.eyeAspectRatio, 
@@ -469,9 +473,9 @@ def funcBitemporalWidth(p:frontProfileSchema):
     ]
     advice = '''Altering your forehead width will mostly have to do with altering your hairline. While altering this proportion is generally not necessary unless it is an extreme case, there are a few ways to do so:
     1) laser hair removal to widen an overly narrow hairline.
-    2) shaving your hairline
-    3) using a hairstyle to cover your forehead
-    4) altering your hair length. For example, wider bitemporal widths may suit shorter sides, while narrow foreheads may suit longer hairstyles.'''
+    2) shaving your hairline is inadvisable, but can widen the hairline.
+    3) using a hairstyle to cover your forehead.
+    4) altering your hair length. For example, wider bitemporal widths may suit shorter sides, while narrow foreheads may suit longer hairstyles. '''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.bitemporalWidth)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.bitemporalWidth, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -491,10 +495,8 @@ def funcLowerThirdProporation(p:frontProfileSchema):
         "Your lower third has an abnormal spacing between its features. The upper portion (upper lip/philtrum) of your lower third may be either too short (low values) or long (high values) relative to the lower portion (chin/lower lip).",
         "Your lower third has an extremely abnormal spacing between its features. The upper portion (upper lip/philtrum) of your lower third may be either too short (low values) or long (high values) relative to the lower portion (chin/lower lip).",
     ]
-    advice = '''Addressing this assessment is similar to others, with a few distinctions:
-    1) altering chin height through the various aforementioned methods (i.e., surgery, facial hair)
-    2) Rhinoplasty to reduce the droopiness of the nasal tip, thereby increasing this proportion.
-    Altering lip size does not substantially affect this proportion.'''
+    advice = '''Altering chin height can be achieved through the following methods: jaw implants, chin implants, vertical genioplasty, facial hair. An increase in chin height lowers this proportion if it is too high.
+    Rhinoplasty can reduce the droopiness of the nasal tip, thereby increasing this proportion. Altering lip size does not substantially affect this proportion.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.lowerThirdProportion)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.lowerThirdProportion, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -515,7 +517,8 @@ def funcLpsilateralAlarAngle(p:frontProfileSchema):
         "Your midface structure lacks balance. Your angle may indicate an extremely elongated nasal region and close set eyes (low values). Or, it may indicate a short nose and wide set eyes (high values).",
         "Your midface structure lacks balance. Your angle may indicate an extremely elongated nasal region and close set eyes (low values). Or, it may indicate a short nose and wide set eyes (high values).",
     ]
-    advice = '''Altering the spacing between your eyes is not really feasible, so the only way to change this measurement is to alter the position of your nasal tip. Namely, Rhinoplasty to reduce nasal tip droopiness can increase this angle.'''
+    advice = '''Altering the spacing between your eyes is not feasible for most people, so the main way to change this measurement is to alter the position of your nasal tip. Rhinoplasty to reduce nasal tip droopiness can increase this angle.
+    You should factor in how that change would alter your other facial proportions (e.g., facial thirds).'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.ipsilateralAlarAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.ipsilateralAlarAngle, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -536,7 +539,7 @@ def funcMedialCanthalAngle(p:frontProfileSchema):
         "The inner corner of your eye is very disharmonious. It either lacks some distinct angularity (high values) or is overly sharp (low values).",
         "The inner corner of your eye is extremely disharmonious. It either lacks some distinct angularity (high values) or is overly sharp (low values).",
     ]
-    advice = '''There is no surgery specifically addressed at altering the medial canthus, but Canthoplasty or Blepharoplasty would alter this to some effect.'''
+    advice = '''There is no surgery specifically addressed at altering the sharpness of the medial canthus, but Canthoplasty, Canthopexy, or Blepharoplasty would alter this to some effect.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.medialCanthalAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.medialCanthalAngle, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],

@@ -132,7 +132,9 @@ def funcFacialConvexityGlabella(p:sideProfileSchema):
     2) braces may be the only thing needed to align your jaw.
     3) other orthodontic contraptions can set your teeth in proper alignment.
     4) facial hair around the chin can improve perceived chin projection, which can increase this angle into the harmonious range.
-    Again, these are suggestions and giving a precise course of action would require consulting a specialist and taking X-rays.'''
+    5) Brow implants if the glabella position is recessed can increase facial convexity.
+    6) Multiple-implant augmentation of the midface skeleton can simulate the visual appearance of Le Fort III osteotomy and advancement without altering dental occlusion. The entire midface is freed in the subperiosteal plane. The midface skeleton is augmented with a combination of porous polyethylene implants immobilized.
+    A precise course of action would require consulting a specialist and taking X-rays beforehand in the case of jaw surgery.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.facialConvexityGlabella)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.facialConvexityGlabella, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -167,12 +169,12 @@ def funcNasofacialAngle(p:sideProfileSchema):
     maxArray = [[36, 40, 42, 43.5, 44.5, 60], [36, 40, 42, 43.5, 44.5, 60]]
     scoreArray = [9, 4.5, 2.25, 1.125, -2, -5]
     notes = [
-        "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "While not perfectly ideal, your angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "While not perfectly ideal, your angle indicates a normal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. This may indicate that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle.",
-        "Your angle indicates a slightly abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. This may indicate that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle.",
-        "Your angle indicates an abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. This indicates that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle.",
-        "Your angle indicates an extremely abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. This indicates that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle.",
+        "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "While not perfectly ideal, your angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "While not perfectly ideal, your angle indicates a normal balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. This may indicate that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle. ",
+        "Your angle indicates a slightly abnormal balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. This may indicate that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle. ",
+        "Your angle indicates an abnormal balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. This indicates that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle. ",
+        "Your angle indicates an extremely abnormal balance between your nose and chin. This encompasses your nose shape and position, as well as your chin's position. This indicates that your jaw's position relative to your nose is unfavorable, but it does not provide additional information regarding the relative positioning of your jaw like the facial convexity angle. ",
     ]
     advice = '''Along with correcting any malocclusion (reference facial convexity glabella), there are a few ways to improve your nasofacial angle. The best course of action would depend on the specifics of your case:
     1) Chin implants if your angle is too obtuse can help reduce the angle and boost harmony. Keep in mind this would have to consider other facial assessments as the change does not occur in isolation.
@@ -197,7 +199,8 @@ def funcNasolabialAngle(p:sideProfileSchema):
         "Your nose has an extremely abnormal shape. Your nose may be noticeably upturned (high values) or droopy (low values) and your philtrum may have a less than ideal shape.",
         "Your nose has an extremely abnormal shape. Your nose may be noticeably upturned (high values) or droopy (low values) and your philtrum may have a less than ideal shape.",
     ]
-    advice = '''Altering your nasolabial angle is fairly straightforward since it is in the isolated region of your nose. A rhinoplasty primarily aimed at addressing the columella and nasal tip region can alter the nasolabial angle.'''
+    advice = '''Altering your nasolabial angle is fairly straightforward since it is in the isolated region of your nose. A rhinoplasty primarily aimed at addressing the columella and nasal tip region can alter the nasolabial angle.
+    Upper lip filler may also create some upswing of your philtrum, reducing the angle.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.nasolabialAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasolabialAngle, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -214,8 +217,8 @@ def funcOrbitalVector(p:sideProfileSchema):
         "You have a slightly negative orbital vector, indicating some infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is not yet extreme hollowing.",
         "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature.",
     ]
-    advice = '''To improve the youthfulness of the undereye region, filler is really the only option. 
-    Hyaluronic acid filler injected in the infraorbital region can add volume and create a rejuvenating effect. This would have to be a yearly event as the filler dissipates. 
+    advice = '''To improve the youthfulness of the undereye region, filler is the primary option. Hyaluronic acid filler injected in the infraorbital region can add volume and create a rejuvenating effect. This would have to recurring as the filler dissipates. 
+    Implants in the midface region, particularly around the zygomatic and infraorbital region can also address this issue.
     Another potential option is gaining body-fat. This will not provide a substantial benefit, but as your face gains soft tissue in the form of fat, so does the region under your eyes to some degree.'''
     index = getStaticMeasurementLevel(valueArray, lvlCnt, p.orbitalVector)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.orbitalVector, [valueArray[0]], notes[index], "N/A" if index == 0 else advice)
@@ -235,8 +238,9 @@ def funcTotalFacialConvexity(p:sideProfileSchema):
         "The harmony of your lateral profile is extremely abnormal when considering your nose. This means that your nose harmonizes unfavorably with the projection of your brow ridge and chin.",
         "The harmony of your lateral profile is extremely abnormal when considering your nose. This means that your nose harmonizes unfavorably with the projection of your brow ridge and chin.",
     ]
-    advice = '''The same concepts of improvement would apply here as for the facial convexity (glabella) assessment. However, since this is the total profile, altering the nose's projection can also improve this assessment if that is the issue. We want to be careful to recognize whether your unfavorable angle is due to your malocclusion or your nose projection though.
-    If your angle is too high, you can get a Rhinoplasty to reduce the projection of your nose.If your angle is too low, increasing the projection of your nose is possible, but less common. I would caution against this if your angle is not extreme.'''
+    advice = '''The same concepts of improvement would apply here as for the facial convexity (glabella) assessment. However, since this is the total profile, altering the nose's projection can also improve this assessment if that is the issue. We want to carefully recognize whether your unfavorable angle is due to your jaw, glabella, or your nose projection.
+    If your angle is too high, you can get a Rhinoplasty to reduce the projection of your nose.
+    If your angle is too low, increasing the projection of your nose is possible, but less common. I would caution against this unless your angle is extreme.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.totalFacialConvexity)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.totalFacialConvexity, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -281,7 +285,7 @@ def funcFacialConvexityNasion(p:sideProfileSchema):
         "Your side profile shape is outside of the normal range. This can indicate that some part of your face -- upper, middle, or lower are in disharmony to one another. You may have some occlusal issues like perhaps a moderate overjet (low values) or underbite (high values).",
         "Your side profile shape is far outside of the normal range. This can indicate that some part of your face -- upper, middle, or lower are in extreme disharmony to one another. You certainly have some occlusal issues like perhaps an overjet (low values) or underbite (high values).",
     ]
-    advice = '''The same concepts of improvement would apply here as for the facial convexity (glabella) assessment. However, there is one caveat. If your angle is low, and it is not primarily a result of a malocclusion, then is may be due to the recessed position of your nasion. In that case, a Rhinoplasty can add projection to the top of your nose.'''
+    advice = '''The same general concepts of improvement would apply here as for the facial convexity (glabella) assessment. However, there is one caveat. If your angle is low, and it is not primarily a result of a jaw recession, then it may be due to the recessed position of your nasion. In that case, a Rhinoplasty can add projection to the top of your nose.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.facialConvexityNasion)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.facialConvexityNasion, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -322,8 +326,8 @@ def funcNasalWHRatio(p:sideProfileSchema):
         "You have an extremely abnormal Nasal WHR. The projection of your nose may be too much (high values) or too little (low values) compared to its height.",
     ]
     advice = '''Reducing the vertical height of the nose is not really possible aside from a Lefort 1 advancement or some kind of invasive maxillofacial surgery. 
-    The more superficial option is a Rhinoplasty to reduce nasal projection is the primary way to address an overly projected nose and create a lower ratio.
-    Increasing nasal projection is not as common, but some form of Rhinoplasty would also apply. to increase the ratio'''
+    The more superficial option is a Rhinoplasty to reduce nasal projection as the primary way to address an overly projected nose and create a lower ratio.
+    Increasing nasal projection is not as common, but some form of Rhinoplasty would also apply to increase the ratio'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.nasalW2HRatio)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasalW2HRatio, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
@@ -387,17 +391,17 @@ def funcNasomentalAngle(p:sideProfileSchema):
     maxArray = [[132, 133.5, 134.5, 136.5, 138.5, 150],[132, 133.5, 134.5, 136.5, 138.5, 150]]
     scoreArray = [5, 2.5, 1.25, 0.625, 0, -5]
     notes = [
-        "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "This angle indicates a reasonably harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "While not ideal, this angle indicates a normal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a normal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "This angle indicates a slightly abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have an abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "This angle indicates an abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It probably indicates that you have an abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
-        "This angle indicates an extremely abnormal balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It probably indicates that you have an extremely abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "This angle indicates a reasonably harmonious balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "While not ideal, this angle indicates a normal balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It can indicate that you have a normal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "This angle indicates a slightly abnormal balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It can indicate that you have an abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "This angle indicates an abnormal balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It probably indicates that you have an abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
+        "This angle indicates an extremely abnormal balance between your nose and chin. This encompasses your nose shape and position as well as your chin's position. It probably indicates that you have an extremely abnormal jaw position, but not always. It mainly indicates that your nose is normal relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
     ]
     advice = '''Along with correcting any malocclusion (reference facial convexity glabella), there are a few ways to improve your nasomental angle. The best course of action would depend on the specifics of your case:
     1) Chin implants if your angle is too acute can help increase the angle and boost harmony. Keep in mind this would have to consider other facial assessments as the change does not occur in isolation.
-    2) Rhinplasty to alter your nose shape in a specific way to either increase or reduce this angle. One such example would be reducing your nasal projection, which tends to increase the angle and vice versa. 
-    Generally, this angle is the same conceptually as the nasofacial, but the angles vary inversely.'''
+    2) Rhinoplasty can alter your nose shape in a specific way to either increase or reduce this angle. One such example would be reducing your nasal projection, which tends to increase the angle and vice versa. 
+    This angle is the same conceptually as the nasofacial, but the angles vary inversely.'''
     index = getMeasurementLevel(p, defaultRacingVal, minArray, maxArray, lvlCnt, p.nasomentalAngle)
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasomentalAngle, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
