@@ -72,7 +72,7 @@ def funcFacialThirds(p:frontProfileSchema):
                                [minArray_basic[1-p.gender][0]+defaultRacingVal[p.racial], maxArray_basic[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[i], "N/A" if index == 0 else advice)
     else:
-        if value[2] == min(value):
+        if value[2] != max(value):
             for i in range(lvlCnt):
                 for index in range(3):
                     if value[index] < minArray_favor[1-p.gender][i] or value[index] > maxArray_favor[1-p.gender][i]: break
