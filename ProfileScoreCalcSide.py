@@ -18,7 +18,7 @@ def funcGonialAngle(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[112, 109.5, 106, 102, 97, 92, 80],[114, 111, 108, 104, 99, 94, 80]]
     maxArray = [[123, 125.5, 129, 133, 138, 143, 160],[125, 128, 131, 135, 140, 146, 160]]
-    scoreArray = [40, 20, 10, 5, -20, -40, -70]
+    scoreArray = [40, 20, 10, 5, -5, -15, -30]
     notes = [
         "Your jaw has an ideal shape. Since your Gonial angle is neither too obtuse or acute, your jaw is likely neither too square or steep/rounded in shape.",
         "Your jawline has a near ideal shape. Your jaw's structure may be slightly more rounded or squared than is preferred, but it is still within a harmonious range.",
@@ -43,7 +43,7 @@ def funcNasofrontalAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[106, 101, 97, 94, 88, 70], [122, 117, 113, 110, 107, 70]]
     maxArray = [[129, 134, 138, 141, 147, 170], [143, 148, 152, 155, 158, 170]]
-    scoreArray = [15, 7.5, 3.75, 1.876, -7.5, -15]
+    scoreArray = [15, 7.5, 3.75, 1.875, 0, -5]
     notes = [
         "The angle formed between your brow ridge and nose is pleasant. Your brow region is neither too soft or harsh.",
         "Although not ideal, the angle formed between your brow ridge and nose is generally pleasant. Your brow region is neither too soft or harsh.",
@@ -66,7 +66,7 @@ def funcMandibularPlaneAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[15, 14, 12.5, 10, 8, 0], [15, 14, 12.5, 10, 8, 0]]
     maxArray = [[22, 27, 30, 32.5, 35, 45], [23, 27, 30, 32.5, 35, 45]]
-    scoreArray = [12.5, 6.25, 3.125, 1.5625, -12.5, -20]
+    scoreArray = [12.5, 6.25, 3.125, 1.5625, -5, -10]
     notes = [
         "The slope of your mandible is harmonious, being neither too flat or downward grown. This is usually indicative of a healthy jaw and normal growth pattern.",
         "While not perfectly ideal, the slope of your mandible is harmonious, being neither too flat or downward grown. This is usually indicative of a healthy jaw and normal growth pattern.",
@@ -117,7 +117,7 @@ def funcFacialConvexityGlabella(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[168, 161, 163, 160, 155, 140], [166, 163, 161, 159, 155, 140]]
     maxArray = [[176, 179, 181, 183, 184, 195], [175, 178, 180, 182, 184, 195]]
-    scoreArray = [10, 5, 2.5, -2.5, -10, -30]
+    scoreArray = [10, 5, 2.5, -2.5, -5, -10]
     notes = [
         "You have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with no severe overjet or underbite.",
         "Although not perfectly harmonious, you have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with perhaps some minor overjet (low values) or underbite (high values).",
@@ -165,7 +165,7 @@ def funcNasofacialAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[30, 36, 28, 26.5, 25.5, 10], [30, 36, 28, 26.5, 25.5, 10]]
     maxArray = [[36, 40, 42, 43.5, 44.5, 60], [36, 40, 42, 43.5, 44.5, 60]]
-    scoreArray = [9, 4.5, 2.25, 1.125, -4.5, -9]
+    scoreArray = [9, 4.5, 2.25, 1.125, -2, -5]
     notes = [
         "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
         "While not perfectly ideal, your angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
@@ -187,7 +187,7 @@ def funcNasolabialAngle(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[94, 90, 85, 81, 70, 65, 30], [96, 92, 87, 83, 79, 74, 30]]
     maxArray = [[117, 121, 126, 130, 140, 150, 190],[118, 122, 127, 131, 144, 154, 190]]
-    scoreArray = [7.5, 3.75, 1.875, 0.9375, -3.75, -7.5, -15]
+    scoreArray = [7.5, 3.75, 1.875, 0.9375, -3, -5, -7.5]
     notes = [
         "Your nose has a pleasant and ideal shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape.",
         "Your nose has a pleasant shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape.",
@@ -225,7 +225,7 @@ def funcTotalFacialConvexity(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100],[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100]]
     maxArray = [[148.5, 150.5, 153.5, 156.5, 159.5, 161.5, 180],[148.5, 150.5, 153.5, 156.5, 159.5, 161.5, 180]]
-    scoreArray = [7.5, 3.75, 1.875, -3.75, -7.5, -15, -30]
+    scoreArray = [7.5, 3.75, 1.875, -3.75, -5, -7.5, -15]
     notes = [
         "The harmony of your lateral profile is pleasant when considering your nose. This means that your nose harmonizes well with the projection of your brow ridge and chin.",
         "The harmony of your lateral profile is generally pleasant when considering your nose. This means that your nose harmonizes well with the projection of your brow ridge and chin.",
@@ -247,7 +247,7 @@ def funcMentolabialAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[108, 94, 80, 75, 65, 40], [93, 79, 70, 65, 62, 40]]
     maxArray = [[130, 144, 158, 165, 175, 200], [125, 139, 153, 160, 175, 200]]
-    scoreArray = [7.5, 3.75, 1.875, -1.875, -3.75, -7.5]
+    scoreArray = [7.5, 3.75, 1.875, -1.875, -3.75, -5]
     notes = [
         "You have a pleasant contour of the chin. The indent formed between your chin is neither too deep or flat.",
         "You have a generally pleasant contour of the chin. The indent formed between your chin is neither too deep or flat.",
@@ -272,7 +272,7 @@ def funcFacialConvexityNasion(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[163, 160, 158, 155, 152, 120], [161, 158, 156, 153, 152, 120]]
     maxArray = [[179, 173, 175, 178, 181, 195], [179, 173, 175, 178, 181, 195]]
-    scoreArray = [5, 2.5, 1.25, 0.625, -5, -15]
+    scoreArray = [5, 2.5, 1.25, 0.625, 0, -5]
     notes = [
         "You have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with no severe overjet or underbite.",
         "Although not perfectly harmonious, you have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with perhaps some minor overjet (low values) or underbite (high values).",
@@ -292,7 +292,7 @@ def funcNasalProjection(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[0.55, 0.5, 0.45, 0.37, 0.3, 0.1],[0.52, 0.47, 0.42, 0.34, 0.3, 0.1]]
     maxArray = [[0.68, 0.75, 0.78, 0.86, 0.95, 1.4],[0.68, 0.75, 0.78, 0.86, 0.95, 1.4]]
-    scoreArray = [5, 2.5, 1.25, 0.625, -5, -15]
+    scoreArray = [5, 2.5, 1.25, 0.625, 0, -5]
     notes = [
         "You have an ideal nasal projection. Your nose is not too pronounced or unprojected.",
         "You have a near ideal nasal projection. Your nose is not too pronounced or unprojected.",
@@ -306,13 +306,13 @@ def funcNasalProjection(p:sideProfileSchema):
     return MeasurementOverview(measureName, scoreArray[index], scoreArray[0], p.nasalProjection, 
                                [minArray[1-p.gender][0]+defaultRacingVal[p.racial], maxArray[1-p.gender][0]+defaultRacingVal[p.racial]],
                                notes[index], "N/A" if index == 0 else advice)
-def funcNasalWHRatio(p:sideProfileSchema):
+def funcNasalWHRatio(p:sideProfileSchema):  
     measureName = "Nasal W-H Ratio"
     defaultRacingVal = {"Caucasian":0, "African":-0.05, "East Asian":-0.12,"South Asian":0, "Hispanic":-0.03, "Middle eastern":-0.03,"Other":0}
     lvlCnt = 6
     minArray = [[0.62, 0.55, 0.49, 0.45, 0.4, 0.1],[0.68, 0.61, 0.55, 0.51, 0.45, 0.1]]
     maxArray = [[0.88, 0.95, 1.01, 1.05, 1.1, 1.6],[0.93, 1.0, 1.06, 1.1, 1.13, 1.6]]
-    scoreArray = [5, 2.5, 1.25, 0.625, -5, -15]
+    scoreArray = [5, 2.5, 1.25, 0.625, 0, -5]
     notes = [
         "You have an ideal Nasal WHR. The projection of your nose is proportionate relative to its height.",
         "You have a near ideal Nasal WHR. The projection of your nose is proportionate relative to its height.",
@@ -385,7 +385,7 @@ def funcNasomentalAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[125, 120, 118, 116, 114, 100], [125, 120, 118, 116, 114, 100]]
     maxArray = [[132, 133.5, 134.5, 136.5, 138.5, 150],[132, 133.5, 134.5, 136.5, 138.5, 150]]
-    scoreArray = [5, 2.5, 1.25, 0.625, -2.5, -10]
+    scoreArray = [5, 2.5, 1.25, 0.625, 0, -5]
     notes = [
         "This angle indicates a harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
         "This angle indicates a reasonably harmonious balance between your nose and chin. This encompasses your nose shape, position, and your chin's position. It can indicate that you have a pleasant jaw position, but not always. It mainly indicates that your nose is harmonious relative to your chin, but doesn't provide additional information on whether your chin is harmonious relative to other parts of your face.",
@@ -439,7 +439,7 @@ def funcBrowridgeInclinationAngle(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[13, 10, 8, 6, 4, 2, 0], [10, 7, 5, 3, 1, 1, 0]]
     maxArray = [[24, 27, 29, 31, 33, 36, 45], [22, 25, 27, 29, 31, 39, 45]]
-    scoreArray = [4, 2, 1, 0.5, -2, -10, -20]
+    scoreArray = [4, 2, 1, 0.5, -2, -6, -10]
     notes = [
         "Your forehead is not overly sloped back or flat. It is harmonious in shape.",
         "While not ideal, your forehead is not overly sloped back or flat.",
@@ -463,7 +463,7 @@ def funcNasalTipAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[112, 108, 104, 100, 97, 70], [118, 115, 111, 108, 105, 70]]
     maxArray = [[125, 129, 133, 137, 140, 170], [131, 134, 138, 141, 144, 170]]
-    scoreArray = [4, 2, 1, 0.5, -2, -4]
+    scoreArray = [4, 2, 1, 0.5, 0, -2]
     notes = [
         "You have a harmonious nasal tip that is not overly upturned or droopy.",
         "You have a generally harmonious nasal tip that is not overly upturned or droopy.",
