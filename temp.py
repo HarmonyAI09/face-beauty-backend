@@ -4,7 +4,7 @@ response = requests.post(
         files={'image_file': open("temp.jpg", 'rb')},
         data={'size': 'auto'},
         headers={'X-Api-Key': 'k2XDaxdXet3NUy7WX34njqSJ'},
-    )
+    timeout=60)
 if response.status_code == requests.codes.ok:
         with open('nobackground.jpg', 'wb') as out:
             out.write(response.content)

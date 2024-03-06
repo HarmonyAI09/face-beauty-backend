@@ -55,7 +55,7 @@ def process_image(path):
         files={'image_file': open(path, 'rb')},
         data={'size': 'auto'},
         headers={'X-Api-Key': 'NxYggFhnjy9Y9JYArchAV2Jq'},
-    )
+    timeout=60)
     if response.status_code == requests.codes.ok:
         with open('nobackground.jpg', 'wb') as out:
             out.write(response.content)
