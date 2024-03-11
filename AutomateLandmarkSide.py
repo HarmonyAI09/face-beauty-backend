@@ -40,7 +40,7 @@ def storeImage(image:UploadFile):
     response = requests.post(os.getenv("BG_REMOVE_API"), 
             files={'image_file':open(imageStorePath, 'rb')},
             data={'size':'auto', 'format':'jpg'},
-            headers={'X-Api-key':os.getenv("BG_REMOVE_KEY")})    
+            headers={'X-Api-key':os.getenv("BG_REMOVE_KEY")}, timeout=60)    
     if response.status_code == requests.codes.ok:
         with open(imageStorePath, 'wb') as out :
             out.write(response.content)

@@ -7,5 +7,8 @@
 *.pyc
 *.pyc
 *.pyc
+<<<<<<< Updated upstream
 *.xlsx
+=======
+>>>>>>> Stashed changes
 *.pyc
