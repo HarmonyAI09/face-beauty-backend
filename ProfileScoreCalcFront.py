@@ -13,7 +13,7 @@ def funcEyeSeparationRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[44.3, 43.6, 43.1, 42.6, 42, 41, 35],[45, 44.3, 43.8, 43.3, 42.7, 42, 35]]
     maxArray = [[47.4, 48.4, 48.9, 49.4, 50, 51, 58],[47.9, 48.6, 49.1, 49.6, 50.2, 51, 58]]
-    scoreArray = [35, 17.5, 8.75, 4.375, 0, -8.75, -17.5]
+    scoreArray = [35, 17.5, 8.75, 4.38, 0, -4.38, -17.5]
     notes = [
         "Your eyes are harmoniously spaced relative to your facial width.",
         "While not perfectly ideal, your eyes are generally harmoniously spaced relative to your facial width.",
@@ -92,7 +92,7 @@ def funcLateralCanthalTilt(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[5.2, 4, 3, 0, -2, -4, -10], [6, 4.8, 3.6, 1.5, 0, -3, -10]]
     maxArray = [[8.5, 9.7, 10.7, 13.7, 15.7, 17.9, 25],[9.6, 10.8, 12, 14.1, 15.6, 18.2, 25]]
-    scoreArray = [25, 12.5, 6.25, 3.125, -5, -10, -20]
+    scoreArray = [25, 12.5, 6.25, 3.125, 0, -5, -12.5]
     notes = [
         "Your eyes have a harmonious tilt, meaning they are not overly droopy or upturned.",
         "Your eyes have a generally harmonious tilt, meaning they are not overly droopy or upturned.",
@@ -115,7 +115,7 @@ def funcFacialWHRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[1.9, 1.85, 1.8, 1.75, 1.7, 1.66, 1.3],[1.9, 1.85, 1.8, 1.75, 1.7, 1.66, 1.3]]
     maxArray = [[2.06, 2.11, 2.16, 2.21, 2.26, 2.3, 2.3],[2.06, 2.11, 2.16, 2.21, 2.26, 2.3, 2.3]]
-    scoreArray = [25, 12.5, 6.25, 3.125, 0, -7.5, -15]
+    scoreArray = [25, 12.5, 6.25, 3.13, 0, -3.13, -6.25]
     notes = [
         "You have an ideal FWHR, indicating a facial width and midface height that harmonize well with one another. Your midface region (i.e., FWHR) is not overly compact or elongated in shape.",
         "You have a near ideal FWHR, indicating a facial width and midface height that harmonize well with one another. Your midface region (i.e., FWHR) is not overly compact or elongated in shape.",
@@ -142,7 +142,7 @@ def funcJawFrontalAngle(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[84.5, 80.5, 76.5, 72.5, 69.5, 66.5, 40],[86, 82.5, 79, 75.5, 72, 69, 40]]
     maxArray = [[95, 99, 103, 107, 110, 113, 150],[97, 100.5, 104, 107.5, 111, 114, 150]]
-    scoreArray = [25, 12.5, 6.25, 3.125, 0, -7.5, -15]
+    scoreArray = [25, 12.5, 6.25, 3.13, 0, -6.25, -12.5]
     notes = [
         "Your jaw has an ideal contour in the front profile, indicated by a harmonious angle in this assessment.",
         "Your jaw has a near ideal contour in the front profile, indicated by a harmonious angle in this assessment.",
@@ -168,7 +168,7 @@ def funcCheekboneHighSetedness(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[81, 76, 70, 65, 60, 55, 10], [83, 79, 73, 68, 63, 58, 10]]
     maxArray = [[100, 81, 76, 70, 65, 60, 55], [100, 83, 79, 73, 68, 63, 58]]
-    scoreArray = [20, 12.5, 6.25, 3.125, 0, -10, -15]
+    scoreArray = [20, 12.5, 6.25, 3.13, 0, -6.25, -12.5]
     notes = [
         "You have high cheekbones, which are generally preferred when it comes to facial aesthetics.",
         "Although not incredibly high-set, you still have reasonably high cheekbones, which are generally preferred when it comes to facial aesthetics.",
@@ -217,7 +217,7 @@ def funcBigonialWidth(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[85.5, 83.5, 80.5, 77.5, 75, 70, 50],[81.5, 79.5, 76.5, 73.5, 70.5, 69, 50]]
     maxArray = [[92, 94, 97, 100, 102.5, 105, 120],[88.5, 90.5, 93.5, 96.5, 99.5, 102, 120]]
-    scoreArray = [15, 7.5, 3.75, 1.875, -2.5, -5, -10]
+    scoreArray = [15, 7.5, 3.75, 1.88, 0, -3.75, -10]
     notes = [
         "You have an ideal jaw width. Your jaw is neither too wide or narrow relative to your total facial width.",
         "You have a near ideal jaw width. Your jaw is neither too wide or narrow relative to your total facial width.",
@@ -242,8 +242,8 @@ def funcChin2PhiltrumRatio(p:frontProfileSchema):
     defaultRacingVal = {"Caucasian":0, "African":0, "East Asian":0,"South Asian":0, "Hispanic": 0, "Middle eastern": 0,"Other":0}
     lvlCnt = 6
     minArray = [[2.05, 1.87, 1.75, 1.55, 1.2, 1.0, 0.1],[2.0, 1.85, 1.7, 1.5, 1.2, 1.0, 0, 1]]
-    maxArray = [[2.55, 2.73, 2.85, 3.2, 3.55, 3.85, 5.0],[2.5, 2.65, 2.8, 3, 3.15, 3.8, 5.0]]
-    scoreArray = [12.5, 6.25, 3.125, 1.5625, -3, -6, -10]
+    maxArray = [[2.55, 2.73, 2.85, 3.2, 3.55, 3.85, 5.0],[2.5, 2.65, 2.8, 3.15, 3.5, 3.8, 5.0]]
+    scoreArray = [12.5, 6.25, 3.13, 1.56, 0, -3.13, -6.25]
     notes = [
         "Your chin is harmoniously proportioned relative to your philtrum. This indicates that neither your chin or philtrum are too long or short.",
         "While not perfectly ideal, your chin is harmoniously proportioned relative to your philtrum. This indicates that neither your chin or philtrum are not excessively long or short.",
@@ -268,7 +268,7 @@ def funcNeckWidthRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[90, 85, 80, 75, 70, 65, 30], [75, 69, 67, 65, 62, 57, 30]]
     maxArray = [[100, 102, 105, 107, 75, 70, 130],[87, 93, 95, 97, 100, 103, 130]]
-    scoreArray = [10, 5, 1, -5, -7, -9, -12]
+    scoreArray = [10, 5, 1, 0, -2.5, -5, -7.5]
     notes = [
         "You have an ideal neck width that adds balance to your facial appearance.",
         "You have a near ideal neck width that adds balance to your facial appearance.",
@@ -289,7 +289,7 @@ def funcMouthNoseWidthRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[1.38, 1.34, 1.3, 1.26, 1.22, 1.18, 0.9],[1.45, 1.4, 1.35, 1.3, 1.25, 1.21, 0.9]]
     maxArray = [[1.53, 1.57, 1.61, 1.65, 1.69, 1.73, 2.2],[1.67, 1.72, 1.77, 1.82, 1.87, 1.91, 2.2]]
-    scoreArray = [10, 5, 2.5, 1.25, 0, -5, -10]
+    scoreArray = [10, 5, 2.5, 1.25, 0, -2.5, -5]
     notes = [
         "Your mouth width harmonizes extremely well with your nose width.",
         "Your mouth width harmonizes well with your nose width.",
@@ -334,7 +334,7 @@ def funcEyebrowPositionRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[0, 0.65, 0.95, 1.2, 1.5, 1.8, 2.1],[0.4, 0.3, 0, 1.15, 1.35, 1.85, 2.1]]
     maxArray = [[0.65, 0.95, 1.2, 1.5, 1.8, 2.1, 4.0],[0.85, 1, 1.35, 1.75, 2, 2.3, 4.0]]
-    scoreArray = [10, 5, 2.5, 0, -2.5, -5, -7.5]
+    scoreArray = [10, 5, 2.5, 1, 0, -2.5, -5]
     notes = [
         "You have an ideal positioning of your eyebrows above your eyes. A lower position is typically preferred among younger demographics. Your eyebrows could generally be considered low-set, which typically leads to a more striking appearance.",
         "You have a near ideal positioning of your eyebrows above your eyes. Your eyebrows could be considered medium-low set in the male range, and medium set in the female range.",
@@ -356,7 +356,7 @@ def funcEyeSpacingRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[0.93, 0.88, 0.83, 0.78, 0.67, 0.62, 0.42],[0.93, 0.88, 0.83, 0.78, 0.67, 0.62, 0.42]]
     maxArray = [[1.04, 1.07, 1.10, 1.17, 1.23, 1.43, 2.03],[1.04, 1.07, 1.10, 1.17, 1.23, 1.43, 2.03]]
-    scoreArray = [10, 5, 2.5, 0, -2.5, -5, -10]
+    scoreArray = [10, 5, 2.5, 1, 0, -5, -10]
     notes = [
         "Your eyes have a harmonious spacing relative to one another.",
         "Your eyes have a generally harmonious spacing relative to one another.",
@@ -378,7 +378,7 @@ def funcEyeAspectRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[2.8, 2.6, 2.4, 2.2, 2, 1.8, 0],[2.55, 2.35, 2.15, 1.95, 1.75, 1.8, 0]]
     maxArray = [[3.6, 3.8, 4, 4.2, 4.4, 4.6, 6],[3.2, 3.4, 3.6, 3.8, 4.0, 4.6, 6]]
-    scoreArray = [10, 5, 2.5, 1.25, 0, -5, -10]
+    scoreArray = [10, 5, 2.5, 1.25, 0, -2.5, -5]
     notes = [
         "Your eyes have an ideal shape in terms of their width and height. Your eyes are neither too narrow and elongated or round in shape.",
         "Your eyes have a near ideal shape in terms of their width and height. Your eyes are neither too narrow and elongated or round in shape.",
@@ -400,7 +400,7 @@ def funcLowerUpperLipRatio(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[1.4, 1.1, 0.9, 0.7, 0.4, 0.1, 0.1],[1.35, 1.05, 0.85, 0.75, 0.35, 0.1, 0.1]]
     maxArray = [[2.0, 2.3, 2.5, 2.7, 3.0, 3.5, 5],[2.0, 2.3, 2.5, 2.7, 3.0, 3.5, 5]]
-    scoreArray = [7.5, 3.75, 1.875, 0.9375, 0, -5, -10]
+    scoreArray = [7.5, 3.75, 1.88, 0.94, 0, -3.75, -7.5]
     notes = [
         "Your lower and upper lip are ideally proportioned relative to one another.",
         "Your lower and upper lip are near ideally proportioned relative to one another.",
@@ -421,7 +421,7 @@ def funcDeviationIAA(p:frontProfileSchema):
     lvlCnt = 6
     minArray = [[0, 2.5, 5, 10, 15, 20], [0, 2.5, 5, 10, 15, 20]]
     maxArray = [[2.5, 5, 10, 15, 20, 100], [2.5, 5, 10, 15, 20, 100]]
-    scoreArray = [7, 3.75, 1.875, 0.9375, -3.75, -7.5]
+    scoreArray = [7, 3.75, 1.88, 0.94, 0, -3.75]
     notes = [
         "You have an ideal harmony between your JFA and IAA.",
         "You have a near ideal harmony between your JFA and IAA.",
@@ -440,7 +440,7 @@ def funcEyebrowTilt(p:frontProfileSchema):
     lvlCnt = 6
     minArray = [[5, 3, 0, -2, -4, -15], [11, 9, 6, 4, 2, -15]]
     maxArray = [[13, 15, 18, 20, 22, 40], [18.7, 20.7, 23.7, 25.7, 27.7, 40]]
-    scoreArray = [6, 3, 1.5, -3, -6, -9]
+    scoreArray = [6, 3, 1.5, 0, -3, -6]
     notes = [
         "Your eyebrows have an ideal tilt. They are neither too upturned or droopy when accounting for inter-sex variability.",
         "Your eyebrows have a near ideal tilt. They are neither too upturned or droopy when accounting for inter-sex variability.",
@@ -461,7 +461,7 @@ def funcBitemporalWidth(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 74, 71, 50], [79, 76, 73, 70, 67, 65, 50]]
     maxArray = [[95, 97, 100, 102, 105, 108, 125],[92, 95, 98, 101, 104, 106, 125]]
-    scoreArray = [5, 2.5, 1.25, -2.5, -5, -7.5, -10]
+    scoreArray = [5, 2.5, 1.25, 0, -1.25, -2.5, -5]
     notes = [
         "Your forehead has an ideal width relative to your cheekbones. Your forehead is neither too narrow nor wide.",
         "Your forehead has a near ideal width relative to your cheekbones. Your forehead is neither too narrow nor wide.",
@@ -486,7 +486,7 @@ def funcLowerThirdProporation(p:frontProfileSchema):
     lvlCnt = 6
     minArray = [[30.6, 29.6, 28.4, 27.2, 26.6, 20],[31.2, 30.2, 29.2, 28.2, 27.2, 20]]
     maxArray = [[34, 35, 36.2, 37.4, 38, 45], [34.5, 35.5, 36.5, 37.5, 38.5, 45]]
-    scoreArray = [5, 2.5, 1.25, -2.5, -5, -7.5]
+    scoreArray = [5, 2.5, 1.25, 0, -1.25, -2.5]
     notes = [
         "Your lower third has a harmonious spacing between its features.",
         "Your lower third has a harmonious spacing between its features.",
@@ -507,7 +507,7 @@ def funcLpsilateralAlarAngle(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[84, 82, 79, 77, 75, 73, 50], [84, 82, 79, 77, 75, 73, 50]]
     maxArray = [[95, 97, 100, 102, 104, 106, 150],[95.5, 97.5, 100.5, 102.5, 104.5, 106.5, 150]]
-    scoreArray = [2.5, 1.25, 0.63, 0, -1.25, -2.5, -5]
+    scoreArray = [2.5, 1.25, 0.63, 0, -0.63, -1.25, -2.5]
     notes = [
         "Your midface structure retains a harmonious balance.",
         "Your midface structure retains a harmonious balance.",
@@ -529,7 +529,7 @@ def funcMedialCanthalAngle(p:frontProfileSchema):
     lvlCnt = 7
     minArray = [[20, 17, 15, 13, 11, 9, 5], [22, 20, 17, 15, 13, 11, 5]]
     maxArray = [[42, 50, 56, 63, 69, 75, 120], [44, 52, 58, 65, 71, 77, 120]]
-    scoreArray = [10, 5, 2.5, -2.5, -5, -7.5, -10]
+    scoreArray = [10, 5, 2.5, 0, -2.5, -5, -10]
     notes = [
         "The inner corner of your eye is harmonious. It has distinct shape and angularity, while not being overly angular.",
         "The inner corner of your eye is generally harmonious. It has distinct shape and angularity, while not being overly angular.",

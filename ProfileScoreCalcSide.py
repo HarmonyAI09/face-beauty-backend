@@ -18,7 +18,7 @@ def funcGonialAngle(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[112, 109.5, 106, 102, 97, 92, 80],[114, 111, 108, 104, 99, 94, 80]]
     maxArray = [[123, 125.5, 129, 133, 138, 143, 160],[125, 128, 131, 135, 140, 146, 160]]
-    scoreArray = [40, 20, 10, 5, -5, -15, -30]
+    scoreArray = [40, 20, 10, 5, 0, -10, -20]
     notes = [
         "Your jaw has an ideal shape. Since your Gonial angle is neither too obtuse or acute, your jaw is likely neither too square or steep/rounded in shape.",
         "Your jawline has a near ideal shape. Your jaw's structure may be slightly more rounded or squared than is preferred, but it is still within a harmonious range.",
@@ -117,7 +117,7 @@ def funcFacialConvexityGlabella(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[168, 161, 163, 160, 155, 140], [166, 163, 161, 159, 155, 140]]
     maxArray = [[176, 179, 181, 183, 184, 195], [175, 178, 180, 182, 184, 195]]
-    scoreArray = [10, 5, 2.5, -2.5, -5, -10]
+    scoreArray = [10, 5, 2.5, 0, -2.5, -5]
     notes = [
         "You have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with no severe overjet or underbite.",
         "Although not perfectly harmonious, you have a pleasant shape of the side profile. Neither part of your face -- upper, middle, or lower are in disharmony to one another. You also likely have a pleasant dental occlusion with perhaps some minor overjet (low values) or underbite (high values).",
@@ -145,7 +145,7 @@ def funcSubmentalCervicalAngle(p:sideProfileSchema):
     lvlCnt = 5
     minArray = [[91, 81, 81, 75, 50], [91, 81, 81, 75, 50]]
     maxArray = [[110, 120, 130, 140, 160], [110, 120, 130, 140, 160]]
-    scoreArray = [10, 5, 2.5, -5, -10]
+    scoreArray = [10, 5, 2.5, 0, -5]
     notes = [
         "The angle between your neck and lower jaw is harmonious and defined.",
         "Although not perfectly ideal, the angle between your neck and lower jaw is generally harmonious and defined.",
@@ -209,7 +209,7 @@ def funcOrbitalVector(p:sideProfileSchema):
     measureName = "Orbital Vector"
     lvlCnt = 5
     valueArray = ["positive", "slightly positive", "neutral", "slightly negative", "very negative"]
-    scoreArray = [7.5, 3.75, 1.88, -3.75, -7.5]
+    scoreArray = [7.5, 3.75, 1.88, 0, -3.75]
     notes = [
         "Your nose has a pleasant and ideal shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape.",
         "You have a slightly positive orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive.",
@@ -228,7 +228,7 @@ def funcTotalFacialConvexity(p:sideProfileSchema):
     lvlCnt = 7
     minArray = [[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100],[137.5, 135.5, 132.5, 129.5, 126.5, 124.5, 100]]
     maxArray = [[148.5, 150.5, 153.5, 156.5, 159.5, 161.5, 180],[148.5, 150.5, 153.5, 156.5, 159.5, 161.5, 180]]
-    scoreArray = [7.5, 3.75, 1.875, -3.75, -5, -7.5, -15]
+    scoreArray = [7.5, 3.75, 1.88, 0, -3.75, -5, -7.5]
     notes = [
         "The harmony of your lateral profile is pleasant when considering your nose. This means that your nose harmonizes well with the projection of your brow ridge and chin.",
         "The harmony of your lateral profile is generally pleasant when considering your nose. This means that your nose harmonizes well with the projection of your brow ridge and chin.",
@@ -251,7 +251,7 @@ def funcMentolabialAngle(p:sideProfileSchema):
     lvlCnt = 6
     minArray = [[108, 94, 80, 75, 65, 40], [93, 79, 70, 65, 62, 40]]
     maxArray = [[130, 144, 158, 165, 175, 200], [125, 139, 153, 160, 175, 200]]
-    scoreArray = [7.5, 3.75, 1.875, -1.875, -3.75, -5]
+    scoreArray = [7.5, 3.75, 1.88, 0, -3.75, -7.5]
     notes = [
         "You have a pleasant contour of the chin. The indent formed between your chin is neither too deep or flat.",
         "You have a generally pleasant contour of the chin. The indent formed between your chin is neither too deep or flat.",
@@ -423,7 +423,7 @@ def funcRecessionRelativeFrankfortPlane(p:sideProfileSchema):
     measureName = "Recession Relative-Frankfort Plane"
     lvlCnt = 4
     valueArray = ["none", "slight", "moderate", "extreme"]
-    scoreArray = [5, 1, 0, -10]
+    scoreArray = [5, 1, 0, -5]
     notes = [
         "According to this assessment, you have no notable recession regarding the position of your chin relative to your nasion.",
         "According to this assessment, you have slight recession regarding the position of your chin relative to your nasion.",
