@@ -207,15 +207,13 @@ def funcNasolabialAngle(p:sideProfileSchema):
                                notes[index], "N/A" if index == 0 else advice)
 def funcOrbitalVector(p:sideProfileSchema):
     measureName = "Orbital Vector"
-    lvlCnt = 5
-    valueArray = ["positive", "slightly positive", "neutral", "slightly negative", "very negative"]
-    scoreArray = [7.5, 3.75, 1.88, 0, -3.75]
+    lvlCnt = 3
+    valueArray = ["positive", "neutral", "negative"]
+    scoreArray = [7.5, 3.75, 0]
     notes = [
-        "Your nose has a pleasant and ideal shape. Your nose is likely not too upturned or droopy and your philtrum probably has a pleasant shape.",
-        "You have a slightly positive orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive.",
-        "You have a neutral orbital vector, indicating no infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is a feature that is generally considered attractive.",
-        "You have a slightly negative orbital vector, indicating some infraorbital hollowing. While you could have more soft tissue protrusion under your eyes, this is not yet extreme hollowing.",
-        "You have a very negative orbital vector, indicating noticeable infraorbital hollowing. This is generally considered an unattractive feature.",
+        "You have a positive orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive.",
+        "You have a neutral orbital vector, indicating no infraorbital hollowing. This is a youthful feature that is generally considered attractive.",
+        "You have a negative orbital vector, indicating infraorbital hollowing. There is a lack of soft tissue protrusion under your eyes, making your eyes perhaps appear sunken and less youthful.",
     ]
     advice = '''To improve the youthfulness of the undereye region, filler is the primary option. Hyaluronic acid filler injected in the infraorbital region can add volume and create a rejuvenating effect. This would have to recurring as the filler dissipates. 
     Implants in the midface region, particularly around the zygomatic and infraorbital region can also address this issue.
