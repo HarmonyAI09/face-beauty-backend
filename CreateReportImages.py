@@ -343,8 +343,8 @@ def create_cheekbone_height_image(points, RLs, DIR, index, canvas):
     i1 = getIntersection((c1, getVertical(c1, RLs[17])), RLs[17])
     i2 = getIntersection((c2, getVertical(c2, RLs[17])), RLs[17])
 
-    dotLines    = [(c1, i1)]
-    solidLines  = [(c2, i2)]
+    dotLines    = [(c2, i2)]
+    solidLines  = [(c1, i1)]
     drawPoints  = [points[12][0], points[12][1],
                    points[17][0], points[17][1],
                    points[21][0],
@@ -494,8 +494,8 @@ def create_chin_to_philtrum_ratio_image(points, RLs, DIR, index, canvas):
     p1 = getIntersection((points[20][0], getVertical(points[20][0], RLs[17])), RLs[17])
     p2 = getIntersection((points[25][0], getVertical(points[25][0], RLs[15])), RLs[15])
 
-    dotLines    = [(points[20][0], p1)]
-    solidLines  = [(points[25][0], p2)]
+    solidLines    = [(points[20][0], p1)]
+    dotLines  = [(points[25][0], p2)]
     drawPoints  = [points[20][0], points[21][0],
                    points[25][0], points[29][0],
                    p1, p2]
