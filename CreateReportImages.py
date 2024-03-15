@@ -659,77 +659,36 @@ def create_midface_ratio_image(points, RLs, DIR, index, canvas):
     crop.save(output_filename)
 
 #13
-def create_eyebrow_position_ratio_image(img_url, mark_points, DIR, index):
-    img = Image.open(img_url)
+def create_eyebrow_position_ratio_image(points, RLs, DIR, index, canvas):
+    indexes = [10, 14, 12, 8]
+    RLIndexes = [11]
+    (TL, BR), W = GetFeatureArea(points, indexes)    # TopLeft, BottomRight, Width
+    crop = GetAreaImage(canvas, TL, BR)
+    painter = ImageDraw.Draw(crop)
+    points = RemakePointArrayBaseOnCrop(TL, W, points)
+    RLs = RemakePointArrayBaseOnCrop(TL, W, RLs)
+
+    #TEMP POINT
+    p1 = getIntersection((points[8][0], getVertical(points[8][0], RLs[11])), RLs[11])
+    p2 = getIntersection((points[8][1], getVertical(points[8][1], RLs[11])), RLs[11])
+
+    dotLines    = [(points[8][0], p1),
+                   (points[8][1], p2)]
+    solidLines  = [(points[10][0], points[14][0]),
+                   (points[10][1], points[14][1])]
+    drawPoints  = [points[10][0], points[10][1],
+                   points[12][0], points[12][1],
+                   points[14][0], points[14][1],
+                   points[8][0], points[8][1],
+                   p1, p2]
     
-    # Calculate the updated dimensions while maintaining aspect ratio
-    if img.height >= img.width:
-        updated_height = 800
-        updated_width = img.width * 800 / img.height
-    else:
-        updated_width = 800
-        updated_height = img.height * 800 / img.width
+    DrawReferenceLines(painter, RLs, RLIndexes)
+    DrawDottedLines(painter,dotLines)
+    DrawSolidLines(painter, solidLines)
+    DrawPoints(painter, drawPoints)
 
-    img = img.resize((int(updated_width), int(updated_height)))
-    canvas = Image.new('RGB', (800, 800), (0, 0, 0))
-
-    x_offset = (800 - img.width) // 2
-    y_offset = (800 - img.height) // 2
-
-    canvas.paste(img, (x_offset, y_offset))
-    draw = ImageDraw.Draw(canvas)  
-
-    x1 = mark_points[10][0]["x"]
-    y1 = mark_points[10][0]["y"]
-    x2 = mark_points[14][0]["x"]
-    y2 = mark_points[14][0]["y"]
-    x3 = mark_points[12][0]["x"]
-    y3 = mark_points[12][0]["y"]
-    x4 = mark_points[12][1]["x"]
-    y4 = mark_points[12][1]["y"]
-    x5 = mark_points[8][0]["x"]
-    y5 = mark_points[8][0]["y"]
-    x6 = mark_points[8][1]["x"]
-    y6 = mark_points[8][1]["y"]
-    x7 = mark_points[10][1]["x"]
-    y7 = mark_points[10][1]["y"]
-    x8 = mark_points[14][1]["x"]
-    y8 = mark_points[14][1]["y"]
-    
-
-    x_min = min(x1,x2,x3,x4,x5,x6,x7,x8)
-    x_max = max(x1,x2,x3,x4,x5,x6,x7,x8)
-    y_min = min(y1,y2,y3,y4,y5,y6,y7,y8)
-    y_max = max(y1,y2,y3,y4,y5,y6,y7,y8)
-    
-    center_x = (x_min + x_max) / 2
-    center_y = (y_min + y_max) / 2
-    half_side_length = max(x_max - center_x, y_max - center_y)
-
-    # Define the square's bounding coordinates
-    square_x_min = max(center_x - half_side_length, 0)
-    square_y_min = max(center_y - half_side_length, 0)
-    square_x_max = min(center_x + half_side_length, 800)
-    square_y_max = min(center_y + half_side_length, 800)
-
-    # Crop the image to the square
-    cropped_img = canvas.crop((square_x_min-10, square_y_min-10, square_x_max+10, square_y_max+10))
-    cropped_img = cropped_img.resize((300, 300))
-    width = half_side_length*2+20
-    start_x = center_x - half_side_length - 10
-    start_y = center_y - half_side_length -10
-    [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), (x8, y8)] = rescale((start_x, start_y), width, [(x1, y1), (x2, y2), (x3, y3), (x4, y4), (x5, y5), (x6, y6), (x7, y7), (x8, y8)])
-    draw = ImageDraw.Draw(cropped_img)  
-    draw_infinite_line(draw, (x3, y3), (x4, y4))
-    draw_solid_line(draw, (x1, y1), (x2, y2))
-    draw_solid_line(draw, (x7, y7), (x8, y8))
-    draw_dotted_line(draw, (x5, y5), (x5, y3))
-    draw_dotted_line(draw, (x6, y6), (x6, y3))
-    output_filename = os.path.join(DIR, f"{create_eyebrow_position_ratio_image.__name__}.jpg")
     output_filename = os.path.join(DIR, f"{index}.jpg")
-    cropped_img.save(output_filename)
-
-    return True
+    crop.save(output_filename)
 
 #14
 def create_eye_spacing_ratio_image(points, RLs, DIR, index, canvas):
@@ -1749,7 +1708,7 @@ async def createReportImages(f_url = None, s_url = None, position_lists = None):
         create_Neck_width__image(f_url, position_lists, DIR, 9)
         create_mouth_width_to_nose_width_ratio_image(f_url, position_lists, DIR, 10)
         create_midface_ratio_image(points, RLs, DIR, 11, f_canvas)
-        create_eyebrow_position_ratio_image(f_url, position_lists, DIR, 12)
+        create_eyebrow_position_ratio_image(points, RLs, DIR, 12, f_canvas)
         create_eye_spacing_ratio_image(points, RLs, DIR, 13, f_canvas)
         create_eye_aspect_ratio_image(f_url, position_lists, DIR, 14)
         create_lower_lip_to_upper_lip_ratio_image(points, RLs, DIR, 15, f_canvas)
