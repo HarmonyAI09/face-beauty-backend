@@ -105,11 +105,11 @@ def DrawSolidLine(painter, st, ed, color=(0, 255, 0), width=4):
     ed = (ed['x'], ed['y'])
     painter.line([st, ed], fill=color, width=width)
 
-def DrawDottedLines(painter:ImageDraw, lines):
+def DrawDottedLines(painter:ImageDraw, lines, color=(0, 255, 0)):
     for line in lines:
         A = line[0]
         B = line[1]
-        DrawDottedLine(painter, A, B)
+        DrawDottedLine(painter, A, B, color=color)
 
 def DrawSolidLines(painter:ImageDraw, lines):
     for line in lines:
